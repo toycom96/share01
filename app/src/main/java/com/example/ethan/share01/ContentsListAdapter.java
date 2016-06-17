@@ -27,8 +27,8 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
 
     @Override
     public void onBindViewHolder(ContentsListAdapter.ViewHolder holder, int position) {
-        //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(476,0).into(holder.Pic);
-        Toast.makeText(mContext, ContentsList.get(position).getPicUrl(),1);
+        Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(476,0).into(holder.Pic);
+        Toast.makeText(mContext, ContentsList.get(position).getPicUrl(), 1);
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).into(holder.Pic);
         holder.Title.setText(ContentsList.get(position).getTitle());
         holder.ContentId = ContentsList.get(position).getId();

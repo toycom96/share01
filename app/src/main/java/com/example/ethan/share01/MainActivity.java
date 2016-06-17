@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +68,13 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView.addOnScrollListener(new ContentsListListener(this, _sGridLayoutManager));
 
-        mAdapter = new ContentsListAdapter(MainActivity.this.getBaseContext(), mContentsList);
+        //mAdapter = new ContentsListAdapter(MainActivity.this.getBaseContext(), mContentsList);
+        mAdapter = new ContentsListAdapter(getApplicationContext(), mContentsList);
         recyclerView.setAdapter(mAdapter);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
         mContentsLoader.LoadFromApi(0, 1);
-
+        //Toast.makeText(recyclerView.getContext() , "aa", 5);
     }
 
     @Override

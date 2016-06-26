@@ -1,11 +1,16 @@
 package com.example.ethan.share01;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +41,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private String getUserAge;
     private String getUserPhone;
     private String getUserSex;
+
+    private String phoneNum;
+    private String deviceId;
 
 
     private RbPreference mPref;
@@ -71,9 +79,69 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         sign_up_btn = (Button) findViewById(R.id.signup_button);
         user_sex_female_rb = (RadioButton) findViewById(R.id.signup_user_sex_femail);
         user_sex_male_rb = (RadioButton) findViewById(R.id.signup_user_sex_male);
-
-
+        //phoneInfo();
     }
+
+    private void phoneInfo() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_PHONE_STATE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        1122);
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        1122);
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1122: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    TelephonyManager manager=(TelephonyManager) getSystemService(getApplicationContext().TELEPHONY_SERVICE);
+                    deviceId=manager.getDeviceId();
+                    phoneNum=manager.getLine1Number();
+                    user_phone_edt.setText(phoneNum);
+
+                } else {
+                    Toast.makeText(this, "폰의 정보를 얻을 수 있어야 회원 가입이 가능합니다.", 3).show();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(SignupActivity.this, MainActivity.class);

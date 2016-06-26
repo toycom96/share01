@@ -60,6 +60,24 @@
             android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/signup_user_sex_male"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="남자"/>
+        <RadioButton
+            android:id="@+id/signup_user_sex_femail"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="여자"/>
+    </RadioGroup>
+
     <Button
         android:id="@+id/signup_button"
         android:layout_width="match_parent"

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private TextView user_login_tv;
+    private RbPreference mPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
 
         user_login_tv = (TextView) header.findViewById(R.id.navigation_user_login);
+        //isLogin();
         user_login_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +90,15 @@ public class MainActivity extends AppCompatActivity
         //Toast.makeText(recyclerView.getContext() , "aa", 5);
     }
 
+    public void isLogin(){
+        mPref = new RbPreference(MainActivity.this);
+
+        if(mPref.getValue("is_login",false)){
+            user_login_tv.setText(mPref.getValue("user_name","???"));
+        } else {
+            user_login_tv.setText("로그인 하기");
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

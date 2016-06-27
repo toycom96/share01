@@ -79,7 +79,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         sign_up_btn = (Button) findViewById(R.id.signup_button);
         user_sex_female_rb = (RadioButton) findViewById(R.id.signup_user_sex_femail);
         user_sex_male_rb = (RadioButton) findViewById(R.id.signup_user_sex_male);
-        //phoneInfo();
+        phoneInfo();
     }
 
     private void phoneInfo() {

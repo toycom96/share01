@@ -25,6 +25,8 @@
             android:layout_gravity="bottom"
             android:gravity="center_horizontal"
             android:background="#BB777777"
-            android:textColor="#000000" />
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:maxLines="2"/>
     </FrameLayout>
 </android.support.v7.widget.CardView>

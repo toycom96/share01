@@ -2,6 +2,7 @@ package com.example.ethan.share01;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +20,19 @@ import java.util.List;
 public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapter.ViewHolder> {
     private List<ContentsListObject> ContentsList;
     private Context mContext;
+    static int picWidth = 470;
 
     public ContentsListAdapter(Context context, List<ContentsListObject> ContentItem) {
         this.mContext = context;
         this.ContentsList = ContentItem;
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        picWidth = (int)((float)dm.widthPixels / 2.0 * 0.97);
     }
 
     @Override
     public void onBindViewHolder(ContentsListAdapter.ViewHolder holder, int position) {
-        Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(476,0).into(holder.Pic);
+        //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(476,0).into(holder.Pic);
+        Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(picWidth, 0).into(holder.Pic);
         Toast.makeText(mContext, ContentsList.get(position).getPicUrl(), 1);
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).into(holder.Pic);
         holder.Title.setText(ContentsList.get(position).getTitle());

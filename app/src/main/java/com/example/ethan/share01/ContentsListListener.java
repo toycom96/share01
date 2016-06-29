@@ -15,7 +15,7 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
     public View view;
     private Context mContext = null;
     MainActivity mActivity;
-    private ContentsListObject mContentsList;
+    //private ContentsListObject mContentsList;
 
     public ContentsListListener(MainActivity activity, StaggeredGridLayoutManager layoutManager) {
         this.mActivity = activity;
@@ -52,9 +52,7 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
         if (lastVisibleItemPositions[0] + 2 >= totalItemCount) {
             int offset = this.mActivity.mContentsList.get(totalItemCount -1).getId();
 
-            this.mActivity.mContentsLoader.LoadFromApi(offset,1);
-            //this.mActivity.items.get(totalItemCount);
-            //Toast.makeText(view.getContext(), "aaaa", 1).show();
+            this.mActivity.mContentsLoader.loadFromApi(offset,1);
         }
 
     }

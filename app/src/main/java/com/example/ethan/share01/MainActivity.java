@@ -76,18 +76,13 @@ public class MainActivity extends AppCompatActivity
         _sGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(_sGridLayoutManager);
 
-        //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-        //mContentsLoader.LoadFromApi(0, 1);
-
         recyclerView.addOnScrollListener(new ContentsListListener(this, _sGridLayoutManager));
 
-        //mAdapter = new ContentsListAdapter(MainActivity.this.getBaseContext(), mContentsList);
         mAdapter = new ContentsListAdapter(getApplicationContext(), mContentsList);
         recyclerView.setAdapter(mAdapter);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-        mContentsLoader.LoadFromApi(0, 1);
-        //Toast.makeText(recyclerView.getContext() , "aa", 5);
+        mContentsLoader.loadFromApi(0, 1);
     }
 
     public void isLogin(){

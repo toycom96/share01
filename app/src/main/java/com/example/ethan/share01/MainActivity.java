@@ -153,7 +153,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.goods_share) {
 
         } else if (id == R.id.setting) {
-
+            Intent intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

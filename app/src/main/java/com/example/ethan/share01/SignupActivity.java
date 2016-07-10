@@ -27,7 +27,6 @@ import java.net.URL;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -69,7 +68,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (userId != null && userPass != null && userNick != null){
             mPref.put("user_name", userId);
 
-            HttpUtil http = new HttpUtil();
+            SignupThread http = new SignupThread();
             http.execute(join_url,userId,userPass,userNick,userAge,userSex,userDeviceId,userPhone);
 
         } else {
@@ -185,7 +184,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    class HttpUtil extends AsyncTask<String, Void, Void> {
+    class SignupThread extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -306,7 +305,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-
+    /*
+     * Create Lai.OH
+     * String 값을 받아와 MD5 형식으로 바꾼 뒤 Return 하는 함수
+     */
     public static String getMD5Hash(String s) {
         MessageDigest m = null;
         String hash = null;

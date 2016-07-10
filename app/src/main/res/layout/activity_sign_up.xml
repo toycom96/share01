@@ -24,14 +24,41 @@
         android:layout_marginTop="10dp">
 
         <EditText
-            android:id="@+id/signup_user_name"
+            android:id="@+id/signup_user_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="이름좀 알려주세요"
-            android:inputType="textPersonName"/>
+            android:hint="이메일형식 아이디에요"
+            android:inputType="textEmailAddress"/>
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/signup_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="비밀번호 길이는 자유에요"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/signup_user_nick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="닉네임도 자유에요"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,23 +69,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="나이좀 알려주세요."
+            android:hint="나이가 궁금해요"
             android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
-
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
         <EditText
-            android:id="@+id/signup_user_phonenum"
+            android:id="@+id/signup_user_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="핸드폰 번호좀 알려주세요."
-            android:inputType="number"/>
+            android:hint="번호가 있어야 가입이 가능해요"
+            android:inputType="text"/>
     </android.support.design.widget.TextInputLayout>
+
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -70,7 +97,8 @@
             android:id="@+id/signup_user_sex_male"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="남자"/>
+            android:text="남자"
+            android:checked="true"/>
         <RadioButton
             android:id="@+id/signup_user_sex_femail"
             android:layout_width="wrap_content"
@@ -86,7 +114,7 @@
         android:background="#b45705"
         android:text="@string/signup_title"
         android:textColor="#fff"/>
-
+    <!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,6 +130,7 @@
         android:background="#3b5998"
         android:text="Facebook 으로 로그인하기"
         android:textColor="#fff"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,6 +138,6 @@
         android:background="#dc4e41"
         android:text="Google + 로 로그인하기"
         android:textColor="#fff"/>
-
+    -->
 
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private TextView user_login_tv;
+    private ImageView user_profile_iv;
+
     private RbPreference mPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,17 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
 
         user_login_tv = (TextView) header.findViewById(R.id.navigation_user_login);
-        //isLogin();
+        user_profile_iv = (ImageView) header.findViewById(R.id.navigation_user_profile_imageView);
+
+        user_profile_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        isLogin();
         user_login_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         mPref = new RbPreference(MainActivity.this);
 
         if(mPref.getValue("is_login",false)){
-            user_login_tv.setText(mPref.getValue("user_name","???"));
+            user_login_tv.setText(mPref.getValue("user_id","???"));
         } else {
             user_login_tv.setText("로그인 하기");
         }

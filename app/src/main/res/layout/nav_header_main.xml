@@ -18,7 +18,7 @@
         android:gravity="center">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageView"
+            android:id="@+id/navigation_user_profile_imageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"

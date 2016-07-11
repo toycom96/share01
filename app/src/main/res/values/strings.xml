@@ -11,4 +11,8 @@
 
     <!--Signup Resources-->
     <string name="signup_title">회원가입</string>
+
+    <!--UserInfoEdit Resources -->
+    <string name="info_edit_title">회원정보 수정</string>
+    <string name="info_edit_complete">수정하기</string>
 </resources>

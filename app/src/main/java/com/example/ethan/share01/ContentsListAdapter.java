@@ -1,6 +1,7 @@
 package com.example.ethan.share01;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -33,7 +34,7 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
     public void onBindViewHolder(ContentsListAdapter.ViewHolder holder, int position) {
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(476,0).into(holder.Pic);
         Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(picWidth, 0).into(holder.Pic);
-        Toast.makeText(mContext, ContentsList.get(position).getPicUrl(), 1);
+        Toast.makeText(mContext, ContentsList.get(position).getPicUrl(), Toast.LENGTH_SHORT);
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).into(holder.Pic);
         holder.Title.setText(ContentsList.get(position).getTitle());
         holder.ContentId = ContentsList.get(position).getId();
@@ -71,6 +72,9 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
             Toast.makeText(ContentView.getContext(),
                     "Clicked ContentId = " + ContentId, Toast.LENGTH_SHORT)
                     .show();
+            Intent intent = new Intent(ContentView.getContext().getApplicationContext(),DetailContents.class);
+            intent.putExtra("id",ContentId);
+            ContentView.getContext().startActivity(intent);
         }
     }
 

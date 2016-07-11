@@ -82,10 +82,6 @@ public class ContentsListLoad {
 
 
                 JSONObject job = new JSONObject();
-                job.put("long", 126.7459979);
-                job.put("lat", 37.259485);
-                job.put("dist", 10000);
-                job.put("lidx", 0);
 
                 os = conn.getOutputStream();
                 os.write(job.toString().getBytes("utf-8"));

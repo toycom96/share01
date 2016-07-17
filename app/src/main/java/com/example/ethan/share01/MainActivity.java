@@ -1,11 +1,14 @@
 package com.example.ethan.share01;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,10 +40,13 @@ public class MainActivity extends AppCompatActivity
     private ImageView user_profile_iv;
 
     private RbPreference mPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //회원가입 유무 확인
+        checkForAuth();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -74,7 +80,7 @@ public class MainActivity extends AppCompatActivity
                 finish();
             }
         });
-        isLogin();
+
         user_login_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,15 +102,41 @@ public class MainActivity extends AppCompatActivity
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
         mContentsLoader.loadFromApi(0, 1);
+
     }
 
-    public void isLogin(){
+    private void checkForAuth(){
+        //Log.e("checkForAuth","check");
         mPref = new RbPreference(MainActivity.this);
+        String auth = mPref.getValue("auth","");
+        if(auth.equals("")){
+            user_login_tv.setEnabled(true);
+            user_profile_iv.setEnabled(true);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        if(mPref.getValue("is_login",false)){
-            user_login_tv.setText(mPref.getValue("user_id","???"));
+            builder.setTitle("회원가입이 필요합니다")
+                    .setMessage("이 어플리케이션은 회원가입을 필요해요\n회원가입하러 가실래요??")
+                    .setCancelable(false)
+                    .setPositiveButton("할래요!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("안할래요", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         } else {
-            user_login_tv.setText("로그인 하기");
+            user_login_tv.setText(mPref.getValue("user_id", ""));
+            user_login_tv.setEnabled(false);
+            user_profile_iv.setEnabled(false);
         }
     }
     @Override

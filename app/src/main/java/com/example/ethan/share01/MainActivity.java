@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //회원가입 유무 확인
-        checkForAuth();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -102,7 +101,8 @@ public class MainActivity extends AppCompatActivity
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
         mContentsLoader.loadFromApi(0, 1);
-
+        //회원가입 유무 확인
+        checkForAuth();
     }
 
     private void checkForAuth(){

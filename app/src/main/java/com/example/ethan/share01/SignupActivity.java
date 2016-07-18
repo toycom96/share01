@@ -1,11 +1,14 @@
 package com.example.ethan.share01;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -50,6 +53,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private String getUserPhone;
     private String getUserDeviceId;
 
+    private Boolean shgnup_complete = false;
 
     public static RbPreference mPref;
     private final String join_url = "https://toycom96.iptime.org:1443/user_join";
@@ -161,6 +165,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.signup_button :
+                sign_up_btn.setEnabled(false);
                 if(user_id_edt.getText().toString().length() != 0 && user_password_edt.getText().toString().length() != 0 && user_age_edt.getText().toString().length() != 0 && user_nick_edt.getText().toString().length() != 0){
                     getUserId = user_id_edt.getText().toString();
                     getUserPass = user_password_edt.getText().toString();
@@ -177,6 +182,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                     signupModule(getUserId,getUserPass,getUserNick,getUserAge,getUserSex,getUserDeviceId,getUserPhone);
                 } else {
+                    sign_up_btn.setEnabled(true);
                     Toast.makeText(SignupActivity.this, "모든정보를 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
 
@@ -185,13 +191,37 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     class SignupThread extends AsyncTask<String, Void, Void> {
+
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProgressDialog loading = new ProgressDialog(SignupActivity.this);
+            loading.setTitle("회원가입");
+            loading.setMessage("회원가입 중이에요...");
+            loading.setCancelable(false);
+            loading.show();
+            //loading = ProgressDialog.show(SignupActivity.this, "회원가입 중...", null,true,true);
+        }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(SignupActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-            mPref.put("is_login",true);
-            CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
-            auth.execute(mPref.getValue("user_num",""),getUserDeviceId);
+            mPref.put("user_id",getUserId);
+            Log.e("UserID", mPref.getValue("user_id",""));
+            if(shgnup_complete){
+                Toast.makeText(SignupActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
+                mPref.put("is_login",true);
+                mPref.put("user_id",getUserId);
+
+                CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
+                auth.execute(mPref.getValue("user_num",""),getUserDeviceId);
+                //loading.dismiss();
+            } else {
+                Toast.makeText(SignupActivity.this, "회원가입중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+
 
             Intent intent = new Intent(SignupActivity.this, MainActivity.class);
             startActivity(intent);
@@ -223,7 +253,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             Log.e("user_id", join_id);
             Log.e("userpass", join_pass);
             Log.e("userDevice", join_device_id);
-            mPref.put("user_id",join_id);
+
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
@@ -287,12 +317,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response ID Value", responseJSON.get("id").toString());
+                    Log.e("Response ID Value", responseJSON.get("id").toString());
                     String result = responseJSON.get("id").toString();
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
                     Log.i("responese value", "DATA response = " + result);
                     mPref.put("user_num", result);
                     mPref.put("device_id", join_device_id);
+                    shgnup_complete = true;
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }

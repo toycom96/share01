@@ -36,6 +36,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText user_id_edt;
     private EditText user_age_edt;
     private EditText user_password_edt;
+    private EditText user_pass_check_edt;
     private EditText user_nick_edt;
     private EditText user_phone_edt;
 
@@ -85,6 +86,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         user_id_edt = (EditText) findViewById(R.id.signup_user_id);
         user_age_edt = (EditText) findViewById(R.id.signup_user_age);
         user_password_edt = (EditText) findViewById(R.id.signup_user_password);
+        user_pass_check_edt = (EditText) findViewById(R.id.signup_user_pass_check);
         user_nick_edt = (EditText) findViewById(R.id.signup_user_nick);
         user_phone_edt = (EditText) findViewById(R.id.signup_user_phone);
 
@@ -179,8 +181,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         getUserSex = "F";
                     }
 
+                    if (user_password_edt.getText().toString().equals(user_pass_check_edt.getText().toString())) {
+                        signupModule(getUserId,getUserPass,getUserNick,getUserAge,getUserSex,getUserDeviceId,getUserPhone);
+                    } else {
+                        Toast.makeText(SignupActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
+                        sign_up_btn.setEnabled(true);
+                    }
 
-                    signupModule(getUserId,getUserPass,getUserNick,getUserAge,getUserSex,getUserDeviceId,getUserPhone);
                 } else {
                     sign_up_btn.setEnabled(true);
                     Toast.makeText(SignupActivity.this, "모든정보를 입력해주세요", Toast.LENGTH_SHORT).show();
@@ -208,13 +215,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mPref.put("user_id",getUserId);
-            Log.e("UserID", mPref.getValue("user_id",""));
+            //mPref.put("user_id",getUserId);
+            //Log.e("UserID", mPref.getValue("user_id",""));
             if(shgnup_complete){
                 Toast.makeText(SignupActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
                 mPref.put("is_login",true);
                 mPref.put("user_id",getUserId);
-
+                mPref.put("user_nick", getUserNick);
+                mPref.put("login","login");
+                Log.e("UserID", mPref.getValue("user_id",""));
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
                 auth.execute(mPref.getValue("user_num",""),getUserDeviceId);
                 //loading.dismiss();
@@ -280,6 +289,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                 JSONObject job = new JSONObject();
                 //JSONObject 생성 후 input
+                getUserId = join_id;
                 job.put("email", join_id);
                 job.put("passwd", join_pass);
                 job.put("name", join_nick);

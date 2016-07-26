@@ -1,5 +1,6 @@
 package com.example.ethan.share01;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -84,17 +85,36 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
+    /*
+     * auth 값을 http header로 보내 사용자 정보를 받아오는 Thread
+     */
     class GetUserInfoThread extends AsyncTask<String, Void, Void> {
+
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = new ProgressDialog(UserInfoEditActivity.this);
+            loading.setTitle("회원정보수정");
+            loading.setMessage("회원님의 정보를 받는 중이에요...");
+            loading.setCancelable(false);
+            loading.show();
+            //loading = ProgressDialog.show(SignupActivity.this, "회원가입 중...", null,true,true);
+        }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(UserInfoEditActivity.this, "정보 확인", Toast.LENGTH_SHORT).show();
+
+            //Toast.makeText(UserInfoEditActivity.this, "정보 확인", Toast.LENGTH_SHORT).show();
 
             user_id.setText(mPref.getValue("user_id", ""));
             user_nick.setText(getUserNick);
             user_age.setText(getUserAge);
             user_coment.setText(getUserComent);
-
+            loading.dismiss();
         }
 
         @Override
@@ -180,12 +200,15 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /*
+     * 사용자 정보 수정 완료 Thread
+     */
     class EditUserInfoThread extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Toast.makeText(UserInfoEditActivity.this, "정보수정 완료", Toast.LENGTH_SHORT).show();
-
+            mPref.put("user_nick", user_nick.getText().toString());
             Intent intent = new Intent(UserInfoEditActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

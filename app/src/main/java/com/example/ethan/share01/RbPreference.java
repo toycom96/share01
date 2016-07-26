@@ -81,4 +81,26 @@ public class RbPreference {
             return dftValue;
         }
     }
+
+    public void delValue(String key) {
+        SharedPreferences pref = mContext.getSharedPreferences(PREF_NAME,
+                Activity.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = pref.edit();
+
+        editor.remove(key);
+        editor.commit();
+
+    }
+
+    public void removeAllValue() {
+        SharedPreferences pref = mContext.getSharedPreferences(PREF_NAME,
+                Activity.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+
+    }
+
 }

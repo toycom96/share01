@@ -15,4 +15,13 @@
     <!--UserInfoEdit Resources -->
     <string name="info_edit_title">회원정보 수정</string>
     <string name="info_edit_complete">수정하기</string>
+
+    <!-- Bottom Sheet Resources -->
+    <string name="bottom_sheet_login">로 그 인</string>
+    <string name="bottom_sheet_logout">로 그 아 웃</string>
+    <string name="bottom_sheet_signup">회 원 가 입</string>
+    <string name="bottom_sheet_mypage">마 이 페 이 지</string>
+
+    <string name="bottom_sheet_title_member">어플리케이션을 이용하기 위해서는 \n회원가입이 필요합니다!!\n기존 회원이시면 로그인만 살포시~</string>
+    <string name="bottom_sheet_title_mypage">어디로 이동하실래요??? </string>
 </resources>

@@ -204,7 +204,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            ProgressDialog loading = new ProgressDialog(SignupActivity.this);
+            loading = new ProgressDialog(SignupActivity.this);
             loading.setTitle("회원가입");
             loading.setMessage("회원가입 중이에요...");
             loading.setCancelable(false);
@@ -226,7 +226,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 Log.e("UserID", mPref.getValue("user_id",""));
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
                 auth.execute(mPref.getValue("user_num",""),getUserDeviceId);
-                //loading.dismiss();
+                loading.dismiss();
             } else {
                 Toast.makeText(SignupActivity.this, "회원가입중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }

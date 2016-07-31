@@ -15,7 +15,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 /**
- * Created by OHRok on 2016-07-27.
+ * Created by Lsi.OH on 2016-07-27.
  */
 public class ChattingRoomAdapter extends BaseAdapter {
 

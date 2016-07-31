@@ -198,9 +198,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.setting) {
 
         } else if (id == R.id.nav_chatlist) {
-
+            Intent intent = new Intent(MainActivity.this, ChatListActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -241,19 +245,20 @@ public class MainActivity extends AppCompatActivity
         cate1_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent;
                 switch (caseVal) {
                     case 1 :
-                        Intent intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
+                        intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
                         startActivity(intent);
                         mBottomSheetDialog.dismiss();
                         finish();
 
                         break;
                     case 2 :
-                        /*
-                         * 로그인 화면 전환 부분
-                         */
-                        Toast.makeText(MainActivity.this,"로그인 부분",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, SigninActivity.class);
+                        startActivity(intent);
+                        mBottomSheetDialog.dismiss();
+                        finish();
                         break;
                 }
             }

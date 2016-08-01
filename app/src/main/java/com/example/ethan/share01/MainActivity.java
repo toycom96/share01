@@ -1,5 +1,6 @@
 package com.example.ethan.share01;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +22,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,10 @@ public class MainActivity extends AppCompatActivity
     private TextView user_nick_tv;
 
     private LinearLayout navigation_view;
+
+
+    private int BOTTOM_CASEVAL1 = 1;
+    private int BOTTOM_CASEVAL2 = 2;
 
     private RbPreference mPref = new RbPreference(MainActivity.this);
 
@@ -82,7 +91,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 userSettingDialog();
-
             }
         });
 
@@ -111,28 +119,7 @@ public class MainActivity extends AppCompatActivity
          * 로그아웃 : 이미 회원가입을 한 상태이므로 login값을 logout으로 바꿔준다.
          * 마이페이지 : 마이페이지 화면으로 화면 전환
          */
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("마이페이지&로그아웃")
-                .setMessage("이동하고 싶은 화면을 선택하세요~")
-                .setCancelable(true)
-                .setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mPref.put("login","logout");
-                        finish();
-                    }
-                })
-                .setNegativeButton("마이페이지", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        openBottomSheet(R.string.bottom_sheet_title_mypage, R.string.bottom_sheet_mypage, R.string.bottom_sheet_logout,BOTTOM_CASEVAL1);
     }
 
     private void checkForLogin(){
@@ -148,61 +135,18 @@ public class MainActivity extends AppCompatActivity
         String getLoginCheck = mPref.getValue("login","");
         if(getLoginCheck.equals("")){
             //기존 회원이 아닌경우
-            user_login_tv.setEnabled(true);
-            user_profile_iv.setEnabled(true);
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("회원가입이 필요합니다")
-                    .setMessage("이 어플리케이션은 회원가입을 필요해요\n회원가입하러 가실래요??")
-                    .setCancelable(false)
-                    .setPositiveButton("할래요!", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("안할래요", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            openBottomSheet(R.string.bottom_sheet_title_member, R.string.bottom_sheet_login, R.string.bottom_sheet_signup,BOTTOM_CASEVAL2);
+
         } else if (getLoginCheck.equals("logout")) {
-            // 기존회원이 로그아웃 했을 경우
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("로그인하기")
-                    .setMessage("기존 회원이시군요 !!\n다시 로그인 하시겠어요??")
-                    .setCancelable(false)
-                    .setPositiveButton("할래요!", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new CreateAuthUtil(getApplicationContext()).execute(mPref.getValue("user_num", ""), mPref.getValue("device_id", ""));
-                            user_login_tv.setText(mPref.getValue("user_id", ""));
-                            user_nick_tv.setText(mPref.getValue("user_nick", ""));
-                            //기존 회원일 경우 login 상태로 바꿔줘야지만 계속해서 dialog가 뜨지 않음.
-                            mPref.put("login", "login");
-                        }
-                    })
-                    .setNegativeButton("안할래요", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            openBottomSheet(R.string.bottom_sheet_title_member, R.string.bottom_sheet_login, R.string.bottom_sheet_signup,BOTTOM_CASEVAL2);
+
         } else if (getLoginCheck.equals("login")){
             //현재 로그인 되어있는 경우
             new CreateAuthUtil(getApplicationContext()).execute(mPref.getValue("user_num", ""), mPref.getValue("device_id", ""));
             user_login_tv.setText(mPref.getValue("user_id", ""));
             user_nick_tv.setText(mPref.getValue("user_nick", ""));
-            //user_login_tv.setEnabled(false);
-            //user_profile_iv.setEnabled(false);
         }
     }
     @Override
@@ -212,6 +156,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
@@ -252,14 +197,104 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.setting) {
 
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.nav_chatlist) {
+            Intent intent = new Intent(MainActivity.this, ChatListActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void openBottomSheet(int titleVal, int cateVal1, int cateVal2, final int caseVal){
+        /*
+         * Create by Lai.OH 2016.07.27
+         *
+         * 밑에서 올라오는 화면 구성 함수
+         * 로그인, 회원가입, 로그아웃, 마이페이지 메뉴를 관리 할 수 있는 서랍형식의 레이아웃생성
+         * params (BottomSheet Title, First Button text, Second Button text, BottomSheet Caseval)
+         * BottomSheet Case :
+         *      1 : 기존의 회원인경우 마이페이지 및 로그아웃 설정
+         *      2 : 기존의 회원이거나 회원이 아닌경우 로그인 및 회원가입 설정
+         */
+
+        View view = getLayoutInflater().inflate(R.layout.custom_bottom_sheet, null);
+        TextView title_tv = (TextView) view.findViewById(R.id.bottomsheet_title);
+        TextView cate1_tv = (TextView) view.findViewById(R.id.bottomsheet_cate1);
+        TextView cate2_tv = (TextView) view.findViewById(R.id.bottomsheet_cate2);
+        TextView calcel_tv = (TextView) view.findViewById(R.id.bottomsheet_cancel);
+
+        title_tv.setText(titleVal);
+        cate1_tv.setText(cateVal1);
+        cate2_tv.setText(cateVal2);
+
+        final Dialog mBottomSheetDialog = new Dialog(MainActivity.this, R.style.MaterialDialogSheet);
+        mBottomSheetDialog.setContentView (view);
+        mBottomSheetDialog.setCancelable (false);
+        mBottomSheetDialog.getWindow ().setLayout (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mBottomSheetDialog.getWindow ().setGravity (Gravity.BOTTOM);
+        mBottomSheetDialog.show ();
+
+        cate1_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                switch (caseVal) {
+                    case 1 :
+                        intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
+                        startActivity(intent);
+                        mBottomSheetDialog.dismiss();
+                        finish();
+
+                        break;
+                    case 2 :
+                        intent = new Intent(MainActivity.this, SigninActivity.class);
+                        startActivity(intent);
+                        mBottomSheetDialog.dismiss();
+                        finish();
+                        break;
+                }
+            }
+        });
+
+        cate2_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (caseVal) {
+                    case 1 :
+                        mPref.removeAllValue();
+                        mPref.put("login","logout");
+                        finish();
+                        break;
+                    case 2 :
+                        Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+                        startActivity(intent);
+                        mBottomSheetDialog.dismiss();
+                        finish();
+                        break;
+                }
+            }
+        });
+
+        calcel_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (caseVal) {
+                    case 2 :
+                        mBottomSheetDialog.dismiss();
+                        finish();
+                        break;
+                    default:
+                        mBottomSheetDialog.dismiss();
+                }
+            }
+        });
     }
 }

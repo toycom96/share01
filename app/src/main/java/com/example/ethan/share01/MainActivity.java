@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void openBottomSheet(int titleVal, int cateVal1, int cateVal2, final int caseVal){
+        Log.e("openBottomSheet", "Open");
         /*
          * Create by Lai.OH 2016.07.27
          *

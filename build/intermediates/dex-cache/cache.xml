@@ -1,3 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_b6eddbbf80f3080e312f58972ce7b221d972c454.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\de.hdodenhof\circleimageview\1.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4b868b833b0887aa48c4e581558eef4f1196f6a2">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\de.hdodenhof-circleimageview-1.2.1_ff758c2c6739c28e98acd7b037720889d49a164d.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d9cdf6034503bee0f35e3e27d1c1662162a8907a">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_d899ad38c810b6a443c0b9ace899d9917f088e58.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-23.4.0_7285b5f36fd0af5301d41a418172dceb267a57dd.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.0.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="39ae02ce40c3ac828abbf780ce0ff5d7a28b7d6a">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-23.0.1_08151a2022bfa4b412ca18b60ff5a498a1f2e0bb.jar" />
+    </item>
+    <item
+        jar="C:\Users\OHRok\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\support-annotations-23.4.0_e262fffbc63bf6e5627a87cfe31f478612143040.jar" />
+    </item>
+    <item
+        jar="C:\Users\OHRok\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\picasso-2.5.2_340180c515a9d42a8bcbfe5abd45c65e620e73c3.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.4.0_c5ec2eb659a27bda445505491e4865d14381da0a.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\design\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\com.android.support-design-23.4.0_8fa08d44c65f8b88585efee86e823c6f9cc71e26.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="7d61e65d1b3fc3d36dfa09c708f84e7e07eddc3b">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\instant-run_5cac36d01883c0aeebb63465b38ad05931098d71.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.4.0_0ef6fcaed40f2a2f6464669a8e3ce1ea9fd77a8c.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_a8e7c1263284a3ce1f12800c9dce6eb826e6fc2a.jar" />
+    </item>
+    <item
+        jar="D:\SourceTree\project0603\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="D:\SourceTree\project0603\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.4.0_d32c9a38c9ae2876951d83ae65e973bdd33f9b1d.jar" />
+    </item>
+
+</items>

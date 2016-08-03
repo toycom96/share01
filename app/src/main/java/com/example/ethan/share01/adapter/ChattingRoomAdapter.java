@@ -46,13 +46,13 @@ public class ChattingRoomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = View.inflate(mContext, R.layout.custom_chat_listview, null);
-        TextView title = (TextView) v.findViewById(R.id.chatlist_time);
+        TextView title = (TextView) v.findViewById(R.id.chatlist_title);
         TextView msg = (TextView) v.findViewById(R.id.chatlist_msg);
         TextView time = (TextView) v.findViewById(R.id.chatlist_time);
 
         ChattingRoom item = mChatRoomList.get(position);
 
-        title.setText(item.getRecv_id());
+        title.setText(String.valueOf(item.getRecv_id()));
         msg.setText(item.getMsg());
         time.setText(item.getSended());
 

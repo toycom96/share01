@@ -7,15 +7,24 @@ public class ChatMessage {
     private int msg_id;
     private int room_id;
     private int sender_id;
+    private String sender_name;
     private String message;
     private String time;
 
-    public ChatMessage(int msg_id, int room_id, int sender_id, String message, String time) {
+    public ChatMessage(int msg_id, int room_id, int sender_id, String sender_name, String message, String time) {
         this.msg_id = msg_id;
         this.room_id = room_id;
         this.sender_id = sender_id;
+        this.sender_name = sender_name;
         this.message = message;
         this.time = time;
+    }
+    public String getSender_name() {
+        return sender_name;
+    }
+
+    public void setSender_name(String sender_name) {
+        this.sender_name = sender_name;
     }
 
     public int getMsg_id() {

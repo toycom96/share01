@@ -45,6 +45,7 @@ public class ChatListActivity extends AppCompatActivity {
 
     private int getChatroomId;
     private int getRecvId;
+    private String getRecvName;
     private String getMsg;
     private String getTime;
 
@@ -58,26 +59,25 @@ public class ChatListActivity extends AppCompatActivity {
     private void init(){
         chatting_room_lv = (ListView) findViewById(R.id.chattingroom_listview);
 
+
+        mChatRooms = new ArrayList<>();
+
+        ChatListLoadThread chatlist = new ChatListLoadThread();
+        chatlist.execute(SERVER_URL, mPref.getValue("auth", ""));
+
         chatting_room_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ChattingRoom chat_room = mChatRooms.get(position);
                 int chat_room_id = chat_room.getChatRoomID();
-
+                int chat_room_user_id = chat_room.getRecv_id();
                 Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
                 intent.putExtra("room_id", chat_room_id);
+                intent.putExtra("sender_id", chat_room_user_id);
                 startActivity(intent);
                 finish();
             }
         });
-        mChatRooms = new ArrayList<>();
-
-        /*
-         * 이부분에 서버에서 데이터를 가져오는 부분 구현
-         */
-
-        ChatListLoadThread chatlist = new ChatListLoadThread();
-        chatlist.execute(SERVER_URL, mPref.getValue("auth", ""));
     }
 
     @Override
@@ -190,10 +190,11 @@ public class ChatListActivity extends AppCompatActivity {
 
                         getChatroomId = Integer.parseInt(order.get("Id").toString());
                         getRecvId = Integer.parseInt(order.get("Recv_id").toString());
+                        getRecvName = order.get("User_name").toString();
                         getMsg = order.get("Msg").toString();
                         getTime = order.get("Sended").toString();
 
-                        mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getMsg, getTime));
+                        mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getRecvName, getMsg, getTime));
                     }
                     Log.i("Response Data", response);
                     //JSONObject responseJSON = new JSONObject(response);

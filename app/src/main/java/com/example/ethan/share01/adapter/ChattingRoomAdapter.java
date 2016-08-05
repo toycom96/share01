@@ -52,7 +52,7 @@ public class ChattingRoomAdapter extends BaseAdapter {
 
         ChattingRoom item = mChatRoomList.get(position);
 
-        title.setText(String.valueOf(item.getRecv_id()));
+        title.setText(item.getRecv_name());
         msg.setText(item.getMsg());
         time.setText(item.getSended());
 

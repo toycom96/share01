@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     private int BOTTOM_CASEVAL1 = 1;
     private int BOTTOM_CASEVAL2 = 2;
 
-    private RbPreference mPref = new RbPreference(MainActivity.this);
+    public RbPreference mPref = new RbPreference(MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,16 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(mAdapter);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-        mContentsLoader.loadFromApi(0, 1);
+        mContentsLoader.loadFromApi(0, 1,mPref.getValue("auth",""));
+
+        recyclerView.setOnClickListener(new RecyclerView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ContentDetailActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         //회원가입 유무 확인
         checkForLogin();
     }

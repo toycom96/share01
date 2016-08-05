@@ -1,6 +1,7 @@
 package com.example.ethan.share01;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).into(holder.Pic);
         holder.Title.setText(ContentsList.get(position).getTitle());
         holder.ContentId = ContentsList.get(position).getId();
+        holder.UserId = ContentsList.get(position).get_user_id();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         private ImageView Pic;
         private TextView Title;
         private int ContentId;
+        private int UserId;
 
         public ViewHolder(View ContentView) {
             super(ContentView);
@@ -63,14 +66,17 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
             Pic = (ImageView) ContentView.findViewById(R.id.ContentPic);
             Title = (TextView) ContentView.findViewById(R.id.ContentTitle);
             ContentId = 0;
+            UserId = 0;
         }
 
         @Override
         public void onClick(View ContentView)
         {
-            Toast.makeText(ContentView.getContext(),
-                    "Clicked ContentId = " + ContentId, Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(ContentView.getContext(), "Clicked ContentId = " + ContentId + " " + UserId, Toast.LENGTH_SHORT).show();
+            Context context = ContentView.getContext();
+            Intent intent = new Intent(context, ContentDetailActivity.class);
+            intent.putExtra("user_num", UserId);
+            context.startActivity(intent);
         }
     }
 

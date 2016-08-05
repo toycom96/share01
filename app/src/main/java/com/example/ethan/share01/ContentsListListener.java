@@ -52,7 +52,7 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
         if (lastVisibleItemPositions[0] + 2 >= totalItemCount) {
             int offset = this.mActivity.mContentsList.get(totalItemCount -1).getId();
 
-            this.mActivity.mContentsLoader.loadFromApi(offset,1);
+            this.mActivity.mContentsLoader.loadFromApi(offset,1,mActivity.mPref.getValue("auth",""));
         }
 
     }

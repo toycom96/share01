@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
         android:scrollbars="vertical" />
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

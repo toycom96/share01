@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".SigninActivity">
         </activity>
+        <activity android:name=".ContentDetailActivity">
+        </activity>
     </application>
 
 </manifest>

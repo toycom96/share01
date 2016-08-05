@@ -30,9 +30,9 @@ public class ContentsListLoad {
         this.mAdapter = ListAdapter;
     }
 
-    public int loadFromApi(int ListIndex, int flag) {
+    public int loadFromApi(int ListIndex, int flag, String auth) {
         getBbsList BbsList = new getBbsList(mContentItem, mAdapter);
-        BbsList.execute("0", "1");
+        BbsList.execute("0", "1",auth);
 
         return 0;
     }
@@ -76,7 +76,7 @@ public class ContentsListLoad {
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("Cookie", "auth=NtUMVRdHefRNbYut82ALIz0kE6a6Q80D13krg/xdxWfi8E3H+nqv5+54Xxo49D4n8tNaTQ==");
+                conn.setRequestProperty("Cookie", value[2]);
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
@@ -113,7 +113,7 @@ public class ContentsListLoad {
                 for (int i = 0; i < ja.length(); i++) {
                     JSONObject order = ja.getJSONObject(i);
 
-                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getString("Media"), order.getString("Title") + "\n" + order.getString("Title") ));
+                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("Media"), order.getString("Title")));
 
                 }
             } catch (Exception e) {

@@ -39,7 +39,8 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<ChatMessage> mChatMessages;
 
 
-    private String getChatRoomId;
+    private int mGetSendId;
+    private String mGetChatRoomId;
 
     private RbPreference mPref = new RbPreference(ChatActivity.this);
 
@@ -59,7 +60,14 @@ public class ChatActivity extends AppCompatActivity {
 
         mChatMessages = new ArrayList<>();
 
+
+        /*
+         * 새로운 채팅 확인해보기
+         */
         int getChatRoomId = getIntent().getIntExtra("room_id", -1);
+        mGetSendId = getIntent().getIntExtra("sender_id", -1);
+        Log.e("room_id", String.valueOf(getChatRoomId));
+        Log.e("sender_id", String.valueOf(mGetSendId));
         switch (getChatRoomId) {
             case -1 :
                 Toast.makeText(getApplicationContext(), "새로운 채팅", Toast.LENGTH_SHORT).show();
@@ -81,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 message_edt.setText("");
                 SendMessageThread send = new SendMessageThread();
-                send.execute(SERVER_URL_SEND,mPref.getValue("user_num",""),messageText,auth);
+                send.execute(SERVER_URL_SEND,String.valueOf(mGetSendId),messageText,auth);
             }
         });
 
@@ -198,9 +206,14 @@ public class ChatActivity extends AppCompatActivity {
                         int getMsgId = Integer.parseInt(order.get("Msg_id").toString());
                         int getChatroomId = Integer.parseInt(order.get("Id").toString());
                         int getSendId = Integer.parseInt(order.get("Send_id").toString());
+                        /*if (!String.valueOf(getSendId).equals(mPref.getValue("user_num", ""))) {
+                            mGetSendId = getSendId;
+                        }*/
                         String getSenderName = order.get("User_name").toString();
                         String getMsg = order.get("Msg").toString();
                         String getTime = order.get("Sended").toString();
+
+                        Log.e("chatListJson", order.toString());
 
                         mChatMessages.add(new ChatMessage(getMsgId,getChatroomId, getSendId, getSenderName, getMsg,getTime));
                         //메세지에 대한 내용 ArrayList에 저장
@@ -254,7 +267,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
             QueryMessageThread qeury = new QueryMessageThread();
-            qeury.execute(SERVER_URL_QUERY,getChatRoomId,mPref.getValue("auth",""));
+            qeury.execute(SERVER_URL_QUERY, mGetChatRoomId,mPref.getValue("auth",""));
             //메세지 보낸 뒤 대화내용 최신화를 위해 메세지 내용 검색 쓰레드 호출
         }
 
@@ -331,9 +344,9 @@ public class ChatActivity extends AppCompatActivity {
                     JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
                     Log.e("Response ID Value", responseJSON.get("chat_id").toString());
-                    getChatRoomId = responseJSON.get("chat_id").toString();
+                    mGetChatRoomId = responseJSON.get("chat_id").toString();
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                    Log.i("responese value", "DATA response = " + getChatRoomId);
+                    Log.i("responese value", "DATA response = " + mGetChatRoomId);
 
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

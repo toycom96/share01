@@ -1,10 +1,15 @@
 package com.example.ethan.share01;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +40,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     private String getUserNum;
     private String getUserDeviceId;
 
+    private String getPermissionPhone;
+    private String getPermissionDevice;
+
     private RbPreference mPref = new RbPreference(SigninActivity.this);
     private Boolean shgnin_complete = false;
     private final String SIGNIN_URL = "https://toycom96.iptime.org:1443/auth_login";
@@ -51,8 +59,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         signin_button = (Button) findViewById(R.id.signin_button);
         user_id_edt = (EditText) findViewById(R.id.signin_userid);
         user_pass_edt = (EditText) findViewById(R.id.signin_user_password);
-
+        phoneInfo();
         signin_button.setOnClickListener(this);
+
     }
     @Override
     public void onClick(View v) {
@@ -67,6 +76,65 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 break;
         }
     }
+
+    private void phoneInfo() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_PHONE_STATE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        1122);
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        1122);
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1122: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    TelephonyManager manager=(TelephonyManager) getSystemService(getApplicationContext().TELEPHONY_SERVICE);
+                    getPermissionDevice=manager.getDeviceId();
+                    getPermissionPhone =manager.getLine1Number();
+                } else {
+                    Toast.makeText(this, "폰의 정보를 얻을 수 있어야 회원 가입이 가능합니다.", Toast.LENGTH_SHORT).show();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -105,14 +173,15 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 mPref.put("login","login");
 
-                //CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
-                //auth.execute(getUserNum ,getUserDeviceId);
+                CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
+                auth.execute(getUserNum ,getUserDeviceId);
 
                 loading.dismiss();
 
             } else {
 
                 Toast.makeText(SigninActivity.this, "로그인중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                loading.dismiss();
             }
 
             signin_button.setEnabled(true);
@@ -162,6 +231,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 job.put("email", getUserId);
                 job.put("passwd", getUserPass);
+                job.put("device_id", getPermissionDevice);
+                job.put("phone_num", getPermissionPhone);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성

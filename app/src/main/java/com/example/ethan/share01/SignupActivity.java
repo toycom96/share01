@@ -71,8 +71,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void signupModule(String userId, String userPass, String userNick, String userAge, String userSex, String userDeviceId, String userPhone){
         mPref = new RbPreference(SignupActivity.this);
         if (userId != null && userPass != null && userNick != null){
-            mPref.put("user_name", userId);
-
             SignupThread http = new SignupThread();
             http.execute(join_url,userId,userPass,userNick,userAge,userSex,userDeviceId,userPhone);
 

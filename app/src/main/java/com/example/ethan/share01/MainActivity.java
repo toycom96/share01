@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     private int BOTTOM_CASEVAL1 = 1;
     private int BOTTOM_CASEVAL2 = 2;
 
-    private RbPreference mPref = new RbPreference(MainActivity.this);
+    public RbPreference mPref = new RbPreference(MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,16 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(mAdapter);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-        mContentsLoader.loadFromApi(0, 1);
+        mContentsLoader.loadFromApi(0, 1,mPref.getValue("auth",""));
+
+        recyclerView.setOnClickListener(new RecyclerView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ContentDetailActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         //회원가입 유무 확인
         checkForLogin();
     }
@@ -214,6 +224,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void openBottomSheet(int titleVal, int cateVal1, int cateVal2, final int caseVal){
+        Log.e("openBottomSheet", "Open");
         /*
          * Create by Lai.OH 2016.07.27
          *

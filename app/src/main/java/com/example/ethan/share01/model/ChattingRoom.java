@@ -4,31 +4,41 @@ package com.example.ethan.share01.model;
  * Created by Lai.OH on 2016-07-27.
  */
 public class ChattingRoom {
-    private String mChatRoomID;
-    private String mRecv_id;
+    private int mChatRoomID;
+    private int mRecv_id;
+    private String mRecv_name;
     private String mMsg;
     private String mSended;
 
-    public ChattingRoom(String chatRoomID, String recv_id, String msg, String sended) {
-        mChatRoomID = chatRoomID;
-        mRecv_id = recv_id;
-        mMsg = msg;
-        mSended = sended;
+    public ChattingRoom(int chatRoomID, int recv_id, String mRecv_name, String msg, String sended) {
+        this.mChatRoomID = chatRoomID;
+        this.mRecv_id = recv_id;
+        this.mRecv_name = mRecv_name;
+        this.mMsg = msg;
+        this.mSended = sended;
     }
 
-    public String getChatRoomID() {
+    public String getRecv_name() {
+        return mRecv_name;
+    }
+
+    public void setRecv_name(String recv_name) {
+        mRecv_name = recv_name;
+    }
+
+    public int getChatRoomID() {
         return mChatRoomID;
     }
 
-    public void setChatRoomID(String chatRoomID) {
+    public void setChatRoomID(int chatRoomID) {
         mChatRoomID = chatRoomID;
     }
 
-    public String getRecv_id() {
+    public int getRecv_id() {
         return mRecv_id;
     }
 
-    public void setRecv_id(String recv_id) {
+    public void setRecv_id(int recv_id) {
         mRecv_id = recv_id;
     }
 

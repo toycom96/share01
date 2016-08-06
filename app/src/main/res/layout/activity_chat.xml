@@ -44,6 +44,7 @@
             android:layout_marginTop="10dp"
             android:listSelector="@android:color/transparent"
             android:transcriptMode="alwaysScroll"
+            android:stackFromBottom="true"
             android:divider="@null" />
 
     </RelativeLayout>

@@ -105,8 +105,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 mPref.put("login","login");
 
-                CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
-                auth.execute(getUserNum ,getUserDeviceId);
+                //CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
+                //auth.execute(getUserNum ,getUserDeviceId);
 
                 loading.dismiss();
 

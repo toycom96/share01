@@ -72,11 +72,20 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         @Override
         public void onClick(View ContentView)
         {
-            Toast.makeText(ContentView.getContext(), "Clicked ContentId = " + ContentId + " " + UserId, Toast.LENGTH_SHORT).show();
+            /*Toast.makeText(ContentView.getContext(), "Clicked ContentId = " + ContentId + " " + UserId, Toast.LENGTH_SHORT).show();
             Context context = ContentView.getContext();
             Intent intent = new Intent(context, ContentDetailActivity.class);
             intent.putExtra("user_num", UserId);
+            context.startActivity(intent);*/
+
+            //ViewHolder.this.UserId
+            //Toast.makeText(ContentView.getContext(), "Clicked ContentId = " + ContentId + " " + ViewHolder.this.UserId, Toast.LENGTH_SHORT).show();
+            Context context = ContentView.getContext();
+            Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra("sender_id", ViewHolder.this.UserId);
             context.startActivity(intent);
+
+
         }
     }
 

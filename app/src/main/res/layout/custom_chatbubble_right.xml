@@ -8,24 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="16dp"
+        android:layout_margin="4dp"
         android:gravity="right">
 
         <TextView
-            android:id="@+id/chat_message"
+            android:id="@+id/chatmsg_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="2dp"
             android:gravity="right"
+            android:background="#CFDDEB"
             android:text="안녕하세요~~"/>
 
         <TextView
-            android:id="@+id/chat_time"
+            android:id="@+id/chatmsg_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
             android:gravity="right"
             android:textSize="10dp"
             android:text="2016.07.11 00:32:45"/>

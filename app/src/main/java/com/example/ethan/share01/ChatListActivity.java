@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,16 +49,20 @@ public class ChatListActivity extends AppCompatActivity {
     private String getRecvName;
     private String getMsg;
     private String getTime;
+    private String getEtcInfo;
+    private String getSex;
+    private String getPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_list);
+        //setContentView(R.layout.activity_chat_list);
+        setContentView(R.layout.activity_main);
         init();
     }
 
     private void init(){
-        chatting_room_lv = (ListView) findViewById(R.id.chattingroom_listview);
+        chatting_room_lv = (ListView) findViewById(R.id.chattingroom_listview2);
 
 
         mChatRooms = new ArrayList<>();
@@ -169,6 +174,7 @@ public class ChatListActivity extends AppCompatActivity {
                 //request code를 받음
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
+                    int unix_sec = 0;
 
                     Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
@@ -192,9 +198,26 @@ public class ChatListActivity extends AppCompatActivity {
                         getRecvId = Integer.parseInt(order.get("Recv_id").toString());
                         getRecvName = order.get("User_name").toString();
                         getMsg = order.get("Msg").toString();
-                        getTime = order.get("Sended").toString();
+                        getPhoto = order.get("User_photo").toString();
+                        unix_sec = Integer.parseInt(order.get("Sended").toString());
 
-                        mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getRecvName, getMsg, getTime));
+                        if ( unix_sec > (6 * 30 * 24 * 60 * 60) ) { getTime = "반년이상"; }
+                        else if ( unix_sec > ( 30 * 24 * 60 * 60) ) { getTime = (unix_sec / ( 30 * 24 * 60 * 60)) + "개월전"; }
+                        else if ( unix_sec > ( 24 * 60 * 60) ) { getTime = (unix_sec / ( 24 * 60 * 60)) + "일전"; }
+                        else if ( unix_sec > ( 60 * 60) ) { getTime = (unix_sec / ( 60 * 60)) + "시간전"; }
+                        else if ( unix_sec > ( 60) ) { getTime = (unix_sec / (60)) + "분전"; }
+                        else { getTime = unix_sec + "초전"; }
+                        //getTime = order.get("Sended").toString();
+
+                        getSex = order.get("User_sex").toString();
+
+                        if (getSex == "F") {
+                            getEtcInfo = "여 " + order.get("User_age").toString() + "세";
+                        } else {
+                            getEtcInfo = "남 " + order.get("User_age").toString() + "세";
+                        }
+
+                        mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getRecvName, getMsg, getTime, getSex, getEtcInfo, getPhoto));
                     }
                     Log.i("Response Data", response);
                     //JSONObject responseJSON = new JSONObject(response);

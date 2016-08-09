@@ -8,52 +8,71 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="4dp"
+        android:layout_marginTop="2dp"
+        android:background="#DDDDDD"
         android:gravity="left">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chatlist_photo"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:src="@drawable/ic_menu_noprofile" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/chatlist_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="상대방 이름"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/chatlist_time"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:text="10주전"/>
+                <TextView
+                    android:id="@+id/chatlist_title"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="16sp"
+                    android:textColor="#0000FF"
+                    android:maxLines="1"
+                    android:text="상대방 이름"/>
+                <TextView
+                    android:id="@+id/chatlist_etc"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:text="나이 거리"/>
+                </LinearLayout>
+
             <TextView
                 android:id="@+id/chatlist_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginLeft="16dp"
+                android:textSize="16sp"
                 android:gravity="center"
-                android:text="채팅방리스트"/>
+                android:maxLines="1"
+                android:text="채팅방리스트 "/>
 
         </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/chatlist_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="right"
-            android:text="2016.07.11 00:32:45"/>
     </LinearLayout>
 
 </LinearLayout>

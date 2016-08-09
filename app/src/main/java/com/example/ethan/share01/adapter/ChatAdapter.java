@@ -51,13 +51,12 @@ public class ChatAdapter extends BaseAdapter {
         if(mPref.getValue("user_num","").equals(String.valueOf(item.getSender_id()))){
             v = View.inflate(mContext, R.layout.custom_chatbubble_right, null);
 
-            TextView msg = (TextView) v.findViewById(R.id.chat_message);
-            TextView time = (TextView) v.findViewById(R.id.chat_time);
+            TextView msg = (TextView) v.findViewById(R.id.chatmsg_msg);
+            TextView time = (TextView) v.findViewById(R.id.chatmsg_time);
 
             msg.setText(item.getMessage());
             time.setText(item.getTime());
 
-            msg.setBackgroundColor(Color.LTGRAY);
             msg.invalidate();
 
             return v;
@@ -65,9 +64,9 @@ public class ChatAdapter extends BaseAdapter {
             //user_num이 상대방일 경우
             v = View.inflate(mContext, R.layout.custom_chatbubble_left, null);
 
-            TextView title = (TextView) v.findViewById(R.id.chat_title);
-            TextView msg = (TextView) v.findViewById(R.id.chat_message);
-            TextView time = (TextView) v.findViewById(R.id.chat_time);
+            TextView title = (TextView) v.findViewById(R.id.chatmsg_title);
+            TextView msg = (TextView) v.findViewById(R.id.chatmsg_msg);
+            TextView time = (TextView) v.findViewById(R.id.chatmsg_time);
 
             title.setText(item.getSender_name());
             msg.setText(item.getMessage());

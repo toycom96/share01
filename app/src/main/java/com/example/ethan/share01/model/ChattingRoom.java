@@ -9,13 +9,19 @@ public class ChattingRoom {
     private String mRecv_name;
     private String mMsg;
     private String mSended;
+    private String mEtcInfo;
+    private String mSex;
+    private String mPhoto;
 
-    public ChattingRoom(int chatRoomID, int recv_id, String mRecv_name, String msg, String sended) {
+    public ChattingRoom(int chatRoomID, int recv_id, String mRecv_name, String msg, String sended, String sex, String etcInfo, String photo) {
         this.mChatRoomID = chatRoomID;
         this.mRecv_id = recv_id;
         this.mRecv_name = mRecv_name;
         this.mMsg = msg;
         this.mSended = sended;
+        this.mEtcInfo = etcInfo;
+        this.mSex = sex;
+        this.mPhoto = photo;
     }
 
     public String getRecv_name() {
@@ -56,5 +62,29 @@ public class ChattingRoom {
 
     public void setSended(String sended) {
         mSended = sended;
+    }
+
+    public String getEtcInfo() {
+        return mEtcInfo;
+    }
+
+    public void setEtcInfo(String etcInfo) {
+        mEtcInfo = etcInfo;
+    }
+
+    public String getSex() {
+        return mSex;
+    }
+
+    public void setSex(String sex) {
+        mSex = sex;
+    }
+
+    public String getPhoto() {
+        return mPhoto;
+    }
+
+    public void setPhoto(String Photo) {
+        mSex = Photo;
     }
 }

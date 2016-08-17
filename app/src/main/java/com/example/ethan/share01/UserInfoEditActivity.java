@@ -2,20 +2,42 @@ package com.example.ethan.share01;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import org.apache.http.HttpConnection;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -31,17 +53,27 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private EditText user_nick;
     private EditText user_age;
     private EditText user_coment;
+    private ImageView user_photo;
 
     private Button infoedit_button;
 
     private String getUserComent;
     private String getUserNick;
     private String getUserAge;
+    private String getUserPhoto = null;
 
+    private String selectedImagePath;
 
+    private String getPhotoPath;
+
+    public Bitmap user_photo_bm;
     public static RbPreference mPref;
     private final String info_url = "https://toycom96.iptime.org:1443/user_info";
     private final String edit_url = "https://toycom96.iptime.org:1443/user_edit";
+    private static final int SELECT_PHOTO = 100;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +83,31 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         init();
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ImageChooseUtil chooseImage = new ImageChooseUtil(data, getApplicationContext());
+
+        switch (requestCode) {
+            case SELECT_PHOTO :
+                if (resultCode == RESULT_OK) {
+                    selectedImagePath = chooseImage.getRealPath();
+                    Log.e("selectedImagePath", selectedImagePath);
+                    user_photo_bm = BitmapFactory.decodeFile(selectedImagePath);
+                    user_photo.setImageBitmap(user_photo_bm);
+                    UploadImageTask editInfo = new UploadImageTask();
+                    editInfo.execute();
+                    //Log.e("start","start");
+                    //chooseImage.uploadImage(bm);
+                    //SystemClock.sleep(3000);
+                    //Log.e("end","end");
+                    //Log.e("image",mPref.getValue("imagefile","Ssss"));
+                    //user_photo.setImageURI(selectedImage);
+                    //Log.e("ImageURI", selectedImage.toString());
+                }
+        }
+    }
+
 
     private void init(){
         user_id = (EditText) findViewById(R.id.infoedit_id);
@@ -58,9 +115,10 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         user_age = (EditText) findViewById(R.id.infoedit_age);
         user_coment = (EditText) findViewById(R.id.infoedit_coment);
         infoedit_button = (Button) findViewById(R.id.infoedit_button);
-
+        user_photo = (ImageView) findViewById(R.id.infoedit_photo);
 
         infoedit_button.setOnClickListener(this);
+        user_photo.setOnClickListener(this);
 
         mPref = new RbPreference(UserInfoEditActivity.this);
         GetUserInfoThread info = new GetUserInfoThread();
@@ -81,10 +139,127 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             case R.id.infoedit_button :
                 String getComent = user_coment.getText().toString();
                 EditUserInfoThread editInfo = new EditUserInfoThread();
-                editInfo.execute(edit_url,getComent);
+                editInfo.execute(edit_url,getComent,getPhotoPath);
+                break;
+
+            case R.id.infoedit_photo:
+                Intent photoPickerIntent = new Intent();
+                photoPickerIntent.setType("image/*");
+                photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(photoPickerIntent,"Select Picture"), SELECT_PHOTO);
+                break;
         }
     }
 
+
+    //이미지 파일 올리는 쓰레드
+    class UploadImageTask extends AsyncTask<Void, Void, String> {
+        private String webAddressToPost = "https://toycom96.iptime.org:1443/up_file";
+
+        private ProgressDialog dialog = new ProgressDialog(UserInfoEditActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Uploading...");
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            dialog.dismiss();
+            Log.e("response String before", s);
+            getPhotoPath = s;
+            //getPhotoPath = s.replace("[", "").replace("]", "");
+
+            Log.e("response String after", getPhotoPath);
+            Toast.makeText(getApplicationContext(), "file uploaded",
+                    Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            HttpURLConnection conn = null;
+            MultipartEntity entity = null;
+            ByteArrayOutputStream bos = null;
+            ByteArrayBody bab = null;
+            OutputStream os = null;
+
+            try {
+                URL url = new URL(webAddressToPost);
+                conn = (HttpURLConnection) url.openConnection();
+                //Http 접속
+                conn.setConnectTimeout(10000);
+                //접속 timeuot시간 설정
+                conn.setReadTimeout(10000);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setUseCaches(false);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.addRequestProperty("Cookie", mPref.getValue("auth", ""));
+
+                entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                bos = new ByteArrayOutputStream();
+                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                byte[] data = bos.toByteArray();
+                bab = new ByteArrayBody(data, "test.jpg");
+                entity.addPart("imgfiles", bab);
+
+
+                conn.addRequestProperty("Content-length", entity.getContentLength() + "");
+                conn.addRequestProperty(entity.getContentType().getName(), entity.getContentType().getValue());
+
+                os = conn.getOutputStream();
+                entity.writeTo(conn.getOutputStream());
+                os.close();
+                conn.connect();
+
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    Log.e("HTTP OK", "HTTP OK");
+                    String result = readStream(conn.getInputStream());
+
+                    //int i = 0;
+                    JSONObject responseJSON = new JSONArray(result).getJSONObject(0);
+
+                    String filename = responseJSON.get("Filename").toString();
+                    //Log.e("result", filename);
+                    return filename;
+                } else {
+                    Log.e("HTTP CODE", "HTTP CONN FAILED");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        private String readStream(InputStream in) {
+            BufferedReader reader = null;
+            StringBuilder builder = new StringBuilder();
+            try {
+                reader = new BufferedReader(new InputStreamReader(in));
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return builder.toString();
+        }
+
+    }
 
     /*
      * auth 값을 http header로 보내 사용자 정보를 받아오는 Thread
@@ -114,6 +289,16 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             user_nick.setText(getUserNick);
             user_age.setText(getUserAge);
             user_coment.setText(getUserComent);
+            if (getUserPhoto != null || !getUserPhoto.equals("")) {
+                try {
+                    Picasso.with(getApplicationContext()).load(getUserPhoto).error(R.drawable.ic_menu_noprofile).into(user_photo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                user_photo.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+
             loading.dismiss();
         }
 
@@ -185,10 +370,12 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     Log.i("Response Nick Value", responseJSON.get("Name").toString());
                     Log.i("Response Age Value", responseJSON.get("Age").toString());
                     Log.i("Response Age Value", responseJSON.get("Msg").toString());
+                    Log.i("Response Age Value", responseJSON.get("Photo").toString());
 
                     getUserNick = responseJSON.get("Name").toString();
                     getUserAge = responseJSON.get("Age").toString();
                     getUserComent = responseJSON.get("Msg").toString();
+                    getUserPhoto = responseJSON.get("Photo").toString();
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }
@@ -226,6 +413,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
              */
             String connUrl = value[0];
             String user_coment = value[1];
+            String user_photo = value[2];
 
 
             try {
@@ -254,6 +442,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 JSONObject job = new JSONObject();
                 //JSONObject 생성 후 input
                 job.put("msg", user_coment);
+                job.put("photo", user_photo);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성

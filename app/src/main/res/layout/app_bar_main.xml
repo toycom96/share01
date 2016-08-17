@@ -33,12 +33,6 @@
         android:layout_below="@id/toolbar"
         android:scrollbars="vertical" />
 
-    <ListView
-        android:id="@+id/chattingroom_listview2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
-
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

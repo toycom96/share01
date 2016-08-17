@@ -5,15 +5,15 @@
         <item
             android:id="@+id/time_share"
             android:icon="@drawable/ic_menu_time"
-            android:title="카테고리1" />
+            android:title="5km 이내" />
         <item
             android:id="@+id/talent_share"
             android:icon="@drawable/ic_menu_manage"
-            android:title="카테고리2" />
+            android:title="30km 이내" />
         <item
             android:id="@+id/goods_share"
             android:icon="@drawable/ic_menu_goods"
-            android:title="카테고리3" />
+            android:title="전체" />
         <item
             android:id="@+id/setting"
             android:icon="@drawable/ic_menu_setting"

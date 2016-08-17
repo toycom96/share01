@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity
     public ContentsListLoad mContentsLoader;
     //public static Context mContext;
 
+    RecyclerView mRecyclerView;
+
+
     public List<ContentsListObject> getItems(){
         return mContentsList;
     }
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.e("MainActivity", "MainActivity");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -97,27 +100,26 @@ public class MainActivity extends AppCompatActivity
 
 
         // michael adding
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        /*
+         * revised Lai.OH on 2016.08.13
+         *
+         * RecyclerView에 대한 Manager 및 Listener 설정만 MainActivity에서 구현
+         * 나머지 카드뷰를 뿌리기 위한 모든 코드는 ContentListLoad 클래스에서 구현
+         *
+         * 이를 구현하기 위해서 recyclerView를 전역변수로 설정 한 뒤 Listener 및 loadFromApi에 parameter로 넘겨줌(MainActivity Context도 함께 넘겨줌)
+         *
+         */
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         _sGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(_sGridLayoutManager);
+        mRecyclerView.setLayoutManager(_sGridLayoutManager);
+        mRecyclerView.addOnScrollListener(new ContentsListListener(this, _sGridLayoutManager, mRecyclerView, getApplicationContext()));
 
-        recyclerView.addOnScrollListener(new ContentsListListener(this, _sGridLayoutManager));
-
-        mAdapter = new ContentsListAdapter(getApplicationContext(), mContentsList);
-        recyclerView.setAdapter(mAdapter);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-        mContentsLoader.loadFromApi(0, 1,mPref.getValue("auth",""));
+        mContentsLoader.loadFromApi(0, 0, mPref.getValue("auth",""), mRecyclerView, getApplicationContext());
 
-        recyclerView.setOnClickListener(new RecyclerView.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ContentDetailActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
         //회원가입 유무 확인
         checkForLogin();
     }
@@ -200,10 +202,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.time_share) {
-            // Handle the camera action
+            mContentsLoader.loadFromApi(0, 5, mPref.getValue("auth",""), mRecyclerView, getApplicationContext());
         } else if (id == R.id.talent_share) {
-
+            mContentsLoader.loadFromApi(0, 30, mPref.getValue("auth",""), mRecyclerView, getApplicationContext());
         } else if (id == R.id.goods_share) {
+            mContentsLoader.loadFromApi(0, 0, mPref.getValue("auth",""), mRecyclerView, getApplicationContext());
 
         } else if (id == R.id.setting) {
 

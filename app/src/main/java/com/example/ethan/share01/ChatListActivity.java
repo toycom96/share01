@@ -57,12 +57,13 @@ public class ChatListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_chat_list);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_chat_list);
+        Log.e("ChatListActivity", "ChatListActivity");
         init();
     }
 
     private void init(){
-        chatting_room_lv = (ListView) findViewById(R.id.chattingroom_listview2);
+        chatting_room_lv = (ListView) findViewById(R.id.chattingroom_listview);
 
 
         mChatRooms = new ArrayList<>();
@@ -189,6 +190,12 @@ public class ChatListActivity extends AppCompatActivity {
 
                     response = new String(byteData);
                     //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
+
+
+                    if (response.isEmpty() || response.equals("null") ) {
+                        Log.e("ChatListNull", response.toString());
+                        return null;
+                    }
 
                     JSONArray ja = new JSONArray(response);
                     for (int i = 0; i < ja.length(); i++) {

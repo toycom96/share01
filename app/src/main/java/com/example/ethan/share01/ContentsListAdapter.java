@@ -1,9 +1,11 @@
 package com.example.ethan.share01;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,9 +86,9 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
             Intent intent = new Intent(context, ChatActivity.class);
             intent.putExtra("sender_id", ViewHolder.this.UserId);
             context.startActivity(intent);
-
+            ((Activity)context).finish();
+            Log.e("Adapter Context", context.toString());
 
         }
     }
-
 }

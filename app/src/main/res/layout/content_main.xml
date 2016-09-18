@@ -1,32 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardUseCompatPadding="true">
+    android:layout_marginBottom="1dp">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="30">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:layout_margin="0dp"
+        android:background="#FAFAFA"
+        android:gravity="left">
 
         <ImageView
-            android:id="@+id/ContentPic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/bbslist_photo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_menu_noprofile" />
 
-        <TextView
-            android:id="@+id/ContentTitle"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="1dp"
-            android:layout_gravity="bottom"
-            android:gravity="center_horizontal"
-            android:background="#BB777777"
-            android:textColor="#FFFFFF"
-            android:textSize="16dp"
-            android:maxLines="2"/>
-    </FrameLayout>
-</android.support.v7.widget.CardView>
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/bbslist_time"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:text="10주전"/>
+                <TextView
+                    android:id="@+id/bbslist_user"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="14sp"
+                    android:textColor="#0000FF"
+                    android:maxLines="1"
+                    android:text="상대방 이름"/>
+                <TextView
+                    android:id="@+id/bbslist_etc"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:text="나이 거리"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/bbslist_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:gravity="left"
+                android:maxLines="10"
+                android:text="채팅방리스트 "/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

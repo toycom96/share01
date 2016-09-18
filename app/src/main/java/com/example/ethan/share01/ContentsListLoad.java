@@ -1,9 +1,11 @@
 package com.example.ethan.share01;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,11 +32,28 @@ public class ContentsListLoad {
     static ContentsListAdapter mAdapter;
     private String mDistFlag = "0";
     private final Lock _mutex = new ReentrantLock(true);
+    private GpsInfo mGps;
+    private double mLat;
+    private double mLon;
 
 
-    public ContentsListLoad (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter) {
+    public ContentsListLoad (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter, GpsInfo gps) {
         this.mContentItem = ContentItem;
         this.mAdapter = ListAdapter;
+        this.mGps = gps;
+
+        mGps.GpsInfoRefresh();
+        // GPS 사용유무 가져오기
+        if (mGps.isGetLocation()) {
+
+            mLat = mGps.getLatitude();
+            mLon = mGps.getLongitude();
+
+        } else {
+            // GPS 를 사용할수 없으므로
+            mGps.showSettingsAlert();
+        }
+
     }
 
     public int loadFromApi(int ListIndex, int dist_flag, String auth, RecyclerView recyclerView, Context context) {
@@ -55,12 +74,26 @@ public class ContentsListLoad {
         public ContentsListAdapter mAdapter;
         private RecyclerView mRecyclerView;
         private  Context mContext;
+        private StaggeredGridLayoutManager _sGridLayoutManager;
+        private MainActivity activity;
+        ProgressDialog loading;
 
         public getBbsList (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter,RecyclerView recyclerView, Context context) {
             this.mContentItem = ContentItem;
             this.mAdapter = ListAdapter;
             this.mRecyclerView = recyclerView;
             this.mContext = context;
+            //this.activity = activity;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = new ProgressDialog(mContext);
+            loading.setTitle("게시글 받아오는중");
+            loading.setMessage("조금만 기다려 주세요~~");
+            loading.setCancelable(false);
+            loading.show();
         }
 
         protected void onPostExecute(Void aVoid) {
@@ -68,8 +101,20 @@ public class ContentsListLoad {
             /*
              * doInBackground에서 모든 데이터를 add한 뒤 adapter에 연결 후 recyclerView에 뿌려준다.
              */
-            mAdapter = new ContentsListAdapter(mContext, mContentItem);
-            mRecyclerView.setAdapter(mAdapter);
+            Log.e("ContentLoadTask", "onPostExecute");
+            Log.e("mContentItem", mContentItem.toString());
+            if (mRecyclerView != null) {
+                mAdapter = new ContentsListAdapter(mContext, mContentItem);
+                mRecyclerView.setAdapter(mAdapter);
+                _sGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                mRecyclerView.setLayoutManager(_sGridLayoutManager);
+                loading.dismiss();
+                loading = null;
+            } else {
+                Log.e("recyclerView", "null");
+            }
+
+
 
         }
 
@@ -97,8 +142,8 @@ public class ContentsListLoad {
                 conn.setDoInput(true);
 
                 JSONObject job = new JSONObject();
-                job.put("long", 126.7459979);
-                job.put("lat", 37.259485);
+                job.put("long", mLon);
+                job.put("lat", mLat);
                 job.put("dist", Integer.parseInt(value[1]));
                 job.put("lidx", Integer.parseInt(value[0]));
 
@@ -144,7 +189,8 @@ public class ContentsListLoad {
 
                 for (int i = 0; i < ja.length(); i++) {
                     JSONObject order = ja.getJSONObject(i);
-                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("Media"), order.getString("Title")));
+                    Log.e("ID", order.getString("User_name"));
+                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), order.getString("Media"), order.getString("Term"), "ETC",order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
 
                 }
             } catch (Exception e) {

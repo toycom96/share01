@@ -12,8 +12,9 @@ public class ChattingRoom {
     private String mEtcInfo;
     private String mSex;
     private String mPhoto;
+    private int mBadgeCnt;
 
-    public ChattingRoom(int chatRoomID, int recv_id, String mRecv_name, String msg, String sended, String sex, String etcInfo, String photo) {
+    public ChattingRoom(int chatRoomID, int recv_id, String mRecv_name, String msg, String sended, String sex, String etcInfo, String photo, int badgeCnt) {
         this.mChatRoomID = chatRoomID;
         this.mRecv_id = recv_id;
         this.mRecv_name = mRecv_name;
@@ -22,6 +23,7 @@ public class ChattingRoom {
         this.mEtcInfo = etcInfo;
         this.mSex = sex;
         this.mPhoto = photo;
+        this.mBadgeCnt = badgeCnt;
     }
 
     public String getRecv_name() {
@@ -87,4 +89,10 @@ public class ChattingRoom {
     public void setPhoto(String Photo) {
         mSex = Photo;
     }
+
+    public int getBadgeCnt() {
+        return mBadgeCnt;
+    }
+
+    public void setBadgeCnt(int badgeCnt) { mBadgeCnt = badgeCnt; }
 }

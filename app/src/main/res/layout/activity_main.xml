@@ -20,6 +20,26 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_gravity="top|right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chatlist_badge"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="230dp"
+            android:paddingTop="0dp"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#FF0000" />
+    </LinearLayout>
+
+</android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

@@ -39,6 +39,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     private String getUserAuth;
     private String getUserNum;
     private String getUserDeviceId;
+    private String getGcmRegId;
 
     private String getPermissionPhone;
     private String getPermissionDevice;
@@ -70,9 +71,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 signin_button.setEnabled(false);
                 String userid = user_id_edt.getText().toString();
                 String userpass = user_pass_edt.getText().toString();
+                getGcmRegId = mPref.getValue("gcm_reg_id","");
 
                 SigninTread signin = new SigninTread();
-                signin.execute(SIGNIN_URL, userid, userpass);
+                signin.execute(SIGNIN_URL, userid, userpass, getGcmRegId);
                 break;
         }
     }
@@ -174,7 +176,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 mPref.put("login","login");
 
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
-                auth.execute(getUserNum ,getUserDeviceId);
+                auth.execute(getUserNum ,getUserDeviceId, mPref.getValue("gcm_reg_id",""));
 
                 loading.dismiss();
 
@@ -203,6 +205,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             String connUrl = value[0];
             getUserId = value[1];
             getUserPass = getMD5Hash(value[2]);
+            getGcmRegId = value[3];
 
 
             try {
@@ -233,6 +236,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 job.put("passwd", getUserPass);
                 job.put("device_id", getPermissionDevice);
                 job.put("phone_num", getPermissionPhone);
+                job.put("gcm_id", getGcmRegId);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성

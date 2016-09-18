@@ -1,11 +1,15 @@
 package com.example.ethan.share01;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.ethan.share01.adapter.ChatAdapter;
+import com.example.ethan.share01.model.ChatMessage;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -13,27 +17,53 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 /**
- * Created by OHRok on 2016-07-11.
+ * Created by Lai.OH on 2016-08-29.
  */
+public class MessageSendUtil extends AsyncTask<String, Void, Void>{
 
-class CreateAuthUtil extends AsyncTask<String, Void, Void> {
-    private final String request_auth_url = "https://toycom96.iptime.org:1443/auth_update";
-    private RbPreference mPref;
+    /*
+         * Create by Lai.OH on 2016-08-01
+         * 채팅 메세지 보내는 쓰레드
+         * param(server_url, recv_id, message, auth)
+         *
+         * recv_id에 대한 사용자에게 메세지를 보내는 함수
+         *
+         * 메세지들을 불러와 ArrayList<ChatMessage>에 저장
+         * Adapter를 이용해 ListView에 등록
+         * 등록하기전 중복을 제거하기 위해서 ListView Clear 진행
+         */
+
     private Context context;
+    private String mGetChatRoomId;
 
-    public CreateAuthUtil(Context context) {
+
+
+    public MessageSendUtil(Context context) {
         this.context = context;
+    }
+
+    ProgressDialog loading;
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        loading = new ProgressDialog(context);
+        loading.setMessage("보내는중");
+        loading.setCancelable(false);
+        loading.show();
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        //Toast.makeText(SignupActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-        //mPref.put("is_login",true);
+        //mPref.put("user_id",getUserId);
+        //Log.e("UserID", mPref.getValue("user_id",""));
+        Toast.makeText(context, "보내기 완료", Toast.LENGTH_SHORT).show();
+        loading.dismiss();
 
+        //메세지 보낸 뒤 대화내용 최신화를 위해 메세지 내용 검색 쓰레드 호출
     }
 
     @Override
@@ -46,19 +76,15 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
             /*
             http통신 부분 설정 변수들
              */
-        int user_num = Integer.parseInt(value[0]);
-        String user_device_id = value[1];
-        String gcm_reg_id = value[2];
-
-        Log.e("user_num", String.valueOf(user_num));
-        Log.e("userDevice", user_device_id);
-        Log.e("gcm_id", gcm_reg_id);
-
+        String connUrl = value[0];
+        int recv_id = Integer.parseInt(value[1]);
+        String message = value[2];
+        String auth = value[3];
 
         try {
             IgnoreHttpSertification.ignoreSertificationHttps();
             //String url = "https://toycom96.iptime.org:1443/user_join";
-            URL obj = new URL(request_auth_url);
+            URL obj = new URL(connUrl);
             //접속 Server URL 설정
             conn = (HttpURLConnection) obj.openConnection();
             //Http 접속
@@ -71,18 +97,19 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
 
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
-            //데이터 주고 받는 형식 : json 설정
-            //conn.setRequestProperty("Cookie", "auth=NtUMVRdHefRNbYut82ALIz0hFKOyRM4D13krg/xdxWfrhThgkmDJTAbs7A3fbhd4lu4cIg==");
             //Cookie값 설정(auth)
+            conn.addRequestProperty("Cookie", auth);
+            //데이터 주고 받는 형식 : json 설정
+
             conn.setDoOutput(true);
             conn.setDoInput(true);
 
 
             JSONObject job = new JSONObject();
             //JSONObject 생성 후 input
-            job.put("id", user_num);
-            job.put("device_id", user_device_id);
-            job.put("gcm_id", gcm_reg_id);
+            job.put("recv_id", recv_id);
+            //job.put("recv_id", 97);
+            job.put("msg", message);
 
             os = conn.getOutputStream();
             //Output Stream 생성
@@ -111,25 +138,10 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
                 Log.i("Response Data", response);
                 JSONObject responseJSON = new JSONObject(response);
                 //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                Log.i("Response ID Value", responseJSON.get("result").toString());
-                String result = responseJSON.get("result").toString();
+                Log.e("Response ID Value", responseJSON.get("chat_id").toString());
+                mGetChatRoomId = responseJSON.get("chat_id").toString();
                 //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                Log.i("responese value", "DATA response = " + result);
-
-                List<String> cookies = conn.getHeaderFields().get("Set-Cookie");
-                Log.e("cookies.get(0)",cookies.get(0));
-                if (cookies != null) {
-                    for (String cookie : cookies) {
-                        String getAuth = cookie.split(";")[0];
-                        Log.e("@COOKIE", getAuth);
-                        mPref = new RbPreference(context);
-                        mPref.put("auth", getAuth);
-                    }
-
-                } else {
-                    Log.e("cookies", "cookie null");
-                }
-
+                Log.i("responese value", "DATA response = " + mGetChatRoomId);
 
             }else {
                 Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
@@ -140,4 +152,6 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
         }
         return null;
     }
+
+
 }

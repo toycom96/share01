@@ -1,7 +1,10 @@
 package com.example.ethan.share01;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ethan.share01.adapter.ChattingRoomAdapter;
 import com.example.ethan.share01.model.ChattingRoom;
@@ -35,12 +39,14 @@ public class ChatListActivity extends AppCompatActivity {
     private ChattingRoomAdapter mChatListAdapter;
     private ListView chatting_room_lv;
     private ArrayList<ChattingRoom> mChatRooms = null;
+    //public Context mContext = ChatListActivity.this;
 
     private TextView recv_id_tv;
     private TextView msg_tv;
     private TextView time_tv;
 
     private RbPreference mPref = new RbPreference(ChatListActivity.this);
+    private int totalChatBadgeCnt;
 
     private final String SERVER_URL = "https://toycom96.iptime.org:1443/chat_list";
 
@@ -52,6 +58,7 @@ public class ChatListActivity extends AppCompatActivity {
     private String getEtcInfo;
     private String getSex;
     private String getPhoto;
+    private int getBadgeCnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,30 @@ public class ChatListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_list);
         Log.e("ChatListActivity", "ChatListActivity");
         init();
+
+
+        this.registerReceiver(this.refreshChatRoomListReceiver, new IntentFilter("refreshChatRoomList"));
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(refreshChatRoomListReceiver);
+    }
+
+    //GcmBroadcastReceiver에서 보내는걸 받는 receiver
+    BroadcastReceiver refreshChatRoomListReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ChatListLoadThread chatlist = new ChatListLoadThread();
+            chatlist.execute(SERVER_URL, mPref.getValue("auth", ""));
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ChatListLoadThread chatlist = new ChatListLoadThread();
+        chatlist.execute(SERVER_URL, mPref.getValue("auth", ""));
     }
 
     private void init(){
@@ -115,6 +146,8 @@ public class ChatListActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            mPref.put("badge_chatcnt",  String.valueOf(totalChatBadgeCnt));
+            GcmBroadcastReceiver.updateIconBadge(ChatListActivity.this, -1);
             //Toast.makeText(UserInfoEditActivity.this, "정보 확인", Toast.LENGTH_SHORT).show();
 
             /*user_id.setText(mPref.getValue("user_id", ""));
@@ -140,6 +173,8 @@ public class ChatListActivity extends AppCompatActivity {
              */
             String connUrl = value[0];
             String user_auth = value[1];
+
+            totalChatBadgeCnt = 0;
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
@@ -196,6 +231,7 @@ public class ChatListActivity extends AppCompatActivity {
                         Log.e("ChatListNull", response.toString());
                         return null;
                     }
+                    mChatRooms.clear();
 
                     JSONArray ja = new JSONArray(response);
                     for (int i = 0; i < ja.length(); i++) {
@@ -206,6 +242,7 @@ public class ChatListActivity extends AppCompatActivity {
                         getRecvName = order.get("User_name").toString();
                         getMsg = order.get("Msg").toString();
                         getPhoto = order.get("User_photo").toString();
+                        getBadgeCnt = Integer.parseInt(order.get("Badge_cnt").toString());
                         unix_sec = Integer.parseInt(order.get("Sended").toString());
 
                         if ( unix_sec > (6 * 30 * 24 * 60 * 60) ) { getTime = "반년이상"; }
@@ -224,7 +261,8 @@ public class ChatListActivity extends AppCompatActivity {
                             getEtcInfo = "남 " + order.get("User_age").toString() + "세";
                         }
 
-                        mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getRecvName, getMsg, getTime, getSex, getEtcInfo, getPhoto));
+                        mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getRecvName, getMsg, getTime, getSex, getEtcInfo, getPhoto, getBadgeCnt));
+                        totalChatBadgeCnt = totalChatBadgeCnt + getBadgeCnt;
                     }
                     Log.i("Response Data", response);
                     //JSONObject responseJSON = new JSONObject(response);

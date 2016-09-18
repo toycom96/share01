@@ -5,48 +5,76 @@ package com.example.ethan.share01;
  */
 public class ContentsListObject
 {
-    private int _id;
-    private int _user_id;
-    private String _picUrl;
-    private String _title;
+    private int mId;
+    private int mUserId;
+    private String mUser;
+    private String mPicUrl;
+    private int mTime;
+    private String mEtc;
+    private String mMsg;
+    private String mSex;
+    private int mAge;
+    private int mDist;
 
-    public ContentsListObject(int Id, int user_id, String PicUrl, String Title)
+    public ContentsListObject(int Id, int UserId, String User, String PicUrl, String Time, String Etc, String Msg, String Sex, int Age, int Dist)
     {
-        this._id = Id;
-        this._user_id = user_id;
-        this._picUrl = PicUrl;
-        this._title = Title;
+        this.mId = Id;
+        this.mUserId = UserId;
+        this.mUser = User;
+        this.mPicUrl = PicUrl;
+        this.mTime = Integer.parseInt(Time);
+        this.mEtc = Etc;
+        this.mMsg = Msg;
+        this.mSex = Sex;
+        this.mAge = Age;
+        this.mDist = Dist;
     }
 
+    public int getId() { return mId; }
+    public void setId(int Id) { this.mId = Id; }
 
-    public int get_user_id() {
-        return _user_id;
+    public int getUserId() { return mUserId; }
+    public void setUserId(int UserId) { this.mUserId = UserId; }
+
+    public String getUser() { return mUser; }
+    public void setUser(String User) {
+        this.mUser = User;
     }
 
-    public void set_user_id(int _user_id) {
-        this._user_id = _user_id;
-    }
     public String getPicUrl()
     {
-        return _picUrl;
+        return mPicUrl;
     }
+    public void setPicUrl(String PicUrl) { this.mPicUrl = PicUrl; }
 
-    public void setPicUrl(String PicUrl)
+    public int getTime()
     {
-        this._picUrl = PicUrl;
+        return mTime;
     }
+    public void setTime(int Time) { this.mTime = mTime; }
 
-    public String getTitle()
+    public String getEtc() { return mEtc; }
+    public void setEtc(String Etc) { this.mEtc = Etc; }
+
+    public String getMsg() { return mMsg; }
+    public void setMsg(String Msg) { this.mMsg = Msg; }
+
+    public String getSex()
     {
-        return _title;
+        return mSex;
     }
+    public void setSex(String Sex) { this.mSex = Sex; }
 
-    public void setTitle(String Title)
+    public int getAge()
     {
-        this._title = Title;
+        return mAge;
     }
+    public void setAge(int Age) { this.mAge = Age; }
 
-    public void setId(int Id) { this._id = Id; }
+    public int getDist()
+    {
+        return mDist;
+    }
+    public void setDist(int Dist) { this.mDist = Dist; }
 
-    public int getId() { return _id;}
 }

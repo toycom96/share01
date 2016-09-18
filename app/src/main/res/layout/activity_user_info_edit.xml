@@ -85,7 +85,7 @@
         <EditText
             android:id="@+id/infoedit_coment"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="60dp"
             android:ems="10"
             android:hint="회원님을 자유롭게 소개해보세요!"
             android:scrollHorizontally="true"

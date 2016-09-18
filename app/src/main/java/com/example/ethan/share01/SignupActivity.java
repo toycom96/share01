@@ -53,6 +53,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private String getUserPhone;
     private String getUserDeviceId;
+    private String getGcmRegId;
 
     private Boolean shgnup_complete = false;
 
@@ -70,9 +71,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signupModule(String userId, String userPass, String userNick, String userAge, String userSex, String userDeviceId, String userPhone){
         mPref = new RbPreference(SignupActivity.this);
+        getGcmRegId = mPref.getValue("gcm_reg_id","");
         if (userId != null && userPass != null && userNick != null){
             SignupThread http = new SignupThread();
-            http.execute(join_url,userId,userPass,userNick,userAge,userSex,userDeviceId,userPhone);
+            http.execute(join_url,userId,userPass,userNick,userAge,userSex,userDeviceId,userPhone, getGcmRegId);
 
         } else {
             Toast.makeText(SignupActivity.this, "입력 실패", Toast.LENGTH_SHORT);
@@ -223,7 +225,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 mPref.put("login","login");
                 Log.e("UserID", mPref.getValue("user_id",""));
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
-                auth.execute(mPref.getValue("user_num",""),getUserDeviceId);
+                auth.execute(mPref.getValue("user_num",""),getUserDeviceId, mPref.getValue("gcm_reg_id",""));
                 loading.dismiss();
             } else {
                 Toast.makeText(SignupActivity.this, "회원가입중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
@@ -252,7 +254,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             int join_age = Integer.parseInt(value[4].toString());
             String join_sex = value[5];
             String join_device_id = value[6];
-            String  join_phone = value[7];
+            String join_phone = value[7];
+            String join_gcm_id = value[8];
 
             String join_photo = "";
             String join_coment = "";
@@ -297,6 +300,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 job.put("msg", join_coment);
                 job.put("device_id", join_device_id);
                 job.put("phone_num", join_phone);
+                job.put("gcm_id", join_gcm_id);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성

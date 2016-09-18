@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.ethan.share01.BbsWrite">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".BbsWriteActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:layout_gravity="left"
+            android:layout_marginBottom="20dp">
+
+            <EditText
+                android:id="@+id/bbs_write_msg"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:textSize="14dp"
+                android:gravity="top|left"
+                android:ems="10"
+                android:hint="다른 회원에게 회원님을 자유롭게 소개해보세요!"
+                android:scrollHorizontally="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left"
+            android:layout_margin="0dp">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:text="사진 올리기(선택)"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="left|bottom"
+                android:layout_margin="0dp"
+                android:layout_gravity="left|bottom">
+
+                <ImageView
+                    android:id="@+id/bbs_write_photo"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_menu_noprofile" />
+
+                <Button
+                    android:id="@+id/bbs_write_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#b45705"
+                    android:text="@string/bbs_write_photo_select"
+                    android:textSize="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#fff"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="top|left"
+            android:ems="10"
+            android:text="@string/bbs_write_warning"
+            android:textSize="14dp"
+            android:scrollHorizontally="true"/>
+
+        <Button
+            android:id="@+id/bbs_write_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:textSize="16dp"
+            android:background="#b45705"
+            android:text="@string/bbs_write_complete"
+            android:textColor="#fff"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

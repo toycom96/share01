@@ -47,18 +47,26 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
     // but first we check if we are waiting for the previous load to finish.
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
-        Log.e("Listener onScrolled", "start");
+/*        Log.e("Listener onScrolled", "start");
         int[] lastVisibleItemPositions = mLayoutManager.findLastVisibleItemPositions(null);
         lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
         int visibleItemCount = view.getChildCount();
         int totalItemCount = mLayoutManager.getItemCount();
-        // same code as before
+        // same code as before*/
+        int visibleItemCount = mRecyclerView.getChildCount();
+        int totalItemCount = mLayoutManager.getItemCount();
+        int[] firstVisibleItem = mLayoutManager.findFirstVisibleItemPositions(null);
 
-        if (totalItemCount != 0 && lastVisibleItemPositions[0] + 2 >= totalItemCount) {
+        Log.e("~~v1 : ", String.valueOf(visibleItemCount));
+        Log.e("~~v2 : ", String.valueOf(totalItemCount));
+        Log.e("~~v3 : ", String.valueOf(firstVisibleItem[0]));
+        //if (totalItemCount != 0 && lastVisibleItemPositions[0] + 2 >= totalItemCount) {
+/*        if ( totalItemCount > 0 && (visibleItemCount + pastVisiblesItems[0]) < totalItemCount) {
             int offset = this.mActivity.mContentsList.get(totalItemCount -1).getId();
 
             //this.mActivity.mContentsLoader.loadFromApi(offset, -1, mActivity.mPref.getValue("auth",""),mRecyclerView, mContext);
-        }
+            this.mActivity.mContentsLoader.loadFromApi(offset, -1, mActivity.mPref.getValue("auth",""), mRecyclerView, mContext);
+        }*/
 
     }
 }

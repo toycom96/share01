@@ -54,6 +54,7 @@ public class ChattingRoomAdapter extends BaseAdapter {
         TextView msg = (TextView) v.findViewById(R.id.chatlist_msg);
         TextView time = (TextView) v.findViewById(R.id.chatlist_time);
         TextView etc = (TextView) v.findViewById(R.id.chatlist_etc);
+        TextView badge = (TextView) v.findViewById(R.id.chatlist_msgcnt);
 
         ChattingRoom item = mChatRoomList.get(position);
 
@@ -66,6 +67,12 @@ public class ChattingRoomAdapter extends BaseAdapter {
         if (!item.getPhoto().toString().isEmpty()) {
             CircleImageView photo = (CircleImageView) v.findViewById(R.id.chatlist_photo);
             Picasso.with(mContext).load(item.getPhoto()).resize(72, 72).into(photo);
+        }
+        if (item.getBadgeCnt() > 0) {
+            badge.setBackgroundResource(R.drawable.ic_badge_new);
+
+        //} else {
+        //    badge.setBackground("");
         }
 
         return v;

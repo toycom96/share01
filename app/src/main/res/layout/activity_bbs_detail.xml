@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.ethan.share01.BbsDetailActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:id="@+id/bbs_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="여기엔 제목이 주~~욱~~"
+            android:textSize="18dp"
+            android:textColor="#000000"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/bbs_detail_photo"
+            android:layout_width="360dp"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            android:layout_margin="1dp"
+            android:src="@drawable/ic_menu_noprofile" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/bbs_detail_pay"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="공유비용 : 아이스아메리카노 1잔"
+            android:textSize="16dp"
+            android:textColor="#1155EE"/>
+
+        <TextView
+            android:id="@+id/bbs_detail_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세"
+            android:textSize="16dp"
+            android:textColor="#000000"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:id="@+id/bbs_detail_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="댓글을 이곳에 주르륵.~~~~"
+            android:textSize="16dp"
+            android:textColor="#000000"/>
+    </LinearLayout>
+
+</LinearLayout>

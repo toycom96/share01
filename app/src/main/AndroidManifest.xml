@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.ethan.share01">
+    package="com.example.ethan.share01">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
         android:name="com.example.ethan.share01.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.example.ethan.share01.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.example.ethan.share01.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -30,41 +30,36 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity">
-        </activity>
-        <activity android:name=".UserInfoEditActivity">
-        </activity>
-        <activity android:name=".ChatListActivity">
-        </activity>
-        <activity android:name=".ChatActivity">
-        </activity>
-        <activity android:name=".SigninActivity">
-        </activity>
-        <activity android:name=".ContentDetailActivity">
-        </activity>
-        <activity android:name=".BbsWrite">
-        </activity>
+        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".UserInfoEditActivity"></activity>
+        <activity android:name=".ChatListActivity"></activity>
+        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".SigninActivity"></activity>
+        <activity android:name=".ContentDetailActivity"></activity>
+        <activity android:name=".BbsWrite"></activity>
 
         <!-- GCM 리시버 -->
         <receiver
             android:name=".GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.example.ethan.share01"/>
+                <category android:name="com.example.ethan.share01" />
             </intent-filter>
         </receiver>
         <!-- GCM 서비스 -->
-        <service android:name=".GCMIntentService"/>
+        <service android:name=".GCMIntentService" />
 
-        <activity android:name=".PictureDetailViewActivity" android:theme="@style/Theme.AppCompat.Transparent">
-        </activity>
+        <activity
+            android:name=".PictureDetailViewActivity"
+            android:theme="@style/Theme.AppCompat.Transparent"></activity>
+        <activity android:name=".BbsDetailActivity"></activity>
     </application>
 
 </manifest>

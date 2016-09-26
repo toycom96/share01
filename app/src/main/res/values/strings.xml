@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">fun talk</string>
+    <string name="app_name">무한잉여</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -20,7 +20,7 @@
     <string name="info_edit_complete">수정하기</string>
 
     <string name="bbs_write_title">글 올리기</string>
-    <string name="bbs_write_warning">부디 청소년도 사용할 수 있는 채팅앱이 되었으면 합니다</string>
+    <string name="bbs_write_warning">사회적 물의를 일으키거나, 다른 회원들이 불쾌할 수 있는 글은 삭제될 수 있습니다</string>
     <string name="bbs_write_complete">글 올리기 ( 저 장 )</string>
     <string name="bbs_write_photo_select">사 진 선 택</string>
 

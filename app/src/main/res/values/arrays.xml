@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="share_cate1">
+        <item>기타 공유</item>
+        <item>시간 공유</item>
+        <item>재능 공유</item>
+        <item>물건 공유</item>
+    </string-array>
+</resources>

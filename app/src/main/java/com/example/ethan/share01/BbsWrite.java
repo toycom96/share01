@@ -53,7 +53,14 @@ import java.net.URL;
 public class BbsWrite extends AppCompatActivity implements View.OnClickListener {
 
     private EditText bbs_msg;
-    private ImageView bbs_photo;
+    private ImageView main_photo;
+    private ImageView sub_photo1;
+    private ImageView sub_photo2;
+    private ImageView sub_photo3;
+    private ImageView sub_photo4;
+    private String saved_image_url[] = {"","","","",""};
+
+
 
     private double mLat;
     private double mLon;
@@ -65,11 +72,16 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
     private String getBbs_photo_url;
     private String selected_Image_path;
 
-    public Bitmap user_photo_bm;
+    public Bitmap main_photo_bm;
+    public Bitmap sub_photo_bm1;
+    public Bitmap sub_photo_bm2;
+    public Bitmap sub_photo_bm3;
+    public Bitmap sub_photo_bm4;
     public static RbPreference mPref;
     private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_getmy";
     private final String write_url = "https://toycom96.iptime.org:1443/bbs_write";
     private static final int GET_PICTURE_URI = 101;
+    private int photo_info_flag = 0;
 
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -102,42 +114,46 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
         //ImageChooseUtil chooseImage = new ImageChooseUtil(data, getApplicationContext());
 
-        switch (requestCode) {
-            case GET_PICTURE_URI :
-                if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
 
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-                    Cursor cursor = getContentResolver().query(data.getData(), filePathColumn, null, null, null);
-                    cursor.moveToFirst();
+            Cursor cursor = getContentResolver().query(data.getData(), filePathColumn, null, null, null);
+            cursor.moveToFirst();
 
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    selected_Image_path = cursor.getString(columnIndex);
-                    cursor.close();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            selected_Image_path = cursor.getString(columnIndex);
+            cursor.close();
 
-                    user_photo_bm = BitmapFactory.decodeFile(selected_Image_path);
-                    //bbs_photo.setImageBitmap(user_photo_bm);
-
-                    UploadBbsImgTask bbs_photo_upload = new UploadBbsImgTask();
-                    bbs_photo_upload.execute();
-                }
+            UploadBbsImgTask bbs_photo_upload = new UploadBbsImgTask();
+            bbs_photo_upload.execute();
         }
     }
 
 
     private void init(){
         bbs_msg = (EditText) findViewById(R.id.bbs_write_msg);
-        bbs_photo = (ImageView) findViewById(R.id.bbs_write_photo);
+        main_photo = (ImageView) findViewById(R.id.bbs_main_photo);
+        sub_photo1 = (ImageView) findViewById(R.id.bbs_sub_photo1);
+        sub_photo2 = (ImageView) findViewById(R.id.bbs_sub_photo2);
+        sub_photo3 = (ImageView) findViewById(R.id.bbs_sub_photo3);
+        sub_photo4 = (ImageView) findViewById(R.id.bbs_sub_photo4);
+        saved_image_url[0] = ""; saved_image_url[1] =""; saved_image_url[2]=""; saved_image_url[3]=""; saved_image_url[4]="";
 
-        photo_select = (Button) findViewById(R.id.bbs_write_select);
+
+        //photo_select = (Button) findViewById(R.id.bbs_write_select);
         bbs_save = (Button) findViewById(R.id.bbs_write_save);
 
-        photo_select.setOnClickListener(this);
+        main_photo.setOnClickListener(this);
+        sub_photo1.setOnClickListener(this);
+        sub_photo2.setOnClickListener(this);
+        sub_photo3.setOnClickListener(this);
+        sub_photo4.setOnClickListener(this);
         bbs_save.setOnClickListener(this);
 
         mPref = new RbPreference(BbsWrite.this);
-        GetMyBbsThread info = new GetMyBbsThread();
-        info.execute(getmy_url, mPref.getValue("auth", ""));
+        //GetMyBbsThread info = new GetMyBbsThread();
+        //info.execute(getmy_url, mPref.getValue("auth", ""));
     }
 
     @Override
@@ -150,30 +166,58 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
+
+
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE );
+        }
+
         switch (viewId) {
-            case R.id.bbs_write_save:
 
-                String getComent = bbs_msg.getText().toString();
-                BbsWriteThread bbs_save_thrd = new BbsWriteThread();
-                bbs_save_thrd.execute(write_url, getComent, getBbs_photo_url);
+            case R.id.bbs_main_photo:
+                photo_info_flag = 0;
                 break;
+            case R.id.bbs_sub_photo1:
+                photo_info_flag = 1;
+                break;
+            case R.id.bbs_sub_photo2:
+                photo_info_flag = 2;
+                break;
+            case R.id.bbs_sub_photo3:
+                photo_info_flag = 3;
+                break;
+            case R.id.bbs_sub_photo4:
+                photo_info_flag = 4;
+                break;
+            case R.id.bbs_write_save:
+                photo_info_flag = -1;
+                break;
+        }
 
-            case R.id.bbs_write_select:
+        /*case R.id.bbs_write_photo;
 
-                int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                if (permission != PackageManager.PERMISSION_GRANTED) {
-                    // We don't have permission so prompt the user
-                    ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE );
-                }
-
+            String getComent = bbs_msg.getText().toString();
+            BbsWriteThread bbs_save_thrd = new BbsWriteThread();
+            bbs_save_thrd.execute(write_url, getComent, getBbs_photo_url);
+            break;*/
+        if (photo_info_flag < 0) {
+            String getComent = bbs_msg.getText().toString();
+            BbsWriteThread bbs_save_thrd = new BbsWriteThread();
+            bbs_save_thrd.execute(write_url, getComent);
+        } else {
+            if (photo_info_flag > 0 && saved_image_url[photo_info_flag - 1].equals("")) {
+                Toast.makeText(getApplicationContext(), "이미지를 순서대로 선택해 주세요.", Toast.LENGTH_SHORT).show();
+            } else {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, GET_PICTURE_URI);
-
-                break;
+            }
         }
+
     }
 
 
@@ -182,6 +226,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         private String webAddressToPost = "https://toycom96.iptime.org:1443/up_file";
 
         private ProgressDialog dialog = new ProgressDialog(BbsWrite.this);
+        private int req_code = 0;
 
         @Override
         protected void onPreExecute() {
@@ -205,12 +250,34 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
             if (getBbs_photo_url != null && !getBbs_photo_url.equals("")) {
                 try {
                     //Picasso.with(getApplicationContext()).load(getBbs_photo_url).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
-                    Picasso.with(getApplicationContext()).load(getBbs_photo_url).resize(640, 0).into(bbs_photo);
+                    saved_image_url[photo_info_flag]=getBbs_photo_url;
+                    if (photo_info_flag == 0) {
+                        Picasso.with(getApplicationContext()).load(getBbs_photo_url).resize(640, 0).into(main_photo);
+                    } else if (photo_info_flag == 1) {
+                        Picasso.with(getApplicationContext()).load(getBbs_photo_url).resize(640, 0).into(sub_photo1);
+                    } else if (photo_info_flag == 2) {
+                        Picasso.with(getApplicationContext()).load(getBbs_photo_url).resize(640, 0).into(sub_photo2);
+                    } else if (photo_info_flag == 3) {
+                        Picasso.with(getApplicationContext()).load(getBbs_photo_url).resize(640, 0).into(sub_photo3);
+                    } else if (photo_info_flag == 4) {
+                        Picasso.with(getApplicationContext()).load(getBbs_photo_url).resize(640, 0).into(sub_photo4);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else{
-                bbs_photo.setImageResource(R.drawable.ic_menu_noprofile);
+                saved_image_url[photo_info_flag]="";
+                if (photo_info_flag == 0) {
+                    main_photo.setImageResource(R.drawable.ic_menu_noprofile);
+                } else if (photo_info_flag == 1) {
+                    sub_photo1.setImageResource(R.drawable.ic_menu_noprofile);
+                } else if (photo_info_flag == 2) {
+                    sub_photo2.setImageResource(R.drawable.ic_menu_noprofile);
+                } else if (photo_info_flag == 3) {
+                    sub_photo3.setImageResource(R.drawable.ic_menu_noprofile);
+                } else if (photo_info_flag == 4) {
+                    sub_photo4.setImageResource(R.drawable.ic_menu_noprofile);
+                }
             }
         }
 
@@ -342,7 +409,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
             //Toast.makeText(UserInfoEditActivity.this, "정보 확인", Toast.LENGTH_SHORT).show();
 
             bbs_msg.setText(getBbs_msg);
-            if (getBbs_photo_url != null && !getBbs_photo_url.equals("")) {
+            /*if (getBbs_photo_url != null && !getBbs_photo_url.equals("")) {
                 try {
                     Picasso.with(getApplicationContext()).load(getBbs_photo_url).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
                 } catch (Exception e) {
@@ -350,7 +417,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                 }
             } else{
                 bbs_photo.setImageResource(R.drawable.ic_menu_noprofile);
-            }
+            }*/
 
             loading.dismiss();
         }
@@ -462,10 +529,30 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
              */
             String connUrl = value[0];
             String user_coment = value[1];
-            String user_photo = value[2];
-
+            String user_photo = "";
 
             try {
+                JSONObject media_json = new JSONObject();
+
+                if (saved_image_url[0].equals("")) {
+                } else {
+                    media_json.put("img0", saved_image_url[0]);
+
+                    if (!saved_image_url[1].equals("")) {
+                        media_json.put("img1", saved_image_url[1]);
+                    }
+                    if (!saved_image_url[2].equals("")) {
+                        media_json.put("img2", saved_image_url[2]);
+                    }
+                    if (!saved_image_url[3].equals("")) {
+                        media_json.put("img3", saved_image_url[3]);
+                    }
+                    if (!saved_image_url[4].equals("")) {
+                        media_json.put("img4", saved_image_url[4]);
+                    }
+                    user_photo = media_json.toString();//.getBytes("utf-8");
+                }
+
                 IgnoreHttpSertification.ignoreSertificationHttps();
                 //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);

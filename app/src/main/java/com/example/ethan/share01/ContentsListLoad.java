@@ -188,10 +188,19 @@ public class ContentsListLoad {
                 mContentItem.clear();
 
                 for (int i = 0; i < ja.length(); i++) {
+                    String mediaPath = "";
                     JSONObject order = ja.getJSONObject(i);
                     Log.e("ID", order.getString("User_name"));
-                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), order.getString("Media"), order.getString("Term"), "ETC",order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
 
+                    try {
+                        JSONObject mediaJson = new JSONObject(order.getString("Media"));
+                        mediaPath = mediaJson.getString("img0");
+                    } catch (Exception e) {
+                        mediaPath = order.getString("Media");
+                    }
+                    //this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), order.getString("Media"), order.getString("Term"), "ETC",order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
+                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), mediaPath, order.getString("Term"), "ETC",order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
+                    //mediaJson = null;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

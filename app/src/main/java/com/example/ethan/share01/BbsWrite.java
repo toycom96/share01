@@ -54,6 +54,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
     private EditText bbs_title;
     private EditText bbs_msg;
+    private EditText bbs_pay;
     private ImageView main_photo;
     private ImageView sub_photo1;
     private ImageView sub_photo2;
@@ -71,6 +72,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
     private String getBbs_title;
     private String getBbs_msg;
+    private String getBbs_pay;
     private String getBbs_photo_url;
     private String selected_Image_path;
 
@@ -135,6 +137,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
     private void init(){
         bbs_title = (EditText) findViewById(R.id.bbs_write_title);
+        bbs_pay = (EditText) findViewById(R.id.bbs_write_pay);
         bbs_msg = (EditText) findViewById(R.id.bbs_write_msg);
         main_photo = (ImageView) findViewById(R.id.bbs_main_photo);
         sub_photo1 = (ImageView) findViewById(R.id.bbs_sub_photo1);
@@ -209,8 +212,9 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         if (photo_info_flag < 0) {
             String getComent = bbs_msg.getText().toString();
             String getTitle = bbs_title.getText().toString();
+            String getPay = bbs_pay.getText().toString();
             BbsWriteThread bbs_save_thrd = new BbsWriteThread();
-            bbs_save_thrd.execute(write_url, getTitle, getComent);
+            bbs_save_thrd.execute(write_url, getTitle, getComent, getPay);
         } else {
             if (photo_info_flag > 0 && saved_image_url[photo_info_flag - 1].equals("")) {
                 Toast.makeText(getApplicationContext(), "이미지를 순서대로 선택해 주세요.", Toast.LENGTH_SHORT).show();
@@ -534,7 +538,9 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
             String connUrl = value[0];
             String user_title = value[1];
             String user_comment = value[2];
+            String user_pay = value[3];
             String user_photo = "";
+            String user_opt = "";
 
             try {
                 JSONObject media_json = new JSONObject();
@@ -557,6 +563,10 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                     }
                     user_photo = media_json.toString();//.getBytes("utf-8");
                 }
+
+                JSONObject opt_json = new JSONObject();
+                opt_json.put("pay", user_pay );
+                user_opt = opt_json.toString();
 
                 IgnoreHttpSertification.ignoreSertificationHttps();
                 //String url = "https://toycom96.iptime.org:1443/user_join";
@@ -585,6 +595,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                 job.put("title",user_title);
                 job.put("msg", user_comment);
                 job.put("media", user_photo);
+                job.put("option", user_opt);
                 job.put("lat", mLat);
                 job.put("long", mLon);
 

@@ -142,7 +142,7 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         @Override
         public void onClick(View ContentView)
         {
-            //클릭했을 때의 해당 화면의 context를 받아온다.
+            /*//클릭했을 때의 해당 화면의 context를 받아온다.
             final Context context = ContentView.getContext();
 
             //쪽지 보내기 Dialog 생성, 상대방의 정보를 같이 보낸다.
@@ -165,7 +165,12 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
                 }
             });
 
-            messageUtil.show();
+            messageUtil.show();*/
+
+            Log.e("~~~~Click : ", "Photo");
+            Intent intent = new Intent(mContext, BbsDetailActivity.class);
+            intent.putExtra("bbs_id", ViewHolder.this.ContentId);
+            mContext.startActivity(intent);
 
         }
     }

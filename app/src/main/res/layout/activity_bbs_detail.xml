@@ -82,14 +82,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
-        <TextView
+
+        <ListView
             android:id="@+id/bbs_detail_memo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="댓글을 이곳에 주르륵.~~~~"
-            android:layout_marginLeft="10dp"
-            android:textSize="16dp"
-            android:textColor="#000000"/>
+            android:layout_marginLeft="10dp">
+        </ListView>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,6 +1,8 @@
 package com.example.ethan.share01;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -8,10 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -52,11 +58,12 @@ public class BbsDetailActivity extends AppCompatActivity {
     private double mLon;
     private int photo_idx = 0;
 
-
     ////////////////////////////////////////////////////////
     private ListView BbsMemo_lv;
     private ArrayList<BbsMemo> mBbsMemo = null;
     private BbsMemoAdapter mBbsMemoAdapter;
+    private Button BbsMemo_write;
+    private EditText BbsMemo_msg;
 
     //int bbs_id, int memo_id, int user_id, String user_name, int user_age, String user_sex, String user_photo, String memo, String date)
     private int getBbs_id;
@@ -70,7 +77,8 @@ public class BbsDetailActivity extends AppCompatActivity {
     private String getBbsMemo_term;
 
     private final String bbs_detail_url = "https://toycom96.iptime.org:1443/bbs_view";
-    private final String bbsmemo_detail_url = "https://toycom96.iptime.org:1443/bbs_memo_list";
+    private final String bbsmemo_list_url = "https://toycom96.iptime.org:1443/bbs_memo_list";
+    private final String bbsmemo_save_url = "https://toycom96.iptime.org:1443/bbs_memo_write";
     public static RbPreference mPref;
     public GpsInfo mGps;
 
@@ -104,6 +112,16 @@ public class BbsDetailActivity extends AppCompatActivity {
         bbs_opt = (TextView) findViewById(R.id.bbs_detail_pay);
         bbs_photo = (ImageView) findViewById(R.id.bbs_detail_photo);
         BbsMemo_lv = (ListView)  findViewById(R.id.bbs_detail_memo);
+        BbsMemo_msg = (EditText) findViewById(R.id.bbs_detail_memo_msg);
+        BbsMemo_write = (Button) findViewById(R.id.bbs_detail_memo_write);
+
+        BbsMemo_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BbsMemoSaveThread BbsMemo = new BbsMemoSaveThread();
+                BbsMemo.execute(bbsmemo_save_url, mPref.getValue("auth", ""));
+            }
+        });
 
         bbs_photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,28 +157,56 @@ public class BbsDetailActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        chatting_room_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        BbsMemo_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ChattingRoom chat_room = mChatRooms.get(position);
-                int chat_room_id = chat_room.getChatRoomID();
-                int chat_room_user_id = chat_room.getRecv_id();
-                Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
-                intent.putExtra("room_id", chat_room_id);
-                intent.putExtra("sender_id", chat_room_user_id);
-                startActivity(intent);
-                finish();
+                //클릭했을 때의 해당 화면의 context를 받아온다.
+                final Context context = view.getContext();
+
+                //쪽지 보내기 Dialog 생성, 상대방의 정보를 같이 보낸다.
+                //쪽지를 보내는 버튼에 대한 이벤트는 MessageDialogUtil 클래스 내부에 구현되어 있다.
+                //MessageDialogUtil(Context context, String recvName, String recvSex, String recvMsg, int recvId
+                final MessageDialogUtil messageUtil =
+                        new MessageDialogUtil(context, mBbsMemo.get(position).getUser_name(), mBbsMemo.get(position).getUser_sex(), mBbsMemo.get(position).getMemo() ,mBbsMemo.get(position).getUser_id() );
+                        //new MessageDialogUtil(context, ContentsListAdapter.ViewHolder.this.User.getText().toString(), ContentsListAdapter.ViewHolder.this.Etc.getText().toString(), ContentsListAdapter.ViewHolder.this.Msg.getText().toString(), ContentsListAdapter.ViewHolder.this.UserId);
+
+                //쪽지 보내기 Dialog가 화면에 보여졌을 때의 기본 셋팅
+                messageUtil.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        messageUtil.setTitle();
+                    }
+                });
+
+                messageUtil.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        return;
+                    }
+                });
+
+                messageUtil.show();
             }
         });
-        */
+
         GetBbsDetailThread info = new GetBbsDetailThread();
         info.execute(bbs_detail_url, mPref.getValue("auth", ""));
 
         BbsMemoLoadThread BbsMemo = new BbsMemoLoadThread();
-        BbsMemo.execute(bbsmemo_detail_url, mPref.getValue("auth", ""));
+        BbsMemo.execute(bbsmemo_list_url, mPref.getValue("auth", ""));
 
     }
+
+/*    @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+
+        if (viewId = R.id.bbs_detail_memo_write) {
+            BbsMemoSaveThread BbsMemo = new BbsMemoSaveThread();
+            BbsMemo.execute(bbsmemo_save_url, mPref.getValue("auth", ""));
+        }
+    }*/
 
     class GetBbsDetailThread extends AsyncTask<String, Void, Void> {
 
@@ -465,6 +511,113 @@ public class BbsDetailActivity extends AppCompatActivity {
 
 
                 }else {
+                    Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    class BbsMemoSaveThread extends AsyncTask<String, Void, Void> {
+
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = new ProgressDialog(BbsDetailActivity.this);
+            loading.setTitle("댓글 저장");
+            loading.setMessage("댓글을 저장 중이에요...");
+            loading.setCancelable(false);
+            loading.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            loading.dismiss();
+
+            if ( BbsMemo_msg.getText().toString().toString().length() < 5) {
+                Toast.makeText(BbsDetailActivity.this, "댓글 내용이 없거나 5자 이하입니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                BbsMemo_msg.setText("");
+                Toast.makeText(BbsDetailActivity.this, "댓글 저장 완료", Toast.LENGTH_SHORT).show();
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(BbsMemo_msg.getWindowToken(), 0);
+
+                BbsMemoLoadThread BbsMemo = new BbsMemoLoadThread();
+                BbsMemo.execute(bbsmemo_list_url, mPref.getValue("auth", ""));
+            }
+        }
+
+        @Override
+        protected Void doInBackground(String... value) {
+            HttpURLConnection conn = null;
+            OutputStream os = null;
+            InputStream is = null;
+            ByteArrayOutputStream baos = null;
+            String response = null;
+            /*
+            http통신 부분 설정 변수들
+             */
+            //mBbsMemo.clear();
+            String connUrl = value[0];
+            String user_auth = value[1];
+
+            if (BbsMemo_msg.getText().toString().toString().length() < 5) {
+                return null;
+            }
+
+            try {
+                IgnoreHttpSertification.ignoreSertificationHttps();
+                //String url = "https://toycom96.iptime.org:1443/user_join";
+                URL obj = new URL(connUrl);
+                //접속 Server URL 설정
+                conn = (HttpURLConnection) obj.openConnection();
+                //Http 접속
+                conn.setConnectTimeout(10000);
+                //접속 timeuot시간 설정
+                conn.setReadTimeout(10000);
+                //read timeout 시간 설정
+                conn.setRequestMethod("POST");
+                //통신 방식 : POST
+
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                //데이터 주고 받는 형식 : json 설정
+                conn.addRequestProperty("Cookie", user_auth);
+                //Cookie값 설정(auth)
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+
+
+                JSONObject job = new JSONObject();
+                //JSONObject 생성 후 input
+
+                job.put("bbs_id", bbs_id);
+                job.put("bbs_memo", BbsMemo_msg.getText().toString());
+                job.put("long", mLon);
+                job.put("lat", mLat);
+
+
+                os = conn.getOutputStream();
+                //Output Stream 생성
+                os.write(job.toString().getBytes("utf-8"));
+                os.flush();
+                //Buffer에 있는 모든 정보를 보냄
+
+                int responseCode = conn.getResponseCode();
+
+                //int responseCode = conn.getResponseCode();
+                //request code를 받음
+
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }
 

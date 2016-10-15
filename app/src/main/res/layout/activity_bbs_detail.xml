@@ -70,7 +70,7 @@
             android:id="@+id/bbs_detail_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세"
+            android:text="대한 사람 대한으로 우리나라 만세"
             android:layout_marginLeft="10dp"
             android:textSize="16dp"
             android:textColor="#000000"/>
@@ -78,10 +78,34 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <EditText
+            android:id="@+id/bbs_detail_memo_msg"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="문의할 내용을 댓글로 작성해 보세요."
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/bbs_detail_memo_write"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="0dp"
+            android:background="#b45705"
+            android:text="댓글 달기"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="5dp">
 
         <ListView
             android:id="@+id/bbs_detail_memo"

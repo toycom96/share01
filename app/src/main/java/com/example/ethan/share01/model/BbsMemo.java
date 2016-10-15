@@ -22,7 +22,11 @@ public class BbsMemo {
         this.mUser_id = user_id;
         this.mUser_name = user_name;
         this.mUser_age = user_age;
-        this.mUser_sex = user_sex;
+        if (user_sex.equals("F")) {
+            this.mUser_sex = "여";
+        } else {
+            this.mUser_sex = "남";
+        }
         this.mUser_photo = user_photo;
         this.mMemo = memo;
         this.mTerm = date;

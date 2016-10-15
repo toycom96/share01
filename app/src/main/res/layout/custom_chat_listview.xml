@@ -53,7 +53,7 @@
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:textSize="14sp"
                     android:maxLines="1"
                     android:text="10주전"/>
@@ -62,7 +62,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="8dp"
                     android:textSize="14sp"
                     android:textColor="#0000FF"
                     android:maxLines="1"
@@ -83,9 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="0dp"
                 android:textSize="14sp"
-                android:gravity="center"
+                android:gravity="left"
                 android:maxLines="1"
                 android:text="채팅방리스트 "/>
 

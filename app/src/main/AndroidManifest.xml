@@ -35,13 +35,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity"></activity>
-        <activity android:name=".UserInfoEditActivity"></activity>
+        <activity android:name=".SignupActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity android:name=".UserInfoEditActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".ChatListActivity"></activity>
         <activity android:name=".ChatActivity"></activity>
-        <activity android:name=".SigninActivity"></activity>
+        <activity android:name=".SigninActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".ContentDetailActivity"></activity>
-        <activity android:name=".BbsWrite"></activity>
+        <activity android:name=".BbsWrite" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
 
         <!-- GCM 리시버 -->
         <receiver
@@ -59,7 +59,9 @@
         <activity
             android:name=".PictureDetailViewActivity"
             android:theme="@style/Theme.AppCompat.Transparent"></activity>
-        <activity android:name=".BbsDetailActivity"></activity>
+        <activity
+            android:name=".BbsDetailActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
     </application>
 
 </manifest>

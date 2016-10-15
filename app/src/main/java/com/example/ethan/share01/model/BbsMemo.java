@@ -25,8 +25,8 @@ public class BbsMemo {
         this.mUser_sex = user_sex;
         this.mUser_photo = user_photo;
         this.mMemo = memo;
-        this.mDate = date;
-        this.mTerm = "";
+        this.mTerm = date;
+        this.mDate = "";
     }
 
     public int getBbs_id() { return mBbs_id; }

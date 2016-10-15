@@ -87,7 +87,7 @@
             android:id="@+id/bbs_detail_memo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="0dp">
         </ListView>
     </LinearLayout>
 

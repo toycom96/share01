@@ -47,6 +47,7 @@ public class BbsMemoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        String etc_info = "";
 
         View v = View.inflate(mContext, R.layout.custom_chat_listview, null);
         TextView title = (TextView) v.findViewById(R.id.chatlist_title);
@@ -58,11 +59,16 @@ public class BbsMemoAdapter extends BaseAdapter {
         BbsMemo item = mBbsMemoList.get(position);
 
         title.setText(item.getUser_name());
-        if (item.getUser_sex().equals("F")) { title.setTextColor(Color.parseColor("#FF0000")); }
-        else { title.setTextColor(Color.parseColor("#0000FF")); }
+        if (item.getUser_sex().equals("F")) {
+            title.setTextColor(Color.parseColor("#FF0000"));
+            etc_info = "여 / " + String.valueOf(item.getUser_age()) + "세";
+        } else {
+            title.setTextColor(Color.parseColor("#0000FF"));
+            etc_info = "남 / " + String.valueOf(item.getUser_age()) + "세";
+        }
+        etc.setText(etc_info);
         msg.setText(item.getMemo());
         time.setText(item.getTerm());
-        etc.setText(item.getUser_sex() + " / " + item.getUser_age() +"세");
         if (!item.getUser_photo().toString().isEmpty()) {
             CircleImageView photo = (CircleImageView) v.findViewById(R.id.chatlist_photo);
             Picasso.with(mContext).load(item.getUser_photo().toString()).resize(72, 72).into(photo);

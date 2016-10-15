@@ -70,7 +70,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private String getBbsMemo_term;
 
     private final String bbs_detail_url = "https://toycom96.iptime.org:1443/bbs_view";
-    private final String bbsmemo_detail_url = "https://toycom96.iptime.org:1443/memo_list";
+    private final String bbsmemo_detail_url = "https://toycom96.iptime.org:1443/bbs_memo_list";
     public static RbPreference mPref;
     public GpsInfo mGps;
 
@@ -88,6 +88,8 @@ public class BbsDetailActivity extends AppCompatActivity {
     private void init(){
         mPref = new RbPreference(BbsDetailActivity.this);
         mGps = new GpsInfo(this);
+        mBbsMemo = new ArrayList<>();
+
         if (mGps.isGetLocation()) {
             mLat = mGps.getLatitude();
             mLon = mGps.getLongitude();
@@ -101,6 +103,7 @@ public class BbsDetailActivity extends AppCompatActivity {
         bbs_msg = (TextView) findViewById(R.id.bbs_detail_msg);
         bbs_opt = (TextView) findViewById(R.id.bbs_detail_pay);
         bbs_photo = (ImageView) findViewById(R.id.bbs_detail_photo);
+        BbsMemo_lv = (ListView)  findViewById(R.id.bbs_detail_memo);
 
         bbs_photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +139,21 @@ public class BbsDetailActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        chatting_room_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ChattingRoom chat_room = mChatRooms.get(position);
+                int chat_room_id = chat_room.getChatRoomID();
+                int chat_room_user_id = chat_room.getRecv_id();
+                Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
+                intent.putExtra("room_id", chat_room_id);
+                intent.putExtra("sender_id", chat_room_user_id);
+                startActivity(intent);
+                finish();
+            }
+        });
+        */
         GetBbsDetailThread info = new GetBbsDetailThread();
         info.execute(bbs_detail_url, mPref.getValue("auth", ""));
 
@@ -338,6 +356,7 @@ public class BbsDetailActivity extends AppCompatActivity {
             /*
             http통신 부분 설정 변수들
              */
+            //mBbsMemo.clear();
             String connUrl = value[0];
             String user_auth = value[1];
 
@@ -364,8 +383,17 @@ public class BbsDetailActivity extends AppCompatActivity {
                 conn.setDoInput(true);
 
 
+                JSONObject job = new JSONObject();
+                //JSONObject 생성 후 input
+
+                job.put("bbs_id", bbs_id);
+                job.put("long", mLon);
+                job.put("lat", mLat);
+
+
                 os = conn.getOutputStream();
                 //Output Stream 생성
+                os.write(job.toString().getBytes("utf-8"));
                 os.flush();
                 //Buffer에 있는 모든 정보를 보냄
 
@@ -408,27 +436,27 @@ public class BbsDetailActivity extends AppCompatActivity {
                         getBbsMemo_username = order.get("User_name").toString();
                         getBbsMemo_usersex = order.get("User_sex").toString();
                         getBbsMemo_userphoto = order.get("User_photo").toString();
-                        getBbsMemo_memo = order.get("Msg").toString();
+                        getBbsMemo_memo = order.get("Bbs_memo").toString();
                         getBbsMemo_date = order.get("Created").toString();
-                        getBbsMemo_term = order.get("Created").toString();
-                        //unix_sec = Integer.parseInt(order.get("Sended").toString());
+                        //getBbsMemo_term = order.get("Created").toString();
+                        unix_sec = Integer.parseInt(order.get("Created").toString());
 
 
-                        /*if ( unix_sec > (6 * 30 * 24 * 60 * 60) ) { getTime = "반년이상"; }
-                        else if ( unix_sec > ( 30 * 24 * 60 * 60) ) { getTime = (unix_sec / ( 30 * 24 * 60 * 60)) + "개월전"; }
-                        else if ( unix_sec > ( 24 * 60 * 60) ) { getTime = (unix_sec / ( 24 * 60 * 60)) + "일전"; }
-                        else if ( unix_sec > ( 60 * 60) ) { getTime = (unix_sec / ( 60 * 60)) + "시간전"; }
-                        else if ( unix_sec > ( 60) ) { getTime = (unix_sec / (60)) + "분전"; }
-                        else { getTime = unix_sec + "초전"; }
+                        if ( unix_sec > (6 * 30 * 24 * 60 * 60) ) { getBbsMemo_term = "반년이상"; }
+                        else if ( unix_sec > ( 30 * 24 * 60 * 60) ) { getBbsMemo_term = (unix_sec / ( 30 * 24 * 60 * 60)) + "개월전"; }
+                        else if ( unix_sec > ( 24 * 60 * 60) ) { getBbsMemo_term = (unix_sec / ( 24 * 60 * 60)) + "일전"; }
+                        else if ( unix_sec > ( 60 * 60) ) { getBbsMemo_term = (unix_sec / ( 60 * 60)) + "시간전"; }
+                        else if ( unix_sec > ( 60) ) { getBbsMemo_term = (unix_sec / (60)) + "분전"; }
+                        else { getBbsMemo_term = unix_sec + "초전"; }
                         //getTime = order.get("Sended").toString();
 
-
+                        /*
                         if (getBbsMemo_usersex == "F") {
                             getEtcInfo = "여 " + order.get("User_age").toString() + "세";
                         } else {
                             getEtcInfo = "남 " + order.get("User_age").toString() + "세";
                         }*/
-                        mBbsMemo.add(new BbsMemo(getBbs_id, 0, getBbsMemo_userid, getBbsMemo_username, getBbsMemo_userage,  getBbsMemo_usersex, getBbsMemo_userphoto, getBbsMemo_memo, getBbsMemo_date));
+                        mBbsMemo.add(new BbsMemo(getBbs_id, 0, getBbsMemo_userid, getBbsMemo_username, getBbsMemo_userage,  getBbsMemo_usersex, getBbsMemo_userphoto, getBbsMemo_memo, getBbsMemo_term));
                     }
                     Log.i("Response Data", response);
                     //JSONObject responseJSON = new JSONObject(response);

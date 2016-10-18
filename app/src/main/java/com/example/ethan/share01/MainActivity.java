@@ -32,6 +32,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.squareup.okhttp.OkHttpClient;
+//import com.squareup.picasso.Cache;
+import com.squareup.picasso.LruCache;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
+import com.squareup.okhttp.Cache;
 
 import org.w3c.dom.Text;
 
@@ -239,6 +245,28 @@ public class MainActivity extends AppCompatActivity
             user_nick_tv.setText(mPref.getValue("user_nick", ""));
         }
     }
+
+    private void setupPicasso()
+    {
+        try {
+            Cache diskCache = new Cache(getDir("foo", Context.MODE_PRIVATE), 100000000);
+            OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.setCache(diskCache);
+
+            Picasso picasso = new Picasso.Builder(this)
+                    .memoryCache(new LruCache(100000000)) // Maybe something fishy here?
+                    .downloader(new OkHttpDownloader(okHttpClient))
+                    .build();
+
+            picasso.setIndicatorsEnabled(true); // For debugging
+
+            Picasso.setSingletonInstance(picasso);
+        } catch (Exception e){
+
+        }
+    }
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

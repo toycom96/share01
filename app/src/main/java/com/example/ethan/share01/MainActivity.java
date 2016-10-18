@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(false);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mGps);
-        mContentsLoader.loadFromApi(0, 0, mPref.getValue("auth",""), mRecyclerView, this);
+        mContentsLoader.loadFromApi(0, 10, "", mPref.getValue("auth",""), mRecyclerView, this);
 
         //회원가입 유무 확인
         checkForLogin();
@@ -308,15 +308,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.time_share) {
-            mContentsLoader.loadFromApi(0, 5, mPref.getValue("auth",""), mRecyclerView, this);
+            mContentsLoader.loadFromApi(0, 10, "시간", mPref.getValue("auth",""), mRecyclerView, this);
         } else if (id == R.id.talent_share) {
             //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-            mContentsLoader.loadFromApi(0, 30, mPref.getValue("auth",""), mRecyclerView, this);
+            mContentsLoader.loadFromApi(0, 10, "재능", mPref.getValue("auth",""), mRecyclerView, this);
         } else if (id == R.id.goods_share) {
-            mContentsLoader.loadFromApi(0, 0, mPref.getValue("auth",""), mRecyclerView, this);
-
-        } else if (id == R.id.setting) {
-
+            mContentsLoader.loadFromApi(0, 10, "물건", mPref.getValue("auth",""), mRecyclerView, this);
+        } else if (id == R.id.all_share) {
+            mContentsLoader.loadFromApi(0, 10, "", mPref.getValue("auth",""), mRecyclerView, this);
         } else if (id == R.id.nav_chatlist) {
             Intent intent = new Intent(MainActivity.this, ChatListActivity.class);
             startActivity(intent);

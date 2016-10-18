@@ -15,9 +15,9 @@
             android:icon="@drawable/ic_menu_goods"
             android:title="물건 공유" />
         <item
-            android:id="@+id/setting"
+            android:id="@+id/all_share"
             android:icon="@drawable/ic_menu_setting"
-            android:title="설정" />
+            android:title="공유 전체" />
     </group>
 
     <item android:title="Communicate">

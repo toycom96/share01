@@ -17,9 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -52,6 +54,7 @@ import java.net.URL;
 
 public class BbsWrite extends AppCompatActivity implements View.OnClickListener {
 
+    private Spinner bbs_cate1;
     private EditText bbs_title;
     private EditText bbs_msg;
     private EditText bbs_pay;
@@ -70,6 +73,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
     private Button photo_select;
     private Button bbs_save;
 
+    private int getBbs_cate1;
     private String getBbs_title;
     private String getBbs_msg;
     private String getBbs_pay;
@@ -136,6 +140,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
 
     private void init(){
+        bbs_cate1 = (Spinner) findViewById(R.id.bbs_write_cate1);
         bbs_title = (EditText) findViewById(R.id.bbs_write_title);
         bbs_pay = (EditText) findViewById(R.id.bbs_write_pay);
         bbs_msg = (EditText) findViewById(R.id.bbs_write_msg);
@@ -213,6 +218,15 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
             String getComent = bbs_msg.getText().toString();
             String getTitle = bbs_title.getText().toString();
             String getPay = bbs_pay.getText().toString();
+
+            if (bbs_cate1.getSelectedItemPosition() == 0) {
+                Toast.makeText(getApplicationContext(), "공유할 종류를 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                getBbs_cate1 = bbs_cate1.getSelectedItemPosition();
+            }
+
+
             BbsWriteThread bbs_save_thrd = new BbsWriteThread();
             bbs_save_thrd.execute(write_url, getTitle, getComent, getPay);
         } else {
@@ -595,6 +609,15 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                 job.put("title",user_title);
                 job.put("msg", user_comment);
                 job.put("media", user_photo);
+                if (getBbs_cate1 == 1) {
+                    job.put("cate", "기타");
+                } else if (getBbs_cate1 == 2) {
+                    job.put("cate", "시간");
+                } else if (getBbs_cate1 == 3) {
+                    job.put("cate", "재능");
+                } else if (getBbs_cate1 == 4) {
+                    job.put("cate", "물건");
+                }
                 job.put("option", user_opt);
                 job.put("lat", mLat);
                 job.put("long", mLon);

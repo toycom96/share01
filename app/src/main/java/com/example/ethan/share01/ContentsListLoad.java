@@ -56,14 +56,14 @@ public class ContentsListLoad {
 
     }
 
-    public int loadFromApi(int ListIndex, int dist_flag, String auth, RecyclerView recyclerView, Context context) {
+    public int loadFromApi(int ListIndex, int dist_flag, String cateStr, String auth, RecyclerView recyclerView, Context context) {
 
         getBbsList BbsList = new getBbsList(mContentItem, mAdapter,recyclerView, context);
 
         String IdxStr = String.valueOf(ListIndex);
         String DistStr = String.valueOf(dist_flag);
 
-        BbsList.execute(IdxStr, DistStr, auth);
+        BbsList.execute(IdxStr, DistStr, cateStr, auth);
 
         return 0;
     }
@@ -137,13 +137,14 @@ public class ContentsListLoad {
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("Cookie", value[2]);
+                conn.setRequestProperty("Cookie", value[3]);
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
                 JSONObject job = new JSONObject();
                 job.put("long", mLon);
                 job.put("lat", mLat);
+                job.put("cate", value[2]);
                 job.put("dist", Integer.parseInt(value[1]));
                 job.put("lidx", Integer.parseInt(value[0]));
 

@@ -62,7 +62,11 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).into(holder.Pic);
         holder.User.setText(ContentsList.get(position).getUser());
 
-        holder.Msg.setText(ContentsList.get(position).getMsg());
+        if (ContentsList.get(position).getTitle().equals("")) {
+            holder.Msg.setText(ContentsList.get(position).getMsg());
+        } else {
+            holder.Msg.setText(ContentsList.get(position).getTitle());
+        }
         holder.ContentId = ContentsList.get(position).getId();
         holder.UserId = ContentsList.get(position).getUserId();
         unix_sec = ContentsList.get(position).getTime();

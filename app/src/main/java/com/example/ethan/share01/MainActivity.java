@@ -46,6 +46,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static int dist = 20;
+    public static String cate1 = "";
+
     private StaggeredGridLayoutManager _sGridLayoutManager;
     public List<ContentsListObject> mContentsList = new ArrayList<ContentsListObject>();
     public ContentsListAdapter mAdapter;
@@ -190,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(false);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mGps);
-        mContentsLoader.loadFromApi(0, 10, "", mPref.getValue("auth",""), mRecyclerView, this);
+        mContentsLoader.loadFromApi(0, dist, cate1, mPref.getValue("auth",""), mRecyclerView, this);
 
         //회원가입 유무 확인
         checkForLogin();
@@ -293,10 +296,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_dist1) {
+            MainActivity.dist = 5;
+        } else if (id == R.id.action_dist2) {
+            MainActivity.dist = 20;
+        } else if (id == R.id.action_dist3) {
+            MainActivity.dist = 50;
+        } else if (id == R.id.action_distall) {
+            MainActivity.dist = 0;
         }
-
+        mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
         return super.onOptionsItemSelected(item);
     }
 
@@ -307,15 +316,25 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.time_share) {
-            mContentsLoader.loadFromApi(0, 10, "시간", mPref.getValue("auth",""), mRecyclerView, this);
+        if (id == R.id.etc_share) {
+            MainActivity.cate1 = "기타";
+            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+        } else if (id == R.id.time_share) {
+            MainActivity.cate1 = "시간";
+            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
         } else if (id == R.id.talent_share) {
             //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-            mContentsLoader.loadFromApi(0, 10, "재능", mPref.getValue("auth",""), mRecyclerView, this);
+            MainActivity.cate1 = "재능";
+            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
         } else if (id == R.id.goods_share) {
-            mContentsLoader.loadFromApi(0, 10, "물건", mPref.getValue("auth",""), mRecyclerView, this);
+            MainActivity.cate1 = "물건";
+            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+        } else if (id == R.id.think_share) {
+            MainActivity.cate1 = "고민";
+            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
         } else if (id == R.id.all_share) {
-            mContentsLoader.loadFromApi(0, 10, "", mPref.getValue("auth",""), mRecyclerView, this);
+            MainActivity.cate1 = "";
+            mContentsLoader.loadFromApi(0,  MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
         } else if (id == R.id.nav_chatlist) {
             Intent intent = new Intent(MainActivity.this, ChatListActivity.class);
             startActivity(intent);

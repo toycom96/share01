@@ -617,6 +617,8 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                     job.put("cate", "재능");
                 } else if (getBbs_cate1 == 4) {
                     job.put("cate", "물건");
+                } else if (getBbs_cate1 == 5) {
+                    job.put("cate", "고민");
                 }
                 job.put("option", user_opt);
                 job.put("lat", mLat);

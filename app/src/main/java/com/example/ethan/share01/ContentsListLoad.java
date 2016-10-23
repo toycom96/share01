@@ -200,7 +200,7 @@ public class ContentsListLoad {
                         mediaPath = order.getString("Media");
                     }
                     //this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), order.getString("Media"), order.getString("Term"), "ETC",order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
-                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), mediaPath, order.getString("Term"), "ETC",order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
+                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), mediaPath, order.getString("Term"), "ETC",order.getString("Title"),order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
                     //mediaJson = null;
                 }
             } catch (Exception e) {

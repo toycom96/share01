@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/bbslist_photo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_menu_noprofile" />
@@ -69,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp"
+                android:textSize="16sp"
+                android:textColor="#000000"
                 android:gravity="left"
                 android:maxLines="10"
                 android:text="채팅방리스트 "/>

@@ -12,11 +12,12 @@ public class ContentsListObject
     private int mTime;
     private String mEtc;
     private String mMsg;
+    private String mTitle;
     private String mSex;
     private int mAge;
     private int mDist;
 
-    public ContentsListObject(int Id, int UserId, String User, String PicUrl, String Time, String Etc, String Msg, String Sex, int Age, int Dist)
+    public ContentsListObject(int Id, int UserId, String User, String PicUrl, String Time, String Etc, String Title, String Msg, String Sex, int Age, int Dist)
     {
         this.mId = Id;
         this.mUserId = UserId;
@@ -24,6 +25,7 @@ public class ContentsListObject
         this.mPicUrl = PicUrl;
         this.mTime = Integer.parseInt(Time);
         this.mEtc = Etc;
+        this.mTitle = Title;
         this.mMsg = Msg;
         this.mSex = Sex;
         this.mAge = Age;
@@ -55,6 +57,9 @@ public class ContentsListObject
 
     public String getEtc() { return mEtc; }
     public void setEtc(String Etc) { this.mEtc = Etc; }
+
+    public String getTitle() { return mTitle; }
+    public void setTitle(String Title) { this.mTitle = Title; }
 
     public String getMsg() { return mMsg; }
     public void setMsg(String Msg) { this.mMsg = Msg; }

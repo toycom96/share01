@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/etc_share"
+            android:icon="@drawable/ic_menu_apps"
+            android:title="기타 공유" />
+        <item
             android:id="@+id/time_share"
             android:icon="@drawable/ic_menu_time"
             android:title="시간 공유" />
@@ -15,8 +19,12 @@
             android:icon="@drawable/ic_menu_goods"
             android:title="물건 공유" />
         <item
+            android:id="@+id/think_share"
+            android:icon="@drawable/ic_menu_think"
+            android:title="고민 공유" />
+        <item
             android:id="@+id/all_share"
-            android:icon="@drawable/ic_menu_setting"
+            android:icon="@drawable/ic_menu_list"
             android:title="공유 전체" />
     </group>
 

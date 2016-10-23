@@ -35,7 +35,7 @@
                 android:textSize="16dp"/>
 
             <Spinner
-                android:layout_width="130dp"
+                android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="0dp"
                 android:paddingLeft="0dp"

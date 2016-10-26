@@ -9,7 +9,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -94,8 +96,16 @@ public class ChatListActivity extends AppCompatActivity {
     }
 
     private void init(){
-        chatting_room_lv = (ListView) findViewById(R.id.chattingroom_listview);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.chatlist_toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        chatting_room_lv = (ListView) findViewById(R.id.chattingroom_listview);
 
         mChatRooms = new ArrayList<>();
 
@@ -116,6 +126,18 @@ public class ChatListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onBackPressed() {

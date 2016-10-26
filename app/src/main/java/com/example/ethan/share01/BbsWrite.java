@@ -15,7 +15,9 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -140,6 +142,15 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
 
     private void init(){
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.bbs_write_toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         bbs_cate1 = (Spinner) findViewById(R.id.bbs_write_cate1);
         bbs_title = (EditText) findViewById(R.id.bbs_write_title);
         bbs_pay = (EditText) findViewById(R.id.bbs_write_pay);
@@ -166,6 +177,18 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         //GetMyBbsThread info = new GetMyBbsThread();
         //info.execute(getmy_url, mPref.getValue("auth", ""));
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onBackPressed() {

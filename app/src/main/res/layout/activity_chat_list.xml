@@ -19,7 +19,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/chatlist_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -29,9 +29,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
                     android:text="채팅방 목록"
-                    android:textStyle="bold"/>
+                    android:textSize="19dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#FFFFFF"/>
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
@@ -40,7 +42,7 @@
             android:id="@+id/chattingroom_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar">
+            android:layout_below="@id/chatlist_toolbar">
         </ListView>
 
     </LinearLayout>

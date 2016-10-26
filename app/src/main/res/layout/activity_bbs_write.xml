@@ -1,220 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
     android:background="#FFFFFF"
     tools:context="com.example.ethan.share01.BbsWrite">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/bbs_write_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:id="@+id/bbs_write_activity_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="이웃끼리 정답게 잉여 공유"
+                android:textSize="19dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#FFFFFF"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="5dp"
-        tools:context=".BbsWriteActivity">
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="5dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:background="#FFFFFF">
 
         <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_vertical">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="0dp"
-                android:paddingRight="0dp"
-                android:text="공유할 종류 :"
-                android:textColor="#000000"
-                android:textSize="16dp"/>
-
-            <Spinner
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="0dp"
-                android:paddingLeft="0dp"
-                android:id="@+id/bbs_write_cate1"
-                android:entries="@array/share_cate1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_vertical">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="0dp"
-                android:paddingRight="0dp"
-                android:text="비용 :"
-                android:textColor="#000000"
-                android:textSize="16dp"/>
-
-            <EditText
-                android:id="@+id/bbs_write_pay"
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:textSize="16dp"
-                android:hint="커피한잔/치맥/5만원"
-                android:background="#F5F5F5"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="left"
-            android:layout_gravity="left"
-            android:layout_marginBottom="20dp">
-
-            <EditText
-                android:id="@+id/bbs_write_title"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:textSize="16dp"
-                android:gravity="top|left"
-                android:ems="10"
-                android:hint="(제목) 공유할 것을 간단히 소개해 주세요."
-                android:background="#F5F5F5"
-                android:scrollHorizontally="true"/>
-
-            <EditText
-                android:id="@+id/bbs_write_msg"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:padding="3dp"
-                android:textSize="16dp"
-                android:gravity="top|left"
-                android:ems="10"
-                android:hint="(본문) 다른 회원들과 공유할 것을 좀더 상세히 소개해 주세요."
-                android:background="#F5F5F5"
-                android:scrollHorizontally="true"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left"
-            android:layout_margin="0dp">
-
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:gravity="left"
-                android:textSize="14sp"
-                android:maxLines="1"
-                android:text="사진 올리기(선택)"/>
+            android:padding="5dp"
+            tools:context=".BbsWriteActivity">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="left|bottom"
-                android:layout_margin="0dp"
-                android:layout_gravity="left|bottom">
+                android:layout_gravity="fill_vertical">
 
-                <ImageView
-                    android:id="@+id/bbs_main_photo"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    android:scaleType="centerCrop"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/ic_menu_noprofile" />
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="0dp"
+                    android:paddingRight="0dp"
+                    android:text="공유할 종류 :"
+                    android:textColor="#000000"
+                    android:textSize="16dp"/>
 
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:columnCount="2"
-                    android:rowCount="3"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/bbs_sub_photo1"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerCrop"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="20dp"
-                        android:src="@drawable/ic_menu_noprofile" />
-
-                    <ImageView
-                        android:id="@+id/bbs_sub_photo2"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerCrop"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="20dp"
-                        android:src="@drawable/ic_menu_noprofile" />
-
-                    <ImageView
-                        android:id="@+id/bbs_sub_photo3"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerCrop"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:src="@drawable/ic_menu_noprofile" />
-
-                    <ImageView
-                        android:id="@+id/bbs_sub_photo4"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerCrop"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:src="@drawable/ic_menu_noprofile" />
-
-                </GridLayout>
+                <Spinner
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+                    android:paddingLeft="0dp"
+                    android:id="@+id/bbs_write_cate1"
+                    android:entries="@array/share_cate1"/>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="0dp"
+                    android:paddingRight="0dp"
+                    android:text="비용 :"
+                    android:textColor="#000000"
+                    android:textSize="16dp"/>
+
+                <EditText
+                    android:id="@+id/bbs_write_pay"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:textSize="16dp"
+                    android:hint="커피한잔/치맥/5만원"
+                    android:background="#F5F5F5"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:layout_gravity="left"
+                android:layout_marginBottom="20dp">
+
+                <EditText
+                    android:id="@+id/bbs_write_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="5dp"
+                    android:textSize="16dp"
+                    android:gravity="top|left"
+                    android:ems="10"
+                    android:hint="(제목) 공유할 것을 간단히 소개해 주세요."
+                    android:background="#F5F5F5"
+                    android:scrollHorizontally="true"/>
+
+                <EditText
+                    android:id="@+id/bbs_write_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="3dp"
+                    android:textSize="16dp"
+                    android:gravity="top|left"
+                    android:ems="10"
+                    android:hint="(본문) 다른 회원들과 공유할 것을 좀더 상세히 소개해 주세요."
+                    android:background="#F5F5F5"
+                    android:scrollHorizontally="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:layout_margin="0dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:text="사진 올리기(선택)"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left|bottom"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="left|bottom">
+
+                    <ImageView
+                        android:id="@+id/bbs_main_photo"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
+                        android:scaleType="centerCrop"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_menu_noprofile" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:columnCount="2"
+                        android:rowCount="3"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/bbs_sub_photo1"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="20dp"
+                            android:src="@drawable/ic_menu_noprofile" />
+
+                        <ImageView
+                            android:id="@+id/bbs_sub_photo2"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="20dp"
+                            android:src="@drawable/ic_menu_noprofile" />
+
+                        <ImageView
+                            android:id="@+id/bbs_sub_photo3"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:src="@drawable/ic_menu_noprofile" />
+
+                        <ImageView
+                            android:id="@+id/bbs_sub_photo4"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:src="@drawable/ic_menu_noprofile" />
+
+                    </GridLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:gravity="top|left"
+                android:ems="10"
+                android:text="@string/bbs_write_warning"
+                android:textSize="14dp"
+                android:textColor="#0055BB"
+                android:scrollHorizontally="true"/>
+
+            <Button
+                android:id="@+id/bbs_write_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:background="#b45705"
+                android:text="@string/bbs_write_complete"
+                android:textColor="#fff"/>
+
         </LinearLayout>
+    </RelativeLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:gravity="top|left"
-            android:ems="10"
-            android:text="@string/bbs_write_warning"
-            android:textSize="14dp"
-            android:textColor="#0055BB"
-            android:scrollHorizontally="true"/>
-
-        <Button
-            android:id="@+id/bbs_write_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:background="#b45705"
-            android:text="@string/bbs_write_complete"
-            android:textColor="#fff"/>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -106,6 +108,14 @@ public class BbsDetailActivity extends AppCompatActivity {
             mLon = 0.0;
         }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.bbs_detail_toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         bbs_title = (TextView) findViewById(R.id.bbs_detail_title);
         bbs_etc = (TextView) findViewById(R.id.bbs_detail_etc);
         bbs_msg = (TextView) findViewById(R.id.bbs_detail_msg);
@@ -197,6 +207,18 @@ public class BbsDetailActivity extends AppCompatActivity {
         BbsMemo.execute(bbsmemo_list_url, mPref.getValue("auth", ""));
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 /*    @Override
     public void onClick(View v) {

@@ -60,7 +60,6 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(picWidth, 0).into(holder.Photo);
         Toast.makeText(mContext, ContentsList.get(position).getPicUrl(), 1);
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).into(holder.Pic);
-        holder.User.setText(ContentsList.get(position).getUser());
 
         if (ContentsList.get(position).getTitle().equals("")) {
             holder.Msg.setText(ContentsList.get(position).getMsg());
@@ -78,15 +77,14 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         else if ( unix_sec > ( 60) ) { getTime = (unix_sec / (60)) + "분전"; }
         else { getTime = unix_sec + "초전"; }
         //getTime = order.get("Sended").toString();
-        holder.Time.setText(getTime);
+
 
         if (ContentsList.get(position).getSex().equals("M")) {
-            holder.User.setTextColor(Color.parseColor("#0000FF"));
-            holder.Etc.setText("남 " + String.valueOf(ContentsList.get(position).getAge()) + "세  " + String.valueOf(ContentsList.get(position).getDist()) + " km 이내");
+            holder.Basic.setText(getTime + " / " + ContentsList.get(position).getUser() + " (남, " + String.valueOf(ContentsList.get(position).getAge()) + "세)");
         } else {
-            holder.User.setTextColor(Color.parseColor("#FF0000"));
-            holder.Etc.setText("여 " + String.valueOf(ContentsList.get(position).getAge()) + "세  " + String.valueOf(ContentsList.get(position).getDist()) + " km 이내");
+            holder.Basic.setText(getTime + " / " + ContentsList.get(position).getUser() + " (여, " + String.valueOf(ContentsList.get(position).getAge()) + "세)");
         }
+        holder.Dist.setText(String.valueOf(ContentsList.get(position).getDist()) + " km");
 
         holder.Photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,9 +111,8 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView Photo;
-        private TextView Time;
-        private TextView User;
-        private TextView Etc;
+        private TextView Basic;
+        private TextView Dist;
         private TextView Msg;
         private int ContentId;
         private int UserId;
@@ -125,9 +122,8 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
 
             ContentView.setOnClickListener(this);
             Photo = (ImageView) ContentView.findViewById(R.id.bbslist_photo);
-            Time = (TextView) ContentView.findViewById(R.id.bbslist_time);
-            User = (TextView) ContentView.findViewById(R.id.bbslist_user);
-            Etc = (TextView) ContentView.findViewById(R.id.bbslist_etc);
+            Basic = (TextView) ContentView.findViewById(R.id.bbslist_basic);
+            Dist = (TextView) ContentView.findViewById(R.id.bbslist_dist);
             Msg = (TextView) ContentView.findViewById(R.id.bbslist_msg);
             ContentId = 0;
             UserId = 0;

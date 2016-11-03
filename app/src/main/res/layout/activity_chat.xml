@@ -22,16 +22,18 @@
             android:layout_toLeftOf="@+id/chat_sendbutton"
             android:layout_margin="0dp"
             android:textSize="16dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:textCursorDrawable="@color/colorPrimary"
             android:hint="메시지를 입력하세요" />
 
         <Button
             android:id="@+id/chat_sendbutton"
             android:layout_width="60dp"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/buttonshape"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="7dp"
             android:layout_marginRight="5dp"
             android:text="보내기"
             android:textColor="@color/colorPrimary"/>

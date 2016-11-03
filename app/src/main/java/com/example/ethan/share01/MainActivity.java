@@ -246,6 +246,7 @@ public class MainActivity extends AppCompatActivity
             new CreateAuthUtil(getApplicationContext()).execute(mPref.getValue("user_num", ""), mPref.getValue("device_id", ""), mPref.getValue("gcm_reg_id", ""));
             user_login_tv.setText(mPref.getValue("user_id", ""));
             user_nick_tv.setText(mPref.getValue("user_nick", ""));
+            //Picasso.with(getApplicationContext()).load(mPref.getValue("User_Photo","")).error(R.drawable.ic_menu_noprofile).into(user_profile_iv);
         }
     }
 

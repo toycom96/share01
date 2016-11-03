@@ -121,6 +121,7 @@ public class ChatListActivity extends AppCompatActivity {
                 Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
                 intent.putExtra("room_id", chat_room_id);
                 intent.putExtra("sender_id", chat_room_user_id);
+                intent.putExtra("sender_photo", chat_room.getPhoto());
                 startActivity(intent);
                 finish();
             }

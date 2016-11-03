@@ -249,9 +249,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:background="#b45705"
+                android:background="@drawable/buttonshape"
                 android:text="@string/bbs_write_complete"
-                android:textColor="#fff"/>
+                android:textColor="@color/colorPrimary"/>
 
         </LinearLayout>
     </RelativeLayout>

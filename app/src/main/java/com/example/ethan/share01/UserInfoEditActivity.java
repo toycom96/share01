@@ -11,7 +11,9 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -110,6 +112,14 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
 
     private void init(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.user_info_edit_toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         user_id = (EditText) findViewById(R.id.infoedit_id);
         user_nick = (EditText) findViewById(R.id.infoedit_nick);
         user_age = (EditText) findViewById(R.id.infoedit_age);
@@ -123,6 +133,17 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         mPref = new RbPreference(UserInfoEditActivity.this);
         GetUserInfoThread info = new GetUserInfoThread();
         info.execute(info_url, mPref.getValue("auth", ""));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -140,6 +161,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 String getComent = user_coment.getText().toString();
                 EditUserInfoThread editInfo = new EditUserInfoThread();
                 editInfo.execute(edit_url,getComent,getPhotoPath);
+                mPref.put("User_Photo",getPhotoPath);
                 break;
 
             case R.id.infoedit_photo:

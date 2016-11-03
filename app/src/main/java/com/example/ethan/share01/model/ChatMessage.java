@@ -7,14 +7,16 @@ public class ChatMessage {
     private int msg_id;
     private int room_id;
     private int sender_id;
+    private String other_user_photo;
     private String sender_name;
     private String message;
     private String time;
 
-    public ChatMessage(int msg_id, int room_id, int sender_id, String sender_name, String message, String time) {
+    public ChatMessage(int msg_id, int room_id, int sender_id, String other_user_photo, String sender_name, String message, String time) {
         this.msg_id = msg_id;
         this.room_id = room_id;
         this.sender_id = sender_id;
+        this.other_user_photo = other_user_photo;
         this.sender_name = sender_name;
         this.message = message;
         this.time = time;
@@ -34,6 +36,12 @@ public class ChatMessage {
     public void setMsg_id(int msg_id) {
         this.msg_id = msg_id;
     }
+
+    public String getOuser_Photo() {
+        return other_user_photo;
+    }
+
+    public void setOuser_Photo(String other_user_photo) { this.other_user_photo = other_user_photo; }
 
     public int getRoom_id() {
         return room_id;

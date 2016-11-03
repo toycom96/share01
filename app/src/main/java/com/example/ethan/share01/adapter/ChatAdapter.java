@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ethan.share01.R;
 import com.example.ethan.share01.RbPreference;
 import com.example.ethan.share01.model.ChatMessage;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -64,10 +66,12 @@ public class ChatAdapter extends BaseAdapter {
             //user_num이 상대방일 경우
             v = View.inflate(mContext, R.layout.custom_chatbubble_left, null);
 
+            ImageView Photo = (ImageView) v.findViewById(R.id.chatmsg_photo);
             TextView title = (TextView) v.findViewById(R.id.chatmsg_title);
             TextView msg = (TextView) v.findViewById(R.id.chatmsg_msg);
             TextView time = (TextView) v.findViewById(R.id.chatmsg_time);
 
+            Picasso.with(mContext).load(item.getOuser_Photo()).error(R.drawable.ic_menu_noprofile).into(Photo);
             title.setText(item.getSender_name());
             msg.setText(item.getMessage());
             time.setText(item.getTime());

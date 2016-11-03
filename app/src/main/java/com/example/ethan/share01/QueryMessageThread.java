@@ -79,7 +79,8 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
              */
         String connUrl = value[0];
         int chatroom_id = Integer.parseInt(value[1]);
-        String auth = value[2];
+        String UserPhoto = value[2];
+        String auth = value[3];
         Log.e("query get auth", auth);
         try {
             IgnoreHttpSertification.ignoreSertificationHttps();
@@ -157,7 +158,7 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
 
                     Log.e("chatListJson", order.toString());
 
-                    mChatMessages.add(new ChatMessage(getMsgId,mGetChatroomId, getSendId, getSenderName, getMsg,getTime));
+                    mChatMessages.add(new ChatMessage(getMsgId,mGetChatroomId, getSendId, UserPhoto, getSenderName, getMsg,getTime));
                     //메세지에 대한 내용 ArrayList에 저장
                 }
 

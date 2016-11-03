@@ -9,6 +9,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
+    android:background="#EEEEEE"
     tools:context="com.example.ethan.share01.BbsDetailActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -46,11 +47,12 @@
         android:padding="0dp"
         android:src="@drawable/ic_menu_noprofile" />
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="5dp"
         android:layout_marginTop="5dp">
 
 
@@ -58,40 +60,66 @@
             android:id="@+id/bbs_detail_etc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="전지현 / 여 35세 / 11km"
-            android:layout_marginLeft="10dp"
+            android:text="전지현 (여, 35세) 11km"
+            android:layout_marginLeft="5dp"
             android:textSize="14dp"
             android:textColor="#000000" />
 
         <TextView
             android:id="@+id/bbs_detail_pay"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="공유비용 : 아이스아메리카노 1잔"
-            android:layout_marginLeft="10dp"
-            android:textSize="16dp"
-            android:textColor="#1155EE"/>
+            android:layout_height="wrap_content"
+            android:text="품앗이: 아이스아메리카노 1잔"
+            android:layout_marginLeft="5dp"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:src="@drawable/dotline"
+        android:background="#FFFFFF"
+        android:layerType="software"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="#FFFFFF"
+        android:layout_marginTop="0dp">
 
         <TextView
             android:id="@+id/bbs_detail_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="대한 사람 대한으로 우리나라 만세"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:textSize="16dp"
             android:textColor="#000000"/>
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:src="@drawable/dotline"
+        android:background="#FFFFFF"
+        android:layerType="software"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:padding="1dp"
+        android:background="#FFFFFF"
+        android:layout_marginTop="0dp">
 
         <EditText
             android:id="@+id/bbs_detail_memo_msg"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="문의할 내용을 댓글로 작성해 보세요."
@@ -99,12 +127,16 @@
 
         <Button
             android:id="@+id/bbs_detail_memo_write"
-            android:layout_width="60dp"
-            android:layout_height="20dp"
+            android:layout_width="65dp"
+            android:layout_height="25dp"
             android:layout_marginTop="0dp"
-            android:background="#b45705"
             android:text="댓글 달기"
-            android:textColor="#fff"/>
+            android:textSize="14dp"
+            android:background="@drawable/buttonshape"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="1"
+            android:textColor="@color/colorPrimary"/>
     </LinearLayout>
 
     <LinearLayout

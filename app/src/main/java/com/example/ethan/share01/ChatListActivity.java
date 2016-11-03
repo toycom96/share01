@@ -278,9 +278,9 @@ public class ChatListActivity extends AppCompatActivity {
                         getSex = order.get("User_sex").toString();
 
                         if (getSex == "F") {
-                            getEtcInfo = "여 " + order.get("User_age").toString() + "세";
+                            getEtcInfo = "여, " + order.get("User_age").toString() + "세";
                         } else {
-                            getEtcInfo = "남 " + order.get("User_age").toString() + "세";
+                            getEtcInfo = "남, " + order.get("User_age").toString() + "세";
                         }
 
                         mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getRecvName, getMsg, getTime, getSex, getEtcInfo, getPhoto, getBadgeCnt));

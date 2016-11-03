@@ -50,20 +50,15 @@ public class ChattingRoomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = View.inflate(mContext, R.layout.custom_chat_listview, null);
-        TextView title = (TextView) v.findViewById(R.id.chatlist_title);
+        TextView profile = (TextView) v.findViewById(R.id.chatlist_profile);
         TextView msg = (TextView) v.findViewById(R.id.chatlist_msg);
-        TextView time = (TextView) v.findViewById(R.id.chatlist_time);
-        TextView etc = (TextView) v.findViewById(R.id.chatlist_etc);
+        TextView dist = (TextView) v.findViewById(R.id.chatlist_dist);
         TextView badge = (TextView) v.findViewById(R.id.chatlist_msgcnt);
 
         ChattingRoom item = mChatRoomList.get(position);
 
-        title.setText(item.getRecv_name());
-        if (item.getSex().equals("F")) { title.setTextColor(Color.parseColor("#FF0000")); }
-        else { title.setTextColor(Color.parseColor("#0000FF")); }
+        profile.setText(item.getSended() + " / " + item.getRecv_name() + " (" + item.getEtcInfo() + ")");
         msg.setText(item.getMsg());
-        time.setText(item.getSended());
-        etc.setText(item.getEtcInfo());
         if (!item.getPhoto().toString().isEmpty()) {
             CircleImageView photo = (CircleImageView) v.findViewById(R.id.chatlist_photo);
             Picasso.with(mContext).load(item.getPhoto()).resize(72, 72).into(photo);

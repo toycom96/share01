@@ -18,7 +18,7 @@
             android:textSize="16dp"
             android:layout_marginRight="2dp"
             android:gravity="right"
-            android:background="#CFDDEB"
+            android:background="@drawable/chat_bubble_right"
             android:text="안녕하세요~~"/>
 
         <TextView

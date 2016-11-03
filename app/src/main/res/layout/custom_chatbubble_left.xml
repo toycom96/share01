@@ -33,11 +33,11 @@
                     android:maxWidth="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="12sp"
                     android:textColor="#0000FF"
                     android:maxLines="1"
-                    android:text="상대방 이름 상대방 이름 상대방 이름"/>
+                    android:text="상대방 이름"/>
                 <TextView
                     android:id="@+id/chatmsg_time"
                     android:layout_marginLeft="4dp"
@@ -55,10 +55,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginLeft="16dp"
-                android:background="#FAF1F1"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/chat_bubble_left"
                 android:textSize="16sp"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="채팅방리스트 "/>
 
         </LinearLayout>

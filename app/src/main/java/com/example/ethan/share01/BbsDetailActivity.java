@@ -254,12 +254,12 @@ public class BbsDetailActivity extends AppCompatActivity {
             bbs_title.setText(getBbs_title);
             bbs_msg.setText(getBbs_msg);
             bbs_opt.setText(getBbs_pay);
-            bbs_etc.setText(getBbs_name + " / " + getBbs_sex + " " + getBbs_age + " / " + getBbs_dist + "km");
-            if (getBbs_sex.equals("여")) {
+            bbs_etc.setText(getBbs_name + " (" + getBbs_sex + ", " + getBbs_age + ") " + getBbs_dist + "km");
+            /*if (getBbs_sex.equals("여")) {
                 bbs_etc.setTextColor(Color.parseColor("#FF0000"));
             } else {
                 bbs_etc.setTextColor(Color.parseColor("#0000FF"));
-            }
+            }*/
 
             if (getBbs_photo_url[0] != null && !getBbs_photo_url[0].equals("")) {
                 try {
@@ -367,7 +367,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                     getBbs_term = Integer.parseInt(responseJSON.get("Term").toString());
 
                     JSONObject optionJson = new JSONObject(responseJSON.getString("Option"));
-                    getBbs_pay = "공유 댓가 : " + optionJson.getString("pay");
+                    getBbs_pay = "품앗이 : " + optionJson.getString("pay");
 
                     //getBbs_cate1 = responseJSON.get("Msg").toString();
 

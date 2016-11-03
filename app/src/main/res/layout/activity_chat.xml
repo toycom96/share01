@@ -26,13 +26,15 @@
 
         <Button
             android:id="@+id/chat_sendbutton"
-            android:layout_width="48dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:background="@color/background_floating_material_dark"
+            android:background="@drawable/buttonshape"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="5dp"
             android:text="보내기"
-            android:textColor="@color/background_material_light"/>
+            android:textColor="@color/colorPrimary"/>
 
         <ListView
             android:id="@+id/chat_listview"

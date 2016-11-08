@@ -158,7 +158,7 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
 
                     Log.e("chatListJson", order.toString());
 
-                    mChatMessages.add(new ChatMessage(getMsgId,mGetChatroomId, getSendId, UserPhoto, getSenderName, getMsg,getTime));
+                    mChatMessages.add(new ChatMessage(getMsgId,mGetChatroomId, getSendId, UserPhoto, getSenderName, getMsg, getTime));
                     //메세지에 대한 내용 ArrayList에 저장
                 }
 

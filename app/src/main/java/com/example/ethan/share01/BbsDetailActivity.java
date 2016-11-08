@@ -1,15 +1,19 @@
 package com.example.ethan.share01;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -32,6 +36,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.ethan.share01.model.BbsMemo;
 import com.example.ethan.share01.adapter.BbsMemoAdapter;
@@ -59,6 +64,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private double mLat;
     private double mLon;
     private int photo_idx = 0;
+    private int edit_mode = 0;
 
     ////////////////////////////////////////////////////////
     private ListView BbsMemo_lv;
@@ -210,15 +216,85 @@ public class BbsDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        edit_mode = 0;
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.bbs_detail_share:
+                String subject = getBbs_title;
+                String text = "http://www.daum.net";
+
+                List<Intent> targetedShareIntents = new ArrayList<Intent>();
+
+// 페이스북
+                Intent facebookIntent = getShareIntent("facebook", subject, text);
+                if(facebookIntent != null)
+                    targetedShareIntents.add(facebookIntent);
+// 트위터
+                Intent twitterIntent = getShareIntent("twitter", subject, text);
+                if(twitterIntent != null)
+                    targetedShareIntents.add(twitterIntent);
+// 구글 플러스
+                Intent googlePlusIntent = getShareIntent("com.google.android.apps.plus", subject, text);
+                if(googlePlusIntent != null)
+                    targetedShareIntents.add(googlePlusIntent);
+// Gmail
+                Intent gmailIntent = getShareIntent("gmail", subject, text);
+                if(gmailIntent != null)
+                    targetedShareIntents.add(gmailIntent);
+// 카카오 톡
+                Intent katalkIntent = getShareIntent("com.kakao.talk", subject, text);
+                if(gmailIntent != null)
+                    targetedShareIntents.add(katalkIntent);
+// 카카오 스토리
+                Intent storyIntent = getShareIntent("com.kakao.story", subject, text);
+                if(gmailIntent != null)
+                    targetedShareIntents.add(storyIntent);
+
+                Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "SNS로 공유하기");
+                //Intent chooser = Intent.createChooser(targetedShareIntents.get(0), "타이틀" );
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+                startActivity(chooser);
+                //Toast.makeText(getApplicationContext(),"share",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.bbs_detail_edit:
+                Intent intent = new Intent(BbsDetailActivity.this, BbsWrite.class);
+                intent.putExtra("Bbs_id", bbs_id);
+                intent.putExtra("Lat", mLat);
+                intent.putExtra("Lon", mLon);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.bbs_detail_delete:
+                new AlertDialog.Builder(BbsDetailActivity.this)
+                        .setTitle("게시물 삭제")
+                        .setMessage("정말로 게시물을 삭제 하시겠습니까?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.sns_share, menu);
+        return true;
+    }
 
 /*    @Override
     public void onClick(View v) {
@@ -229,6 +305,34 @@ public class BbsDetailActivity extends AppCompatActivity {
             BbsMemo.execute(bbsmemo_save_url, mPref.getValue("auth", ""));
         }
     }*/
+
+    private Intent getShareIntent(String type, String subject, String text)
+    {
+        boolean found = false;
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+
+        // gets the list of intents that can be loaded.
+        List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(share, 0);
+        System.out.println("resinfo: " + resInfo);
+        if (!resInfo.isEmpty()){
+            for (ResolveInfo info : resInfo) {
+                if (info.activityInfo.packageName.toLowerCase().contains(type) ||
+                        info.activityInfo.name.toLowerCase().contains(type) ) {
+                    share.putExtra(Intent.EXTRA_SUBJECT,  subject);
+                    share.putExtra(Intent.EXTRA_TEXT,     text);
+                    share.setPackage(info.activityInfo.packageName);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                return null;
+
+            return share;
+        }
+        return null;
+    }
 
     class GetBbsDetailThread extends AsyncTask<String, Void, Void> {
 
@@ -506,8 +610,8 @@ public class BbsDetailActivity extends AppCompatActivity {
                         getBbsMemo_userphoto = order.get("User_photo").toString();
                         getBbsMemo_memo = order.get("Bbs_memo").toString();
                         getBbsMemo_date = order.get("Created").toString();
-                        //getBbsMemo_term = order.get("Created").toString();
-                        unix_sec = Integer.parseInt(order.get("Created").toString());
+                        getBbsMemo_term = order.get("Term").toString();
+                        unix_sec = Integer.parseInt(order.get("Term").toString());
 
 
                         if ( unix_sec > (6 * 30 * 24 * 60 * 60) ) { getBbsMemo_term = "반년이상"; }

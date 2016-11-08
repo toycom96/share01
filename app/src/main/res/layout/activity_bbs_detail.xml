@@ -123,13 +123,15 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="문의할 내용을 댓글로 작성해 보세요."
+            android:backgroundTint="@color/colorPrimary"
+            android:textCursorDrawable="@color/colorPrimary"
             android:inputType="text"/>
 
         <Button
             android:id="@+id/bbs_detail_memo_write"
             android:layout_width="65dp"
             android:layout_height="25dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="10dp"
             android:text="댓글 달기"
             android:textSize="14dp"
             android:background="@drawable/buttonshape"

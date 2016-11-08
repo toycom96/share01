@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bbs_detail_share"
+        android:orderInCategory="100"
+        android:title="공유하기"
+        android:icon="@drawable/ic_menu_share"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/bbs_detail_more"
+        android:orderInCategory="200"
+        android:title="편집"
+        android:icon="@drawable/ic_menu_vmore"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/bbs_detail_edit"
+                android:orderInCategory="200"
+                android:title="수정하기"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/bbs_detail_delete"
+                android:orderInCategory="201"
+                android:title="삭제하기"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+</menu>

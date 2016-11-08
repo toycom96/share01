@@ -266,7 +266,7 @@ public class ChatListActivity extends AppCompatActivity {
                         getMsg = order.get("Msg").toString();
                         getPhoto = order.get("User_photo").toString();
                         getBadgeCnt = Integer.parseInt(order.get("Badge_cnt").toString());
-                        unix_sec = Integer.parseInt(order.get("Sended").toString());
+                        unix_sec = Integer.parseInt(order.get("Term").toString());
 
                         if ( unix_sec > (6 * 30 * 24 * 60 * 60) ) { getTime = "반년이상"; }
                         else if ( unix_sec > ( 30 * 24 * 60 * 60) ) { getTime = (unix_sec / ( 30 * 24 * 60 * 60)) + "개월전"; }

@@ -82,14 +82,19 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
     private String getBbs_photo_url;
     private String selected_Image_path;
 
+    private int getBbs_id;
+    private int getEdit_flag;   //0은 새로운 글쓰기 모드, 1은 수정 모드
+
     public Bitmap main_photo_bm;
     public Bitmap sub_photo_bm1;
     public Bitmap sub_photo_bm2;
     public Bitmap sub_photo_bm3;
     public Bitmap sub_photo_bm4;
     public static RbPreference mPref;
-    private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_getmy";
+    //private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_getmy";
+    private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_view";
     private final String write_url = "https://toycom96.iptime.org:1443/bbs_write";
+    private final String update_url = "https://toycom96.iptime.org:1443/bbs_edit";
     private static final int GET_PICTURE_URI = 101;
     private int photo_info_flag = 0;
 
@@ -109,6 +114,8 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         Intent intent = getIntent();
         mLat = intent.getDoubleExtra("Lat", 0.0);
         mLon = intent.getDoubleExtra("Lon", 0.0);
+        getBbs_id = intent.getIntExtra("Bbs_id", 0);
+        if (getBbs_id == 0) { getEdit_flag = 0; } else { getEdit_flag = 1; }
 
         /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
@@ -174,8 +181,10 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         bbs_save.setOnClickListener(this);
 
         mPref = new RbPreference(BbsWrite.this);
-        //GetMyBbsThread info = new GetMyBbsThread();
-        //info.execute(getmy_url, mPref.getValue("auth", ""));
+        if (getEdit_flag == 1) {
+            GetMyBbsThread info = new GetMyBbsThread();
+            info.execute(getmy_url, mPref.getValue("auth", ""));
+        }
     }
 
     @Override
@@ -250,8 +259,13 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
             }
 
 
-            BbsWriteThread bbs_save_thrd = new BbsWriteThread();
-            bbs_save_thrd.execute(write_url, getTitle, getComent, getPay);
+            if (getEdit_flag == 0 ) {
+                BbsWriteThread bbs_save_thrd = new BbsWriteThread();
+                bbs_save_thrd.execute(write_url, getTitle, getComent, getPay);
+            } else {
+                BbsWriteThread bbs_save_thrd = new BbsWriteThread();
+                bbs_save_thrd.execute(update_url, getTitle, getComent, getPay);
+            }
         } else {
             if (photo_info_flag > 0 && saved_image_url[photo_info_flag - 1].equals("")) {
                 Toast.makeText(getApplicationContext(), "이미지를 순서대로 선택해 주세요.", Toast.LENGTH_SHORT).show();
@@ -440,7 +454,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         protected void onPreExecute() {
             super.onPreExecute();
             loading = new ProgressDialog(BbsWrite.this);
-            loading.setTitle("게시판 글쓰기");
+            loading.setTitle("게시물 수정하기");
             loading.setMessage("회원님의 이전 글을 조회 중이에요...");
             loading.setCancelable(false);
             loading.show();
@@ -453,16 +467,58 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
             //Toast.makeText(UserInfoEditActivity.this, "정보 확인", Toast.LENGTH_SHORT).show();
 
+            bbs_title.setText(getBbs_title);
             bbs_msg.setText(getBbs_msg);
-            /*if (getBbs_photo_url != null && !getBbs_photo_url.equals("")) {
+            bbs_pay.setText(getBbs_pay);
+
+
+            if (saved_image_url[0] != null && !saved_image_url[0].equals("")) {
                 try {
-                    Picasso.with(getApplicationContext()).load(getBbs_photo_url).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
+                    Picasso.with(getApplicationContext()).load(saved_image_url[0]).error(R.drawable.ic_menu_noprofile).into(main_photo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else{
-                bbs_photo.setImageResource(R.drawable.ic_menu_noprofile);
-            }*/
+                main_photo.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+            if (saved_image_url[1] != null && !saved_image_url[1].equals("")) {
+                try {
+                    Picasso.with(getApplicationContext()).load(saved_image_url[1]).error(R.drawable.ic_menu_noprofile).into(sub_photo1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                sub_photo1.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+            if (saved_image_url[2] != null && !saved_image_url[2].equals("")) {
+                try {
+                    Picasso.with(getApplicationContext()).load(saved_image_url[2]).error(R.drawable.ic_menu_noprofile).into(sub_photo2);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                sub_photo2.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+            if (saved_image_url[3] != null && !saved_image_url[3].equals("")) {
+                try {
+                    Picasso.with(getApplicationContext()).load(saved_image_url[3]).error(R.drawable.ic_menu_noprofile).into(sub_photo3);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                sub_photo3.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+            if (saved_image_url[4] != null && !saved_image_url[4].equals("")) {
+                try {
+                    Picasso.with(getApplicationContext()).load(saved_image_url[4]).error(R.drawable.ic_menu_noprofile).into(sub_photo4);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                sub_photo4.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+
+            bbs_cate1.setSelection(getBbs_cate1);
 
             loading.dismiss();
         }
@@ -482,37 +538,31 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
-                Log.e("user_auth", user_auth);
                 conn.addRequestProperty("Cookie", user_auth);
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
+                JSONObject job = new JSONObject();
+                //JSONObject 생성 후 input
+                job.put("id", getBbs_id);
+                job.put("lat", mLat);
+                job.put("long", mLon);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성
+                os.write(job.toString().getBytes("utf-8"));
                 os.flush();
-                //Buffer에 있는 모든 정보를 보냄
+
 
                 int responseCode = conn.getResponseCode();
-
-                //int responseCode = conn.getResponseCode();
-                //request code를 받음
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
@@ -535,8 +585,34 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                     Log.i("Response Age Value", responseJSON.get("Msg").toString());
                     Log.i("Response Age Value", responseJSON.get("Media").toString());
 
+
+                    getBbs_title = responseJSON.get("Title").toString();
                     getBbs_msg = responseJSON.get("Msg").toString();
-                    getBbs_photo_url = responseJSON.get("Media").toString();
+
+                    JSONObject optionJson = new JSONObject(responseJSON.getString("Option"));
+                    getBbs_pay = optionJson.getString("pay");
+
+                    if (responseJSON.get("Cate").toString().equals("기타")) {
+                        getBbs_cate1 = 1;
+                    } else if (responseJSON.get("Cate").toString().equals("시간")) {
+                        getBbs_cate1 = 2;
+                    } else if (responseJSON.get("Cate").toString().equals("재능")) {
+                        getBbs_cate1 = 3;
+                    } else if (responseJSON.get("Cate").toString().equals("물건")) {
+                        getBbs_cate1 = 4;
+                    } else if (responseJSON.get("Cate").toString().equals("고민")) {
+                        getBbs_cate1 = 5;
+                    } else {
+                        getBbs_cate1 = 0;
+                    }
+
+                    JSONObject mediaJson = new JSONObject(responseJSON.getString("Media"));
+                    saved_image_url[0] = mediaJson.getString("img0");
+                    saved_image_url[1] = mediaJson.getString("img1");
+                    saved_image_url[2] = mediaJson.getString("img2");
+                    saved_image_url[3] = mediaJson.getString("img3");
+                    saved_image_url[4] = mediaJson.getString("img4");
+                    //getBbs_photo_url = responseJSON.get("Media").toString();
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }
@@ -629,6 +705,9 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
                 JSONObject job = new JSONObject();
                 //JSONObject 생성 후 input
+                if (getEdit_flag == 1) {
+                    job.put("id", getBbs_id);
+                }
                 job.put("title",user_title);
                 job.put("msg", user_comment);
                 job.put("media", user_photo);

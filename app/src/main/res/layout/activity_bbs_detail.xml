@@ -131,7 +131,7 @@
             android:id="@+id/bbs_detail_memo_write"
             android:layout_width="65dp"
             android:layout_height="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical"
             android:text="댓글 달기"
             android:textSize="14dp"
             android:background="@drawable/buttonshape"

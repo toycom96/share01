@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static int dist = 20;
     public static String cate1 = "";
+    public static int user_id_num = 0;
 
     private StaggeredGridLayoutManager _sGridLayoutManager;
     public List<ContentsListObject> mContentsList = new ArrayList<ContentsListObject>();
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity
          *
          * 각 상태를 확인 후 dialog를 띄워 해당 action을 수행
          */
+        MainActivity.user_id_num = Integer.parseInt(mPref.getValue("user_num", ""));
         String getLoginCheck = mPref.getValue("login","");
         if(getLoginCheck.equals("")){
             //기존 회원이 아닌경우
@@ -311,6 +313,12 @@ public class MainActivity extends AppCompatActivity
         }
         mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
     }
 
 

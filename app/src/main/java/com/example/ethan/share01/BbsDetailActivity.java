@@ -49,6 +49,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private TextView bbs_etc;
     private ImageView bbs_photo;
 
+    private int getBbs_user_id;
     private String getBbs_title;
     private String getBbs_msg;
     private String getBbs_pay;
@@ -85,6 +86,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private String getBbsMemo_term;
 
     private final String bbs_detail_url = "https://toycom96.iptime.org:1443/bbs_view";
+    private final String bbs_detail_delete_url = "https://toycom96.iptime.org:1443/bbs_delete";
     private final String bbsmemo_list_url = "https://toycom96.iptime.org:1443/bbs_memo_list";
     private final String bbsmemo_save_url = "https://toycom96.iptime.org:1443/bbs_memo_write";
     public static RbPreference mPref;
@@ -260,6 +262,10 @@ public class BbsDetailActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),"share",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bbs_detail_edit:
+                if (getBbs_user_id != MainActivity.user_id_num) {
+                    Toast.makeText(BbsDetailActivity.this, "작성자가 아니면 수정할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 Intent intent = new Intent(BbsDetailActivity.this, BbsWrite.class);
                 intent.putExtra("Bbs_id", bbs_id);
                 intent.putExtra("Lat", mLat);
@@ -268,17 +274,24 @@ public class BbsDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.bbs_detail_delete:
+                if (getBbs_user_id != MainActivity.user_id_num) {
+                    Toast.makeText(BbsDetailActivity.this, "작성자가 아니면 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 new AlertDialog.Builder(BbsDetailActivity.this)
                         .setTitle("게시물 삭제")
                         .setMessage("정말로 게시물을 삭제 하시겠습니까?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
+                                BbsDetailDeleteThread BbsDelete = new BbsDetailDeleteThread();
+                                BbsDelete.execute(bbs_detail_delete_url, mPref.getValue("auth", ""));
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // do nothing
+                                Toast.makeText(BbsDetailActivity.this, "삭제 요청이 취소 되었습니다.", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -457,7 +470,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                     Log.i("Response Age Value", responseJSON.get("Msg").toString());
                     Log.i("Response Age Value", responseJSON.get("Media").toString());
 
-
+                    getBbs_user_id = Integer.parseInt(responseJSON.get("User_id").toString());
                     getBbs_title = responseJSON.get("Title").toString();
                     getBbs_msg = responseJSON.get("Msg").toString();
                     getBbs_name = responseJSON.get("User_name").toString();
@@ -742,6 +755,78 @@ public class BbsDetailActivity extends AppCompatActivity {
                 //int responseCode = conn.getResponseCode();
                 //request code를 받음
 
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                } else {
+                    Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    class BbsDetailDeleteThread extends AsyncTask<String, Void, Void> {
+
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = new ProgressDialog(BbsDetailActivity.this);
+            loading.setTitle("게시물 삭제");
+            loading.setMessage("게시물 삭제 요청중입니다.");
+            loading.setCancelable(false);
+            loading.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            loading.dismiss();
+            Toast.makeText(BbsDetailActivity.this, "게시글 삭제 완료", Toast.LENGTH_SHORT).show();
+            onBackPressed();
+        }
+
+        @Override
+        protected Void doInBackground(String... value) {
+            HttpURLConnection conn = null;
+            OutputStream os = null;
+            InputStream is = null;
+            ByteArrayOutputStream baos = null;
+            String response = null;
+            /*
+            http통신 부분 설정 변수들
+             */
+            //mBbsMemo.clear();
+            String connUrl = value[0];
+            String user_auth = value[1];
+
+            try {
+                IgnoreHttpSertification.ignoreSertificationHttps();
+                URL obj = new URL(connUrl);
+                conn = (HttpURLConnection) obj.openConnection();
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
+                conn.setRequestMethod("POST");
+
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.addRequestProperty("Cookie", user_auth);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+
+                JSONObject job = new JSONObject();
+                job.put("id", bbs_id);
+
+
+                os = conn.getOutputStream();
+                os.write(job.toString().getBytes("utf-8"));
+                os.flush();
+
+                int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                 } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

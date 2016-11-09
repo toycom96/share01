@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.SystemClock;
@@ -44,6 +46,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -125,26 +128,68 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //ImageChooseUtil chooseImage = new ImageChooseUtil(data, getApplicationContext());
-
-        if (resultCode == RESULT_OK) {
-
+        if ( resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            Cursor cursor = getContentResolver().query(data.getData(), filePathColumn, null, null, null);
+            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            selected_Image_path = cursor.getString(columnIndex);
+            String picturePath = cursor.getString(columnIndex);
             cursor.close();
+
+            Bitmap loadedBitmap = BitmapFactory.decodeFile(picturePath);
+
+            ExifInterface exif = null;
+            try {
+                File pictureFile = new File(picturePath);
+                exif = new ExifInterface(pictureFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            int orientation = ExifInterface.ORIENTATION_NORMAL;
+
+            if (exif != null)
+                orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    loadedBitmap = rotateBitmap(loadedBitmap, 90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    loadedBitmap = rotateBitmap(loadedBitmap, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    loadedBitmap = rotateBitmap(loadedBitmap, 270);
+                    break;
+            }
+
+            File file = new File(getExternalCacheDir(), "unlimited_share_image.jpg");
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                loadedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                Log.e("Image", "Convert");
+            }
 
             UploadBbsImgTask bbs_photo_upload = new UploadBbsImgTask();
             bbs_photo_upload.execute();
+
+
         }
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
 
@@ -368,7 +413,8 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                 //File file = new File(selected_Image_path);
                 //byte[] fileData = new byte[(int) file.length()];
 
-                FileInputStream fis = new FileInputStream(selected_Image_path);
+                File file = new File(getExternalCacheDir(), "unlimited_share_image.jpg");
+                FileInputStream fis = new FileInputStream(file);
                 byte[] fileData = new byte[(int) fis.available()];
                 DataInputStream dis = new DataInputStream(fis);
                 dis.readFully(fileData);

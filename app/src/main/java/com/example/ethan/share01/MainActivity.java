@@ -232,7 +232,11 @@ public class MainActivity extends AppCompatActivity
          *
          * 각 상태를 확인 후 dialog를 띄워 해당 action을 수행
          */
-        MainActivity.user_id_num = Integer.parseInt(mPref.getValue("user_num", ""));
+        if (mPref.getValue("user_num", "").equals("")) {
+            MainActivity.user_id_num = 0;
+        } else {
+            MainActivity.user_id_num = Integer.parseInt(mPref.getValue("user_num", ""));
+        }
         String getLoginCheck = mPref.getValue("login","");
         if(getLoginCheck.equals("")){
             //기존 회원이 아닌경우

@@ -171,6 +171,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 mPref.put("user_id",getUserId);
                 mPref.put("user_nick", getUserNick);
                 mPref.put("user_num", getUserNum);
+                MainActivity.user_id_num = Integer.parseInt(getUserNum);
                 mPref.put("device_id", getUserDeviceId);
 
                 mPref.put("login","login");

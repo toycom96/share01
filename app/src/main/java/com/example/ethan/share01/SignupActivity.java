@@ -334,6 +334,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
                     Log.i("responese value", "DATA response = " + result);
                     mPref.put("user_num", result);
+                    MainActivity.user_id_num = Integer.parseInt(result);
                     mPref.put("device_id", join_device_id);
                     shgnup_complete = true;
                 }else {

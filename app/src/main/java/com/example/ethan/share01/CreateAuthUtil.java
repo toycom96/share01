@@ -47,6 +47,7 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
             http통신 부분 설정 변수들
              */
         int user_num = Integer.parseInt(value[0]);
+        MainActivity.user_id_num = user_num;
         String user_device_id = value[1];
         String gcm_reg_id = value[2];
 

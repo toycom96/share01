@@ -56,12 +56,12 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/infoedit_id"
+                android:id="@+id/infoedit_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
-                android:hint="아이디는 수정이 불가능해요."
+                android:hint="이메일은 수정이 불가능해요."
                 android:enabled="false"
                 android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>

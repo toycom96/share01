@@ -51,7 +51,7 @@ import java.net.URL;
 public class UserInfoEditActivity extends AppCompatActivity implements View.OnClickListener{
 
 
-    private EditText user_id;
+    private EditText user_email;
     private EditText user_nick;
     private EditText user_age;
     private EditText user_coment;
@@ -61,7 +61,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     private String getUserComent;
     private String getUserNick;
-    private String getUserAge;
+    private int getUserAge;
     private String getUserPhoto = null;
 
     private String selectedImagePath;
@@ -69,7 +69,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private String getPhotoPath;
 
     public Bitmap user_photo_bm;
-    public static RbPreference mPref;
     private final String info_url = "https://toycom96.iptime.org:1443/user_info";
     private final String edit_url = "https://toycom96.iptime.org:1443/user_edit";
     private static final int SELECT_PHOTO = 100;
@@ -120,7 +119,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        user_id = (EditText) findViewById(R.id.infoedit_id);
+        user_email = (EditText) findViewById(R.id.infoedit_email);
         user_nick = (EditText) findViewById(R.id.infoedit_nick);
         user_age = (EditText) findViewById(R.id.infoedit_age);
         user_coment = (EditText) findViewById(R.id.infoedit_coment);
@@ -130,9 +129,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         infoedit_button.setOnClickListener(this);
         user_photo.setOnClickListener(this);
 
-        mPref = new RbPreference(UserInfoEditActivity.this);
         GetUserInfoThread info = new GetUserInfoThread();
-        info.execute(info_url, mPref.getValue("auth", ""));
+        info.execute(info_url, Profile.auth);
     }
 
     @Override
@@ -158,10 +156,13 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         int viewId = v.getId();
         switch (viewId) {
             case R.id.infoedit_button :
-                String getComent = user_coment.getText().toString();
+                getUserComent = user_coment.getText().toString();
+                getUserNick = user_nick.getText().toString();
+                getUserPhoto = getPhotoPath;
+                getUserAge = Integer.parseInt( user_age.getText().toString() );
                 EditUserInfoThread editInfo = new EditUserInfoThread();
-                editInfo.execute(edit_url,getComent,getPhotoPath);
-                mPref.put("User_Photo",getPhotoPath);
+                editInfo.execute(edit_url);
+                Profile.photo = getPhotoPath;
                 break;
 
             case R.id.infoedit_photo:
@@ -219,7 +220,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 conn.setUseCaches(false);
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.addRequestProperty("Cookie", mPref.getValue("auth", ""));
+                conn.addRequestProperty("Cookie",Profile.auth);
 
                 entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
@@ -307,9 +308,9 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
             //Toast.makeText(UserInfoEditActivity.this, "정보 확인", Toast.LENGTH_SHORT).show();
 
-            user_id.setText(mPref.getValue("user_id", ""));
+            user_email.setText(Profile.email);
             user_nick.setText(getUserNick);
-            user_age.setText(getUserAge);
+            user_age.setText(String.valueOf(getUserAge));
             user_coment.setText(getUserComent);
             if (getUserPhoto != null || !getUserPhoto.equals("")) {
                 try {
@@ -395,7 +396,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     Log.i("Response Age Value", responseJSON.get("Photo").toString());
 
                     getUserNick = responseJSON.get("Name").toString();
-                    getUserAge = responseJSON.get("Age").toString();
+                    getUserAge = Integer.parseInt(responseJSON.get("Age").toString());
                     getUserComent = responseJSON.get("Msg").toString();
                     getUserPhoto = responseJSON.get("Photo").toString();
                 }else {
@@ -417,7 +418,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Toast.makeText(UserInfoEditActivity.this, "정보수정 완료", Toast.LENGTH_SHORT).show();
-            mPref.put("user_nick", user_nick.getText().toString());
             Intent intent = new Intent(UserInfoEditActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -434,9 +434,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             http통신 부분 설정 변수들
              */
             String connUrl = value[0];
-            String user_coment = value[1];
-            String user_photo = value[2];
-
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
@@ -455,7 +452,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
                 //데이터 주고 받는 형식 : json 설정
-                conn.addRequestProperty("Cookie", mPref.getValue("auth",""));
+                conn.addRequestProperty("Cookie", Profile.auth);
                 //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
@@ -463,8 +460,11 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
                 JSONObject job = new JSONObject();
                 //JSONObject 생성 후 input
-                job.put("msg", user_coment);
-                job.put("photo", user_photo);
+                job.put("msg", getUserComent);
+                job.put("photo", getUserPhoto);
+                job.put("name", getUserNick);
+                job.put("age", getUserAge);
+
 
                 os = conn.getOutputStream();
                 //Output Stream 생성

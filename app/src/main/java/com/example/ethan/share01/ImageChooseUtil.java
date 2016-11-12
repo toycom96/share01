@@ -35,13 +35,11 @@ public class ImageChooseUtil {
     private Intent data;
     private String webAddressToPost = "https://192.168.0.14:1443/up_file";
     private Bitmap bitmap;
-    private RbPreference mPref;
 
     private String getPath;
     public ImageChooseUtil(Intent data, Context context) {
         this.data = data;
         this.context = context;
-        mPref = new RbPreference(this.context);
     }
 
     public String getRealPath() {

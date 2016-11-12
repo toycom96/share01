@@ -20,18 +20,20 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/navigation_user_profile_imageView"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="15dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:src="@drawable/ic_menu_noprofile" />
 
 
         <TextView
-            android:id="@+id/navigation_user_login"
+            android:id="@+id/navigation_user_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:paddingTop="0dp"
+            android:layout_marginTop="5dp"
             android:text="@string/navigation_no_login"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -40,7 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:paddingTop="5dp"
+            android:paddingTop="0dp"
+            android:layout_marginTop="5dp"
             style="@style/TextAppearance.AppCompat.Body1"/>
     </LinearLayout>
 

@@ -12,7 +12,6 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,20 +28,15 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpConnection;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -57,7 +50,7 @@ import java.net.URL;
 
 
 
-public class BbsWrite extends AppCompatActivity implements View.OnClickListener {
+public class BbsWriteActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Spinner bbs_cate1;
     private EditText bbs_title;
@@ -93,7 +86,6 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
     public Bitmap sub_photo_bm2;
     public Bitmap sub_photo_bm3;
     public Bitmap sub_photo_bm4;
-    public static RbPreference mPref;
     //private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_getmy";
     private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_view";
     private final String write_url = "https://toycom96.iptime.org:1443/bbs_write";
@@ -225,10 +217,9 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         sub_photo4.setOnClickListener(this);
         bbs_save.setOnClickListener(this);
 
-        mPref = new RbPreference(BbsWrite.this);
         if (getEdit_flag == 1) {
             GetMyBbsThread info = new GetMyBbsThread();
-            info.execute(getmy_url, mPref.getValue("auth", ""));
+            info.execute(getmy_url, Profile.auth);
         }
     }
 
@@ -246,7 +237,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(BbsWrite.this, MainActivity.class);
+        Intent intent = new Intent(BbsWriteActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -329,7 +320,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
     class UploadBbsImgTask extends AsyncTask<Void, Void, String> {
         private String webAddressToPost = "https://toycom96.iptime.org:1443/up_file";
 
-        private ProgressDialog dialog = new ProgressDialog(BbsWrite.this);
+        private ProgressDialog dialog = new ProgressDialog(BbsWriteActivity.this);
         private int req_code = 0;
 
         @Override
@@ -405,7 +396,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                 conn.setUseCaches(false);
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.addRequestProperty("Cookie", mPref.getValue("auth", ""));
+                conn.addRequestProperty("Cookie", Profile.auth);
 
                 entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
@@ -499,7 +490,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = new ProgressDialog(BbsWrite.this);
+            loading = new ProgressDialog(BbsWriteActivity.this);
             loading.setTitle("게시물 수정하기");
             loading.setMessage("회원님의 이전 글을 조회 중이에요...");
             loading.setCancelable(false);
@@ -677,9 +668,8 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(BbsWrite.this, "게시글 저장 완료", Toast.LENGTH_SHORT).show();
-            //mPref.put("user_nick", user_nick.getText().toString());
-            Intent intent = new Intent(BbsWrite.this, MainActivity.class);
+            Toast.makeText(BbsWriteActivity.this, "게시글 저장 완료", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(BbsWriteActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -743,7 +733,7 @@ public class BbsWrite extends AppCompatActivity implements View.OnClickListener 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
                 //데이터 주고 받는 형식 : json 설정
-                conn.addRequestProperty("Cookie", mPref.getValue("auth",""));
+                conn.addRequestProperty("Cookie", Profile.auth);
                 //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);

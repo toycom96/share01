@@ -149,9 +149,7 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
                     int getMsgId = Integer.parseInt(order.get("Msg_id").toString());
                     int mGetChatroomId = Integer.parseInt(order.get("Id").toString());
                     int getSendId = Integer.parseInt(order.get("Send_id").toString());
-                        /*if (!String.valueOf(getSendId).equals(mPref.getValue("user_num", ""))) {
-                            mGetSendId = getSendId;
-                        }*/
+
                     String getSenderName = order.get("User_name").toString();
                     String getMsg = order.get("Msg").toString();
                     String getTime = order.get("Sended").toString();

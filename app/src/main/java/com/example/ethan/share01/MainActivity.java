@@ -2,17 +2,16 @@ package com.example.ethan.share01;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -39,16 +38,19 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.okhttp.Cache;
 
-import org.w3c.dom.Text;
+import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public static int dist = 20;
-    public static String cate1 = "";
-    public static int user_id_num = 0;
 
     private StaggeredGridLayoutManager _sGridLayoutManager;
     public List<ContentsListObject> mContentsList = new ArrayList<ContentsListObject>();
@@ -56,16 +58,14 @@ public class MainActivity extends AppCompatActivity
     public ContentsListLoad mContentsLoader;
     //public static Context mContext;
     public GpsInfo mGps;
-    public String mGcmRegId;
 
     RecyclerView mRecyclerView;
-
 
     public List<ContentsListObject> getItems(){
         return mContentsList;
     }
 
-    private TextView user_login_tv;
+    private TextView user_email_tv;
     private ImageView user_profile_iv;
     private TextView user_nick_tv;
 
@@ -91,20 +91,17 @@ public class MainActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
         mGps = new GpsInfo(this);
-        mGcmRegId = mPref.getValue("gcm_reg_id","");
-        if (mGcmRegId == null || mGcmRegId.equals("")) {
-            GcmRegThread GcmRegObj = new GcmRegThread();
-            GcmRegObj.start();
-        }
-        this.registerReceiver(this.mainActivityNewBadgeReceiver, new IntentFilter("mainActivityNewBadge"));
+        Profile.gpslat = mGps.getLatitude();
+        Profile.gpslong = mGps.getLongitude();
 
+        this.registerReceiver(this.mainActivityNewBadgeReceiver, new IntentFilter("mainActivityNewBadge"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Intent intent = new Intent(MainActivity.this, BbsWrite.class);
+                Intent intent = new Intent(MainActivity.this, BbsWriteActivity.class);
 
                 //intent.putExtra("OBJECT", MainActivity.this.mGps);
                 if (mGps.isGetLocation()) {
@@ -122,12 +119,6 @@ public class MainActivity extends AppCompatActivity
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            /*@Override
-            public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
-                super.onDrawerClosed(drawerView);
-                Log.e("~~ toolbar : ", "close");
-            }*/
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -145,12 +136,6 @@ public class MainActivity extends AppCompatActivity
         };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        /*//Setting the actionbarToggle to drawer layout
-        drawer.setDrawerListener(actionBarDrawerToggle);
-        //calling sync state is necessay or else your hamburger icon wont show up
-        actionBarDrawerToggle.syncState();*/
-
-
 
 
 
@@ -158,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
 
-        user_login_tv = (TextView) header.findViewById(R.id.navigation_user_login);
+        user_email_tv = (TextView) header.findViewById(R.id.navigation_user_email);
         user_nick_tv = (TextView) header.findViewById(R.id.navigation_user_nick);
         user_profile_iv = (ImageView) header.findViewById(R.id.navigation_user_profile_imageView);
 
@@ -194,10 +179,35 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(false);
 
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mGps);
-        mContentsLoader.loadFromApi(0, dist, cate1, mPref.getValue("auth",""), mRecyclerView, this);
+        //mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
 
-        //회원가입 유무 확인
+
+        IntentFilter intentfilter = new IntentFilter();
+        //intentfilter.addAction("com.example.ethan.share01.AuthFinish");
+        intentfilter.addAction("AuthFinish");
+
+        //동적 리시버 구현
+        BroadcastReceiver mReceiver = new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context context, Intent intent){
+
+                getUserProfile user = new getUserProfile();
+                user.execute();
+
+                mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
+            }
+        };
+
+        //Receiver 등록
+        registerReceiver(mReceiver, intentfilter);
+
+
+
+        //GcmRegThread GcmRegObj = new GcmRegThread();
+        //GcmRegObj.start();
+        //회원 가입 유무 확인
         checkForLogin();
+
     }
 
     BroadcastReceiver mainActivityNewBadgeReceiver = new BroadcastReceiver() {
@@ -211,6 +221,14 @@ public class MainActivity extends AppCompatActivity
             }
         }
     };
+
+    /*BroadcastReceiver mainActivityAuthFinishReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(MainActivity.this, "되나????", Toast.LENGTH_LONG).show();
+            //mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
+        }
+    };*/
 
     private void userSettingDialog(){
         /*
@@ -226,33 +244,26 @@ public class MainActivity extends AppCompatActivity
 
         /*
          * 회원가입 유무에 따른 action 설정 함수
-         * 로그인 상태 ("login","login")
-         * 로그아웃 상태 ("login","logout")
-         * 미가입 회원 ("login","")
-         *
+         * user_id가 존재 하면 로그인 상태, 아니면 미로그인 상태
          * 각 상태를 확인 후 dialog를 띄워 해당 action을 수행
          */
-        if (mPref.getValue("user_num", "").equals("")) {
-            MainActivity.user_id_num = 0;
+
+        String user_id_str = mPref.getValue("user_id", "");
+        String device_id_str = mPref.getValue("device_id", "");
+        if (user_id_str.equals("") || device_id_str.equals("")) {
+            Profile.user_id = 0;
         } else {
-            MainActivity.user_id_num = Integer.parseInt(mPref.getValue("user_num", ""));
+            Profile.user_id = Integer.parseInt(user_id_str);
+            Profile.device_id = device_id_str;
         }
-        String getLoginCheck = mPref.getValue("login","");
-        if(getLoginCheck.equals("")){
+
+        if(Profile.user_id == 0){
             //기존 회원이 아닌경우
-
             openBottomSheet(R.string.bottom_sheet_title_member, R.string.bottom_sheet_login, R.string.bottom_sheet_signup,BOTTOM_CASEVAL2);
-
-        } else if (getLoginCheck.equals("logout")) {
-
-            openBottomSheet(R.string.bottom_sheet_title_member, R.string.bottom_sheet_login, R.string.bottom_sheet_signup,BOTTOM_CASEVAL2);
-
-        } else if (getLoginCheck.equals("login")){
+        } else {
             //현재 로그인 되어있는 경우
-            new CreateAuthUtil(getApplicationContext()).execute(mPref.getValue("user_num", ""), mPref.getValue("device_id", ""), mPref.getValue("gcm_reg_id", ""));
-            user_login_tv.setText(mPref.getValue("user_id", ""));
-            user_nick_tv.setText(mPref.getValue("user_nick", ""));
-            //Picasso.with(getApplicationContext()).load(mPref.getValue("User_Photo","")).error(R.drawable.ic_menu_noprofile).into(user_profile_iv);
+            CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
+            auth.execute();
         }
     }
 
@@ -307,22 +318,24 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_dist1) {
-            MainActivity.dist = 5;
+            GlobalVar.dist = 5;
         } else if (id == R.id.action_dist2) {
-            MainActivity.dist = 20;
+            GlobalVar.dist = 20;
         } else if (id == R.id.action_dist3) {
-            MainActivity.dist = 50;
+            GlobalVar.dist = 50;
         } else if (id == R.id.action_distall) {
-            MainActivity.dist = 0;
+            GlobalVar.dist = 0;
         }
-        mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+        mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+        if (!Profile.auth.equals("")) {
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+        }
     }
 
 
@@ -333,24 +346,24 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.etc_share) {
-            MainActivity.cate1 = "기타";
-            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+            GlobalVar.cate1 = "기타";
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         } else if (id == R.id.time_share) {
-            MainActivity.cate1 = "시간";
-            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+            GlobalVar.cate1 = "시간";
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         } else if (id == R.id.talent_share) {
             //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
-            MainActivity.cate1 = "재능";
-            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+            GlobalVar.cate1 = "재능";
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         } else if (id == R.id.goods_share) {
-            MainActivity.cate1 = "물건";
-            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+            GlobalVar.cate1 = "물건";
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         } else if (id == R.id.think_share) {
-            MainActivity.cate1 = "고민";
-            mContentsLoader.loadFromApi(0, MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+            GlobalVar.cate1 = "고민";
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         } else if (id == R.id.all_share) {
-            MainActivity.cate1 = "";
-            mContentsLoader.loadFromApi(0,  MainActivity.dist, MainActivity.cate1, mPref.getValue("auth",""), mRecyclerView, this);
+            GlobalVar.cate1 = "";
+            mContentsLoader.loadFromApi(0,  GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         } else if (id == R.id.nav_chatlist) {
             Intent intent = new Intent(MainActivity.this, ChatListActivity.class);
             startActivity(intent);
@@ -445,7 +458,8 @@ public class MainActivity extends AppCompatActivity
                 switch (caseVal) {
                     case 1 :
                         mPref.removeAllValue();
-                        mPref.put("login","logout");
+                        new Profile("removeAll");
+                        //mPref.put("login","logout");
                         finish();
                         break;
                     case 2 :
@@ -477,14 +491,112 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             try {
                 GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                //String regId = gcm.register("chat01-140505");
                 String regId = gcm.register("1028702649415");
 
-                mPref.put("gcm_reg_id",regId);
-                mGcmRegId = regId;
+                Profile.gcm_id = regId;
+                //mPref.put("gcm_reg_id",regId);
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
         }
     }
+
+    class loadBbs extends Thread {
+        public void run() {
+            try {
+                mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    class getUserProfile extends AsyncTask<String, Void, Void> {
+
+        /*ProgressDialog loading;
+        private int auth_succ_flag = 0;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            loading = new ProgressDialog(MainActivity.this);
+            loading.setTitle("사용자 정보 조회");
+            loading.setMessage("사용자 정보를 로딩 중 입니다...");
+            loading.setCancelable(false);
+            loading.show();
+        }*/
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            user_email_tv.setText(Profile.email);
+            user_nick_tv.setText(Profile.name);
+
+            if (Profile.photo != null && !Profile.photo.equals("")) {
+                try {
+                    Picasso.with(getApplicationContext()).load(Profile.photo).error(R.drawable.ic_menu_noprofile).into(user_profile_iv);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                user_profile_iv.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+
+            //loading.dismiss();
+        }
+
+        @Override
+        protected Void doInBackground(String... value) {
+            HttpURLConnection conn = null;
+            OutputStream os = null;
+            InputStream is = null;
+            ByteArrayOutputStream baos = null;
+            String response = null;
+
+            try {
+                IgnoreHttpSertification.ignoreSertificationHttps();
+                URL obj = new URL("https://toycom96.iptime.org:1443/user_info");
+                conn = (HttpURLConnection) obj.openConnection();
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
+                conn.setRequestMethod("POST");
+
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.addRequestProperty("Cookie", Profile.auth);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+
+                os = conn.getOutputStream();
+                os.flush();
+
+                int responseCode = conn.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+
+                    is = conn.getInputStream();
+                    baos = new ByteArrayOutputStream();
+                    byte[] byteBuffer = new byte[1024];
+                    byte[] byteData = null;
+                    int nLength = 0;
+                    while((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
+                        baos.write(byteBuffer, 0, nLength);
+                    }
+                    byteData = baos.toByteArray();
+                    response = new String(byteData);
+
+                    new Profile(response);
+                    JSONObject responseJSON = new JSONObject(response);
+                }else {
+                    Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
 }

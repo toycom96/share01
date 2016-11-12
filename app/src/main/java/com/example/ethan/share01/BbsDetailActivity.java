@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -89,8 +88,6 @@ public class BbsDetailActivity extends AppCompatActivity {
     private final String bbs_detail_delete_url = "https://toycom96.iptime.org:1443/bbs_delete";
     private final String bbsmemo_list_url = "https://toycom96.iptime.org:1443/bbs_memo_list";
     private final String bbsmemo_save_url = "https://toycom96.iptime.org:1443/bbs_memo_write";
-    public static RbPreference mPref;
-    public GpsInfo mGps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,17 +101,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     }
 
     private void init(){
-        mPref = new RbPreference(BbsDetailActivity.this);
-        mGps = new GpsInfo(this);
         mBbsMemo = new ArrayList<>();
-
-        if (mGps.isGetLocation()) {
-            mLat = mGps.getLatitude();
-            mLon = mGps.getLongitude();
-        } else {
-            mLat = 0.0;
-            mLon = 0.0;
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.bbs_detail_toolbar);
         setSupportActionBar(toolbar);
@@ -137,7 +124,7 @@ public class BbsDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BbsMemoSaveThread BbsMemo = new BbsMemoSaveThread();
-                BbsMemo.execute(bbsmemo_save_url, mPref.getValue("auth", ""));
+                BbsMemo.execute(bbsmemo_save_url, Profile.auth);
             }
         });
 
@@ -209,10 +196,10 @@ public class BbsDetailActivity extends AppCompatActivity {
         });
 
         GetBbsDetailThread info = new GetBbsDetailThread();
-        info.execute(bbs_detail_url, mPref.getValue("auth", ""));
+        info.execute(bbs_detail_url, Profile.auth);
 
         BbsMemoLoadThread BbsMemo = new BbsMemoLoadThread();
-        BbsMemo.execute(bbsmemo_list_url, mPref.getValue("auth", ""));
+        BbsMemo.execute(bbsmemo_list_url, Profile.auth);
 
     }
 
@@ -262,11 +249,11 @@ public class BbsDetailActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),"share",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bbs_detail_edit:
-                if (getBbs_user_id != MainActivity.user_id_num) {
+                if (getBbs_user_id != Profile.user_id) {
                     Toast.makeText(BbsDetailActivity.this, "작성자가 아니면 수정할 수 없습니다.", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                Intent intent = new Intent(BbsDetailActivity.this, BbsWrite.class);
+                Intent intent = new Intent(BbsDetailActivity.this, BbsWriteActivity.class);
                 intent.putExtra("Bbs_id", bbs_id);
                 intent.putExtra("Lat", mLat);
                 intent.putExtra("Lon", mLon);
@@ -274,7 +261,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.bbs_detail_delete:
-                if (getBbs_user_id != MainActivity.user_id_num) {
+                if (getBbs_user_id != Profile.user_id) {
                     Toast.makeText(BbsDetailActivity.this, "작성자가 아니면 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -285,7 +272,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
                                 BbsDetailDeleteThread BbsDelete = new BbsDetailDeleteThread();
-                                BbsDelete.execute(bbs_detail_delete_url, mPref.getValue("auth", ""));
+                                BbsDelete.execute(bbs_detail_delete_url, Profile.auth);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -308,16 +295,6 @@ public class BbsDetailActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.sns_share, menu);
         return true;
     }
-
-/*    @Override
-    public void onClick(View v) {
-        int viewId = v.getId();
-
-        if (viewId = R.id.bbs_detail_memo_write) {
-            BbsMemoSaveThread BbsMemo = new BbsMemoSaveThread();
-            BbsMemo.execute(bbsmemo_save_url, mPref.getValue("auth", ""));
-        }
-    }*/
 
     private Intent getShareIntent(String type, String subject, String text)
     {
@@ -690,7 +667,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(BbsMemo_msg.getWindowToken(), 0);
 
                 BbsMemoLoadThread BbsMemo = new BbsMemoLoadThread();
-                BbsMemo.execute(bbsmemo_list_url, mPref.getValue("auth", ""));
+                BbsMemo.execute(bbsmemo_list_url, Profile.auth);
             }
         }
 

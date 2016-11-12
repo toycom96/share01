@@ -84,7 +84,7 @@ public class ChatListActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             ChatListLoadThread chatlist = new ChatListLoadThread();
-            chatlist.execute(SERVER_URL, mPref.getValue("auth", ""));
+            chatlist.execute(SERVER_URL, Profile.auth);
         }
     };
 
@@ -92,7 +92,7 @@ public class ChatListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         ChatListLoadThread chatlist = new ChatListLoadThread();
-        chatlist.execute(SERVER_URL, mPref.getValue("auth", ""));
+        chatlist.execute(SERVER_URL, Profile.auth);
     }
 
     private void init(){
@@ -110,7 +110,7 @@ public class ChatListActivity extends AppCompatActivity {
         mChatRooms = new ArrayList<>();
 
         ChatListLoadThread chatlist = new ChatListLoadThread();
-        chatlist.execute(SERVER_URL, mPref.getValue("auth", ""));
+        chatlist.execute(SERVER_URL, Profile.auth);
 
         chatting_room_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -171,12 +171,6 @@ public class ChatListActivity extends AppCompatActivity {
 
             mPref.put("badge_chatcnt",  String.valueOf(totalChatBadgeCnt));
             GcmBroadcastReceiver.updateIconBadge(ChatListActivity.this, -1);
-            //Toast.makeText(UserInfoEditActivity.this, "정보 확인", Toast.LENGTH_SHORT).show();
-
-            /*user_id.setText(mPref.getValue("user_id", ""));
-            user_nick.setText(getUserNick);
-            user_age.setText(getUserAge);
-            user_coment.setText(getUserComent);*/
 
             mChatListAdapter = new ChattingRoomAdapter(ChatListActivity.this, mChatRooms);
 

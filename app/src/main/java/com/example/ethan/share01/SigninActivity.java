@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -33,13 +35,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     private EditText user_id_edt;
     private EditText user_pass_edt;
 
-    private String getUserId;
+    private String getUserEmail;
     private String getUserPass;
-    private String getUserNick;
-    private String getUserAuth;
-    private String getUserNum;
-    private String getUserDeviceId;
-    private String getGcmRegId;
 
     private String getPermissionPhone;
     private String getPermissionDevice;
@@ -71,10 +68,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 signin_button.setEnabled(false);
                 String userid = user_id_edt.getText().toString();
                 String userpass = user_pass_edt.getText().toString();
-                getGcmRegId = mPref.getValue("gcm_reg_id","");
 
                 SigninTread signin = new SigninTread();
-                signin.execute(SIGNIN_URL, userid, userpass, getGcmRegId);
+                signin.execute(SIGNIN_URL, userid, userpass);
                 break;
         }
     }
@@ -162,22 +158,15 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            //mPref.put("user_id",getUserId);
-            //Log.e("UserID", mPref.getValue("user_id",""));
             if(shgnin_complete){
                 Toast.makeText(SigninActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
-                mPref.put("is_login",true);
 
-                mPref.put("user_id",getUserId);
-                mPref.put("user_nick", getUserNick);
-                mPref.put("user_num", getUserNum);
-                MainActivity.user_id_num = Integer.parseInt(getUserNum);
-                mPref.put("device_id", getUserDeviceId);
-
-                mPref.put("login","login");
+                mPref.put("user_id", Profile.user_id);
+                mPref.put("device_id", Profile.device_id);
+                mPref.put("gcm_id", Profile.gcm_id);
 
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
-                auth.execute(getUserNum ,getUserDeviceId, mPref.getValue("gcm_reg_id",""));
+                auth.execute();
 
                 loading.dismiss();
 
@@ -204,12 +193,14 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             http통신 부분 설정 변수들
              */
             String connUrl = value[0];
-            getUserId = value[1];
+            getUserEmail = value[1];
             getUserPass = getMD5Hash(value[2]);
-            getGcmRegId = value[3];
 
 
             try {
+                GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                String regId = gcm.register("1028702649415");
+
                 IgnoreHttpSertification.ignoreSertificationHttps();
                 //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
@@ -233,11 +224,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 JSONObject job = new JSONObject();
                 //JSONObject 생성 후 input
 
-                job.put("email", getUserId);
+                job.put("email", getUserEmail);
                 job.put("passwd", getUserPass);
                 job.put("device_id", getPermissionDevice);
                 job.put("phone_num", getPermissionPhone);
-                job.put("gcm_id", getGcmRegId);
+                job.put("gcm_id", regId);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성
@@ -267,17 +258,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                     JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
 
-                    getUserNum = responseJSON.get("Id").toString();
-                    getUserId = responseJSON.get("Email").toString();
-                    getUserNick = responseJSON.get("Name").toString();
-                    getUserDeviceId = responseJSON.get("Device_id").toString();
-
-                    //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                    Log.i("getUserNum value", "DATA response = " + getUserNum);
-                    Log.i("getUserId value", "DATA response = " + getUserId);
-                    Log.i("getUserNick value", "DATA response = " + getUserNick);
-                    Log.i("getUserDeviceId value", "DATA response = " + getUserDeviceId);
-
+                    Profile.user_id = Integer.parseInt(responseJSON.get("Id").toString());
+                    Profile.device_id = responseJSON.get("Device_id").toString();
+                    Profile.gcm_id = regId;
                     shgnin_complete = true;
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

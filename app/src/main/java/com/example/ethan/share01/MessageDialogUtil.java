@@ -35,8 +35,6 @@ public class MessageDialogUtil extends Dialog{
     private String mRecvMsg;
     private int mRecvId;
 
-    private RbPreference mPref;
-
     private final String SERVER_URL_SEND = "https://toycom96.iptime.org:1443/chat_send";
 
     private TextView dialog_title_tv;
@@ -52,8 +50,6 @@ public class MessageDialogUtil extends Dialog{
         this.mRecvSex = recvSex;
         this.mRecvMsg = recvMsg;
         this.mRecvId = recvId;
-
-        mPref = new RbPreference(mContext);
 
     }
 
@@ -73,7 +69,7 @@ public class MessageDialogUtil extends Dialog{
             @Override
             public void onClick(View v) {
                 MessageSendUtil sendMsgTask = new MessageSendUtil(mContext);
-                sendMsgTask.execute(SERVER_URL_SEND, String.valueOf(mRecvId), dialog_message_edt.getText().toString(), mPref.getValue("auth", ""));
+                sendMsgTask.execute(SERVER_URL_SEND, String.valueOf(mRecvId), dialog_message_edt.getText().toString(), Profile.auth);
                 dismiss();
             }
         });

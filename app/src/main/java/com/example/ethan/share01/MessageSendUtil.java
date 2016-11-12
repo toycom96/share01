@@ -58,8 +58,6 @@ public class MessageSendUtil extends AsyncTask<String, Void, Void>{
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        //mPref.put("user_id",getUserId);
-        //Log.e("UserID", mPref.getValue("user_id",""));
         Toast.makeText(context, "보내기 완료", Toast.LENGTH_SHORT).show();
         loading.dismiss();
 

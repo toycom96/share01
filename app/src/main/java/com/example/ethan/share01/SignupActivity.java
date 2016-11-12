@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -53,7 +55,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private String getUserPhone;
     private String getUserDeviceId;
-    private String getGcmRegId;
 
     private Boolean shgnup_complete = false;
 
@@ -70,11 +71,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void signupModule(String userId, String userPass, String userNick, String userAge, String userSex, String userDeviceId, String userPhone){
-        mPref = new RbPreference(SignupActivity.this);
-        getGcmRegId = mPref.getValue("gcm_reg_id","");
         if (userId != null && userPass != null && userNick != null){
             SignupThread http = new SignupThread();
-            http.execute(join_url,userId,userPass,userNick,userAge,userSex,userDeviceId,userPhone, getGcmRegId);
+            http.execute(join_url,userId,userPass,userNick,userAge,userSex,userDeviceId,userPhone);
 
         } else {
             Toast.makeText(SignupActivity.this, "입력 실패", Toast.LENGTH_SHORT);
@@ -215,17 +214,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            //mPref.put("user_id",getUserId);
-            //Log.e("UserID", mPref.getValue("user_id",""));
             if(shgnup_complete){
                 Toast.makeText(SignupActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-                mPref.put("is_login",true);
-                mPref.put("user_id",getUserId);
-                mPref.put("user_nick", getUserNick);
-                mPref.put("login","login");
-                Log.e("UserID", mPref.getValue("user_id",""));
+
+                mPref.put("user_id", Profile.user_id );
+                mPref.put("device_id", Profile.device_id);
+                mPref.put("gcm_id", Profile.gcm_id);
+
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
-                auth.execute(mPref.getValue("user_num",""),getUserDeviceId, mPref.getValue("gcm_reg_id",""));
+                auth.execute();
+
                 loading.dismiss();
             } else {
                 Toast.makeText(SignupActivity.this, "회원가입중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
@@ -255,7 +253,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             String join_sex = value[5];
             String join_device_id = value[6];
             String join_phone = value[7];
-            String join_gcm_id = value[8];
 
             String join_photo = "";
             String join_coment = "";
@@ -266,6 +263,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
             try {
+                GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                String regId = gcm.register("1028702649415");
+
                 IgnoreHttpSertification.ignoreSertificationHttps();
                 //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
@@ -300,7 +300,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 job.put("msg", join_coment);
                 job.put("device_id", join_device_id);
                 job.put("phone_num", join_phone);
-                job.put("gcm_id", join_gcm_id);
+                job.put("gcm_id", regId);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성
@@ -333,9 +333,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     String result = responseJSON.get("id").toString();
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
                     Log.i("responese value", "DATA response = " + result);
-                    mPref.put("user_num", result);
-                    MainActivity.user_id_num = Integer.parseInt(result);
-                    mPref.put("device_id", join_device_id);
+
+                    Profile.user_id = Integer.parseInt(result);
+                    Profile.device_id = join_device_id;
+                    Profile.gcm_id = regId;
                     shgnup_complete = true;
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

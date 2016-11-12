@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ethan.share01.Profile;
 import com.example.ethan.share01.R;
 import com.example.ethan.share01.RbPreference;
 import com.example.ethan.share01.model.ChatMessage;
@@ -50,7 +51,8 @@ public class ChatAdapter extends BaseAdapter {
         ChatMessage item = mChatList.get(position);
         View v;
         //user_num이 자기 자신일 경우 메세지 오른쪽 배치 layout
-        if(mPref.getValue("user_num","").equals(String.valueOf(item.getSender_id()))){
+        if(Profile.user_id == item.getSender_id()) {
+        //if(mPref.getValue("user_num","").equals(String.valueOf(item.getSender_id()))){
             v = View.inflate(mContext, R.layout.custom_chatbubble_right, null);
 
             TextView msg = (TextView) v.findViewById(R.id.chatmsg_msg);

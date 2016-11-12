@@ -41,7 +41,7 @@
         <activity android:name=".ChatActivity"></activity>
         <activity android:name=".SigninActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".ContentDetailActivity"></activity>
-        <activity android:name=".BbsWrite" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity android:name=".BbsWriteActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
 
         <!-- GCM 리시버 -->
         <receiver
@@ -62,6 +62,7 @@
         <activity
             android:name=".BbsDetailActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+
     </application>
 
 </manifest>

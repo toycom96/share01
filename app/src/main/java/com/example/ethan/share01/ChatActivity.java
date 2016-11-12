@@ -46,8 +46,6 @@ public class ChatActivity extends AppCompatActivity {
     private int mGetChatRoomId = -1;
     private String mGetSenderPhoto = "";
 
-    private RbPreference mPref = new RbPreference(ChatActivity.this);
-
     private final String SERVER_URL_SEND = "https://toycom96.iptime.org:1443/chat_send";
     private final String SERVER_URL_QUERY = "https://toycom96.iptime.org:1443/chat_msg_list";
     @Override
@@ -70,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         QueryMessageThread query = new QueryMessageThread(mContext, chat_listview);
-        query.execute(SERVER_URL_QUERY, String.valueOf(mGetChatRoomId), mGetSenderPhoto, mPref.getValue("auth", ""));
+        query.execute(SERVER_URL_QUERY, String.valueOf(mGetChatRoomId), mGetSenderPhoto, Profile.auth);
     }
 
     @Override
@@ -87,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
             String RoomId = b.getString("Room_id");
             if (b != null && RoomId.equals(String.valueOf(mGetChatRoomId))) {
                 QueryMessageThread query = new QueryMessageThread(mContext, chat_listview);
-                query.execute(SERVER_URL_QUERY, String.valueOf(mGetChatRoomId), mGetSenderPhoto, mPref.getValue("auth", ""));
+                query.execute(SERVER_URL_QUERY, String.valueOf(mGetChatRoomId), mGetSenderPhoto, Profile.auth);
             }
         }
     };
@@ -109,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
                 break;
             default:
                 QueryMessageThread query = new QueryMessageThread(this, chat_listview);
-                query.execute(SERVER_URL_QUERY, String.valueOf(mGetChatRoomId), mGetSenderPhoto, mPref.getValue("auth", ""));
+                query.execute(SERVER_URL_QUERY, String.valueOf(mGetChatRoomId), mGetSenderPhoto, Profile.auth);
         }
 
         send_btn.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +115,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String messageText = message_edt.getText().toString();
                 //사용자 입력 메세지 내용을 받아옴
-                String auth = mPref.getValue("auth", "");
+                String auth = Profile.auth;
                 if (TextUtils.isEmpty(messageText)) {
                     //공란일 경우 보내기 방지
                     return;
@@ -160,14 +158,12 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            //mPref.put("user_id",getUserId);
-            //Log.e("UserID", mPref.getValue("user_id",""));
             Toast.makeText(ChatActivity.this, "보내기 완료", Toast.LENGTH_SHORT).show();
             loading.dismiss();
 
 
             QueryMessageThread qeury = new QueryMessageThread(mContext, chat_listview);
-            qeury.execute(SERVER_URL_QUERY,String.valueOf(mGetChatRoomId), mGetSenderPhoto, mPref.getValue("auth",""));
+            qeury.execute(SERVER_URL_QUERY,String.valueOf(mGetChatRoomId), mGetSenderPhoto, Profile.auth);
             //메세지 보낸 뒤 대화내용 최신화를 위해 메세지 내용 검색 쓰레드 호출
         }
 

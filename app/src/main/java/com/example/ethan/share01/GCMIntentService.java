@@ -35,7 +35,6 @@ public class GCMIntentService extends IntentService {
     static final String OPT2_EXTRA_KEY = "Opt2";
     // web server 에서 받을 extras key
 
-    //private RbPreference mPref = new RbPreference(GCMIntentService.this);
     private int mSoundFlag = 0;
 
     public GCMIntentService() {

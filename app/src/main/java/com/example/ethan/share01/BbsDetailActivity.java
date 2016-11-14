@@ -213,7 +213,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                 return true;
             case R.id.bbs_detail_share:
                 String subject = getBbs_title;
-                String text = "http://www.daum.net";
+                String text = "http://toycom96.iptime.org/item_view?id=" + bbs_id;
 
                 List<Intent> targetedShareIntents = new ArrayList<Intent>();
 

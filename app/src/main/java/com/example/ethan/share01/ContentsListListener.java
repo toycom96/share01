@@ -1,6 +1,7 @@
 package com.example.ethan.share01;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
         //Toast.makeText(AppCompatActivity(), "msg msg", Toast.LENGTH_SHORT).show();
     }
 
-    public int getLastVisibleItem(int[] lastVisibleItemPositions) {
+    /*public int getLastVisibleItem(int[] lastVisibleItemPositions) {
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
             if (i == 0) {
@@ -40,33 +41,30 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
             }
         }
         return maxSize;
-    }
+    }*/
 
     // This happens many times a second during a scroll, so be wary of the code you place here.
     // We are given a few useful parameters to help us work out if we need to load some more data,
     // but first we check if we are waiting for the previous load to finish.
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
-/*        Log.e("Listener onScrolled", "start");
-        int[] lastVisibleItemPositions = mLayoutManager.findLastVisibleItemPositions(null);
-        lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
+        if (GlobalVar.loading_flag == 1) {
+            return;
+        }
         int visibleItemCount = view.getChildCount();
-        int totalItemCount = mLayoutManager.getItemCount();
-        // same code as before*/
-        int visibleItemCount = mRecyclerView.getChildCount();
-        int totalItemCount = mLayoutManager.getItemCount();
-        int[] firstVisibleItem = mLayoutManager.findFirstVisibleItemPositions(null);
+        int totalItemCount = view.getLayoutManager().getItemCount();
+        int[] firstVisibleItem = ((StaggeredGridLayoutManager) view.getLayoutManager()).findFirstVisibleItemPositions(null);
 
         Log.e("~~v1 : ", String.valueOf(visibleItemCount));
         Log.e("~~v2 : ", String.valueOf(totalItemCount));
         Log.e("~~v3 : ", String.valueOf(firstVisibleItem[0]));
         //if (totalItemCount != 0 && lastVisibleItemPositions[0] + 2 >= totalItemCount) {
-/*        if ( totalItemCount > 0 && (visibleItemCount + pastVisiblesItems[0]) < totalItemCount) {
+        if ( totalItemCount > 0 && (visibleItemCount + firstVisibleItem[0]) >= totalItemCount - 2) {
+            Log.e("~~v4 : ", "Start Load");
             int offset = this.mActivity.mContentsList.get(totalItemCount -1).getId();
 
-            //this.mActivity.mContentsLoader.loadFromApi(offset, -1, mActivity.mPref.getValue("auth",""),mRecyclerView, mContext);
-            this.mActivity.mContentsLoader.loadFromApi(offset, -1, mActivity.mPref.getValue("auth",""), mRecyclerView, mContext);
-        }*/
+            this.mActivity.mContentsLoader.loadFromApi(offset, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, mContext);
+        }
 
     }
 }

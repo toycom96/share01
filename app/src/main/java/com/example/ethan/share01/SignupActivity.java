@@ -217,10 +217,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             if(shgnup_complete){
                 Toast.makeText(SignupActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
 
-                mPref.put("user_id", Profile.user_id );
-                mPref.put("device_id", Profile.device_id);
-                mPref.put("gcm_id", Profile.gcm_id);
-
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
                 auth.execute();
 

@@ -7,4 +7,5 @@ package com.example.ethan.share01;
 public class GlobalVar {
     public static int dist = 20;
     public static String cate1 = "";
+    public static int loading_flag = 0;
 }

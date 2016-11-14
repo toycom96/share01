@@ -37,6 +37,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private String getUserEmail;
     private String getUserPass;
+    private String getUserNick;
+    private String getUserAuth;
+    private String getUserNum;
+    private String getUserDeviceId;
 
     private String getPermissionPhone;
     private String getPermissionDevice;
@@ -160,10 +164,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             super.onPostExecute(aVoid);
             if(shgnin_complete){
                 Toast.makeText(SigninActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
-
-                mPref.put("user_id", Profile.user_id);
-                mPref.put("device_id", Profile.device_id);
-                mPref.put("gcm_id", Profile.gcm_id);
 
                 CreateAuthUtil auth = new CreateAuthUtil(getApplicationContext());
                 auth.execute();

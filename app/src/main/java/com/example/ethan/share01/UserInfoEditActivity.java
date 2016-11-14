@@ -20,6 +20,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpConnection;
@@ -48,7 +52,7 @@ import java.net.URL;
 /**
  * Created by Lai.OH on 16. 7. 11..
  */
-public class UserInfoEditActivity extends AppCompatActivity implements View.OnClickListener{
+public class UserInfoEditActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     private EditText user_email;
@@ -72,8 +76,11 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private final String info_url = "https://toycom96.iptime.org:1443/user_info";
     private final String edit_url = "https://toycom96.iptime.org:1443/user_edit";
     private static final int SELECT_PHOTO = 100;
-
-
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -83,14 +90,18 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
         init();
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ImageChooseUtil chooseImage = new ImageChooseUtil(data, getApplicationContext());
 
         switch (requestCode) {
-            case SELECT_PHOTO :
+            case SELECT_PHOTO:
                 if (resultCode == RESULT_OK) {
                     selectedImagePath = chooseImage.getRealPath();
                     Log.e("selectedImagePath", selectedImagePath);
@@ -98,23 +109,16 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     user_photo.setImageBitmap(user_photo_bm);
                     UploadImageTask editInfo = new UploadImageTask();
                     editInfo.execute();
-                    //Log.e("start","start");
-                    //chooseImage.uploadImage(bm);
-                    //SystemClock.sleep(3000);
-                    //Log.e("end","end");
-                    //Log.e("image",mPref.getValue("imagefile","Ssss"));
-                    //user_photo.setImageURI(selectedImage);
-                    //Log.e("ImageURI", selectedImage.toString());
                 }
         }
     }
 
 
-    private void init(){
+    private void init() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.user_info_edit_toolbar);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -133,6 +137,11 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         info.execute(info_url, Profile.auth);
     }
 
+    /*@Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }*/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -146,6 +155,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
+
         Intent intent = new Intent(UserInfoEditActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -155,11 +165,11 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         int viewId = v.getId();
         switch (viewId) {
-            case R.id.infoedit_button :
+            case R.id.infoedit_button:
                 getUserComent = user_coment.getText().toString();
                 getUserNick = user_nick.getText().toString();
                 getUserPhoto = getPhotoPath;
-                getUserAge = Integer.parseInt( user_age.getText().toString() );
+                getUserAge = Integer.parseInt(user_age.getText().toString());
                 EditUserInfoThread editInfo = new EditUserInfoThread();
                 editInfo.execute(edit_url);
                 Profile.photo = getPhotoPath;
@@ -169,9 +179,45 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 Intent photoPickerIntent = new Intent();
                 photoPickerIntent.setType("image/*");
                 photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(photoPickerIntent,"Select Picture"), SELECT_PHOTO);
+                startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), SELECT_PHOTO);
                 break;
         }
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("UserInfoEdit Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 
 
@@ -220,12 +266,12 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 conn.setUseCaches(false);
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.addRequestProperty("Cookie",Profile.auth);
+                conn.addRequestProperty("Cookie", Profile.auth);
 
                 entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
                 bos = new ByteArrayOutputStream();
-                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 85, bos);
                 byte[] data = bos.toByteArray();
                 bab = new ByteArrayBody(data, "test.jpg");
                 entity.addPart("imgfiles", bab);
@@ -318,7 +364,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else{
+            } else {
                 user_photo.setImageResource(R.drawable.ic_menu_noprofile);
             }
 
@@ -372,7 +418,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 //int responseCode = conn.getResponseCode();
                 //request code를 받음
 
-                if(responseCode == HttpURLConnection.HTTP_OK) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
 
                     Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
@@ -380,7 +426,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     byte[] byteBuffer = new byte[1024];
                     byte[] byteData = null;
                     int nLength = 0;
-                    while((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
+                    while ((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
                         baos.write(byteBuffer, 0, nLength);
                     }
                     byteData = baos.toByteArray();
@@ -399,7 +445,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     getUserAge = Integer.parseInt(responseJSON.get("Age").toString());
                     getUserComent = responseJSON.get("Msg").toString();
                     getUserPhoto = responseJSON.get("Photo").toString();
-                }else {
+                } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }
 
@@ -475,7 +521,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 int responseCode = conn.getResponseCode();
                 //request code를 받음
 
-                if(responseCode == HttpURLConnection.HTTP_OK) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
 
                     Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
@@ -483,7 +529,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     byte[] byteBuffer = new byte[1024];
                     byte[] byteData = null;
                     int nLength = 0;
-                    while((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
+                    while ((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
                         baos.write(byteBuffer, 0, nLength);
                     }
                     byteData = baos.toByteArray();
@@ -497,7 +543,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     String result = responseJSON.get("result").toString();
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
                     Log.i("responese value", "DATA response = " + result);
-                }else {
+                } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }
 

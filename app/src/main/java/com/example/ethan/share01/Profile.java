@@ -27,6 +27,7 @@ public class Profile {
     public static String sex="";
 
     public static String gcm_id="";
+    public static int auth_finish=0;
 
     public static double gpslat=0.0;
     public static double gpslong=0.0;
@@ -69,6 +70,7 @@ public class Profile {
         age = 0;
         sex = "";
         gcm_id="";
+        auth_finish = 0;
         gpslat = 0.0;
         gpslong = 0.0;
     }

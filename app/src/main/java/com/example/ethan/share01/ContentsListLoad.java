@@ -35,6 +35,7 @@ public class ContentsListLoad {
     private GpsInfo mGps;
     private double mLat;
     private double mLon;
+    private int refresh_data_flag = 0;
 
 
     public ContentsListLoad (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter, GpsInfo gps) {
@@ -57,6 +58,10 @@ public class ContentsListLoad {
     }
 
     public int loadFromApi(int ListIndex, int dist_flag, String cateStr, String auth, RecyclerView recyclerView, Context context) {
+        if (GlobalVar.loading_flag == 1) {
+            return 0;
+        }
+        GlobalVar.loading_flag = 1;
 
         getBbsList BbsList = new getBbsList(mContentItem, mAdapter,recyclerView, context);
 
@@ -73,7 +78,7 @@ public class ContentsListLoad {
         private List<ContentsListObject> mContentItem;
         public ContentsListAdapter mAdapter;
         private RecyclerView mRecyclerView;
-        private  Context mContext;
+        private Context mContext;
         private StaggeredGridLayoutManager _sGridLayoutManager;
         private MainActivity activity;
         ProgressDialog loading;
@@ -86,7 +91,7 @@ public class ContentsListLoad {
             //this.activity = activity;
         }
 
-        @Override
+        /*@Override
         protected void onPreExecute() {
             super.onPreExecute();
             loading = new ProgressDialog(mContext);
@@ -94,28 +99,24 @@ public class ContentsListLoad {
             loading.setMessage("조금만 기다려 주세요~~");
             loading.setCancelable(false);
             loading.show();
-        }
+        }*/
 
+        @Override
         protected void onPostExecute(Void aVoid) {
-
-            /*
-             * doInBackground에서 모든 데이터를 add한 뒤 adapter에 연결 후 recyclerView에 뿌려준다.
-             */
-            Log.e("ContentLoadTask", "onPostExecute");
-            Log.e("mContentItem", mContentItem.toString());
-            if (mRecyclerView != null) {
+            if (refresh_data_flag == 0 ) {
+                int curSize = mAdapter.getItemCount();
+                Log.e("~~reload", String.valueOf(curSize));
+                mAdapter.notifyItemRangeInserted(curSize, mContentItem.size() - 1);
+            } else {
+                Log.e("~~refresh"," err");
                 mAdapter = new ContentsListAdapter(mContext, mContentItem);
                 mRecyclerView.setAdapter(mAdapter);
                 _sGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(_sGridLayoutManager);
-                loading.dismiss();
-                loading = null;
-            } else {
-                Log.e("recyclerView", "null");
             }
+            refresh_data_flag = 0;
 
-
-
+            GlobalVar.loading_flag = 0;
         }
 
         @Override
@@ -125,6 +126,11 @@ public class ContentsListLoad {
             InputStream is = null;
             ByteArrayOutputStream baos = null;
             String response = null;
+
+            if ( Integer.parseInt(value[0]) <= 0 ) {
+                mContentItem.clear();
+                refresh_data_flag = 1;
+            }
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
@@ -173,19 +179,9 @@ public class ContentsListLoad {
 
                 String result = "";
                 if (response.isEmpty() || response.equals("null")) {
-                /*
-                 * response가 null인 경우, 즉 반경내의 게시글이 없을경우
-                 * item을 clear 해준다
-                 * 안해줄시 그전의 내용이 남아있음.
-                 */
-                    mContentItem.clear();
                     return null;
                 }
                 JSONArray ja = new JSONArray(response);
-            /*
-             * 반경에 따른 response값을 adding 해주기전 clear를 해야 item들이 겹치지 않는다.
-             */
-                mContentItem.clear();
 
                 for (int i = 0; i < ja.length(); i++) {
                     String mediaPath = "";
@@ -198,9 +194,7 @@ public class ContentsListLoad {
                     } catch (Exception e) {
                         mediaPath = order.getString("Media");
                     }
-                    //this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), order.getString("Media"), order.getString("Term"), "ETC",order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
                     this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), mediaPath, order.getString("Term"), "ETC", order.getString("Title"), order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
-                    //mediaJson = null;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

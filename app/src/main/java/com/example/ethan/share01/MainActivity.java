@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity
     private TextView user_email_tv;
     private ImageView user_profile_iv;
     private TextView user_nick_tv;
+    private TextView user_infoedit;
+    private TextView user_logout;
 
     private LinearLayout navigation_view;
 
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity
         Profile.gpslong = mGps.getLongitude();
 
         this.registerReceiver(this.mainActivityNewBadgeReceiver, new IntentFilter("mainActivityNewBadge"));
+        this.registerReceiver(this.mainActivityAuthFinishReceiver, new IntentFilter("AuthFinish"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -149,14 +152,26 @@ public class MainActivity extends AppCompatActivity
 
         navigation_view = (LinearLayout) header.findViewById(R.id.navigation_view);
 
+        user_infoedit = (TextView) header.findViewById(R.id.navigation_user_infoedit);
+        user_logout = (TextView) header.findViewById(R.id.navigation_user_logout);
 
-        navigation_view.setOnClickListener(new View.OnClickListener() {
+        user_infoedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userSettingDialog();
+                Intent  intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
-
+        user_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPref.removeAllValue();
+                new Profile("removeAll");
+                GcmBroadcastReceiver.updateIconBadge(MainActivity.this, 0);
+                finish();
+            }
+        });
 
         // michael adding
 
@@ -178,37 +193,26 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);
 
+        //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mGps);
+        mAdapter = new ContentsListAdapter(getApplicationContext(), mContentsList);
+        mRecyclerView.setAdapter(mAdapter);
         mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mGps);
-        //mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
 
-
-        IntentFilter intentfilter = new IntentFilter();
-        //intentfilter.addAction("com.example.ethan.share01.AuthFinish");
-        intentfilter.addAction("AuthFinish");
-
-        //동적 리시버 구현
-        BroadcastReceiver mReceiver = new BroadcastReceiver(){
-            @Override
-            public void onReceive(Context context, Intent intent){
-
-                getUserProfile user = new getUserProfile();
-                user.execute();
-
-                mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
-            }
-        };
-
-        //Receiver 등록
-        registerReceiver(mReceiver, intentfilter);
-
-
-
-        //GcmRegThread GcmRegObj = new GcmRegThread();
-        //GcmRegObj.start();
         //회원 가입 유무 확인
         checkForLogin();
 
     }
+
+    BroadcastReceiver mainActivityAuthFinishReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent){
+
+            getUserProfile user = new getUserProfile();
+            user.execute();
+
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
+        }
+    };
 
     BroadcastReceiver mainActivityNewBadgeReceiver = new BroadcastReceiver() {
         @Override
@@ -222,24 +226,6 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    /*BroadcastReceiver mainActivityAuthFinishReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Toast.makeText(MainActivity.this, "되나????", Toast.LENGTH_LONG).show();
-            //mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
-        }
-    };*/
-
-    private void userSettingDialog(){
-        /*
-         * 로그인이 되어있는 경우 navigation header를 눌러 원하는 action을 구분하는 함수
-         *
-         * 로그아웃 : 이미 회원가입을 한 상태이므로 login값을 logout으로 바꿔준다.
-         * 마이페이지 : 마이페이지 화면으로 화면 전환
-         */
-        openBottomSheet(R.string.bottom_sheet_title_mypage, R.string.bottom_sheet_mypage, R.string.bottom_sheet_logout,BOTTOM_CASEVAL1);
-    }
-
     private void checkForLogin(){
 
         /*
@@ -248,10 +234,14 @@ public class MainActivity extends AppCompatActivity
          * 각 상태를 확인 후 dialog를 띄워 해당 action을 수행
          */
 
+        if (Profile.auth_finish == 1) {
+            return;
+        }
+
         String user_id_str = mPref.getValue("user_id", "");
         String device_id_str = mPref.getValue("device_id", "");
         if (user_id_str.equals("") || device_id_str.equals("")) {
-            Profile.user_id = 0;
+            //Profile.user_id = 0;
         } else {
             Profile.user_id = Integer.parseInt(user_id_str);
             Profile.device_id = device_id_str;
@@ -333,6 +323,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        user_email_tv.setText(Profile.email);
+        user_nick_tv.setText(Profile.name);
+
+        if (Profile.photo != null && !Profile.photo.equals("")) {
+            try {
+                Picasso.with(getApplicationContext()).load(Profile.photo).error(R.drawable.ic_menu_noprofile).into(user_profile_iv);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else{
+            user_profile_iv.setImageResource(R.drawable.ic_menu_noprofile);
+        }
+
         if (!Profile.auth.equals("")) {
             mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
         }
@@ -398,6 +402,7 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(mainActivityNewBadgeReceiver);
+        this.unregisterReceiver(mainActivityAuthFinishReceiver);
     }
 
     private void openBottomSheet(int titleVal, int cateVal1, int cateVal2, final int caseVal){
@@ -487,46 +492,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    class GcmRegThread extends Thread {
-        public void run() {
-            try {
-                GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                String regId = gcm.register("1028702649415");
-
-                Profile.gcm_id = regId;
-                //mPref.put("gcm_reg_id",regId);
-            } catch(Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    class loadBbs extends Thread {
-        public void run() {
-            try {
-                mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
-            } catch(Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
     class getUserProfile extends AsyncTask<String, Void, Void> {
-
-        /*ProgressDialog loading;
-        private int auth_succ_flag = 0;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            loading = new ProgressDialog(MainActivity.this);
-            loading.setTitle("사용자 정보 조회");
-            loading.setMessage("사용자 정보를 로딩 중 입니다...");
-            loading.setCancelable(false);
-            loading.show();
-        }*/
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -543,8 +509,6 @@ public class MainActivity extends AppCompatActivity
             } else{
                 user_profile_iv.setImageResource(R.drawable.ic_menu_noprofile);
             }
-
-            //loading.dismiss();
         }
 
         @Override

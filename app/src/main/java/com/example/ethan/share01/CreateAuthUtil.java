@@ -102,8 +102,13 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
                     for (String cookie : cookies) {
                         String getAuth = cookie.split(";")[0];
                         mPref = new RbPreference(context);
-                        mPref.put("auth", getAuth);
+
+                        mPref.put("user_id", String.valueOf(Profile.user_id));
+                        mPref.put("device_id", Profile.device_id);
+                        mPref.put("gcm_id", Profile.gcm_id);
+
                         Profile.auth = getAuth;
+                        Profile.auth_finish = 1;
                     }
 
                 } else {

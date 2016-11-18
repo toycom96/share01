@@ -73,7 +73,16 @@ public class ChatAdapter extends BaseAdapter {
             TextView msg = (TextView) v.findViewById(R.id.chatmsg_msg);
             TextView time = (TextView) v.findViewById(R.id.chatmsg_time);
 
-            Picasso.with(mContext).load(item.getOuser_Photo()).error(R.drawable.ic_menu_noprofile).into(Photo);
+            if (item.getOuser_Photo() != null && !item.getOuser_Photo().equals("")) {
+                try {
+                    Picasso.with(mContext).load(item.getOuser_Photo()).error(R.drawable.ic_menu_noprofile).into(Photo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                Photo.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+
             title.setText(item.getSender_name());
             msg.setText(item.getMessage());
             time.setText(item.getTime());

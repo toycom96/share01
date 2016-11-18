@@ -2,6 +2,7 @@ package com.example.ethan.share01.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -50,18 +51,30 @@ public class ChattingRoomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = View.inflate(mContext, R.layout.custom_chat_listview, null);
+
         TextView profile = (TextView) v.findViewById(R.id.chatlist_profile);
         TextView msg = (TextView) v.findViewById(R.id.chatlist_msg);
         TextView dist = (TextView) v.findViewById(R.id.chatlist_dist);
         TextView badge = (TextView) v.findViewById(R.id.chatlist_msgcnt);
 
+        Log.e("~~chatrool list : ", String.valueOf(position));
         ChattingRoom item = mChatRoomList.get(position);
 
         profile.setText(item.getSended() + " / " + item.getRecv_name() + " (" + item.getEtcInfo() + ")");
         msg.setText(item.getMsg());
         if (!item.getPhoto().toString().isEmpty()) {
             CircleImageView photo = (CircleImageView) v.findViewById(R.id.chatlist_photo);
-            Picasso.with(mContext).load(item.getPhoto()).resize(72, 72).into(photo);
+
+            if (item.getPhoto() != null && !item.getPhoto().equals("")) {
+                try {
+                    Picasso.with(mContext).load(item.getPhoto()).error(R.drawable.ic_menu_noprofile).resize(72, 72).into(photo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                photo.setImageResource(R.drawable.ic_menu_noprofile);
+            }
+
         }
         if (item.getBadgeCnt() > 0) {
             badge.setBackgroundResource(R.drawable.ic_badge_new);

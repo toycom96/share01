@@ -51,6 +51,7 @@ public class ChatListActivity extends AppCompatActivity {
     private int totalChatBadgeCnt;
 
     private final String SERVER_URL = "https://toycom96.iptime.org:1443/chat_list";
+    private static int load_flag = 0;
 
     private int getChatroomId;
     private int getRecvId;
@@ -83,20 +84,25 @@ public class ChatListActivity extends AppCompatActivity {
     BroadcastReceiver refreshChatRoomListReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ChatListLoadThread chatlist = new ChatListLoadThread();
-            chatlist.execute(SERVER_URL, Profile.auth);
+            if (load_flag == 0) {
+                ChatListLoadThread chatlist = new ChatListLoadThread();
+                chatlist.execute(SERVER_URL, Profile.auth);
+            }
         }
     };
 
     @Override
     protected void onResume() {
         super.onResume();
-        ChatListLoadThread chatlist = new ChatListLoadThread();
-        chatlist.execute(SERVER_URL, Profile.auth);
+        if ( load_flag == 0 ) {
+            ChatListLoadThread chatlist = new ChatListLoadThread();
+            chatlist.execute(SERVER_URL, Profile.auth);
+        }
     }
 
     private void init(){
 
+        load_flag = 0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.chatlist_toolbar);
         setSupportActionBar(toolbar);
 
@@ -109,21 +115,25 @@ public class ChatListActivity extends AppCompatActivity {
 
         mChatRooms = new ArrayList<>();
 
-        ChatListLoadThread chatlist = new ChatListLoadThread();
-        chatlist.execute(SERVER_URL, Profile.auth);
+        if ( load_flag == 0) {
+            ChatListLoadThread chatlist = new ChatListLoadThread();
+            chatlist.execute(SERVER_URL, Profile.auth);
+        }
 
         chatting_room_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ChattingRoom chat_room = mChatRooms.get(position);
-                int chat_room_id = chat_room.getChatRoomID();
-                int chat_room_user_id = chat_room.getRecv_id();
-                Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
-                intent.putExtra("room_id", chat_room_id);
-                intent.putExtra("sender_id", chat_room_user_id);
-                intent.putExtra("sender_photo", chat_room.getPhoto());
-                startActivity(intent);
-                finish();
+                if (load_flag == 0 ) {
+                    ChattingRoom chat_room = mChatRooms.get(position);
+                    int chat_room_id = chat_room.getChatRoomID();
+                    int chat_room_user_id = chat_room.getRecv_id();
+                    Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
+                    intent.putExtra("room_id", chat_room_id);
+                    intent.putExtra("sender_id", chat_room_user_id);
+                    intent.putExtra("sender_photo", chat_room.getPhoto());
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }
@@ -157,6 +167,7 @@ public class ChatListActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            load_flag = 1;
             super.onPreExecute();
             loading = new ProgressDialog(ChatListActivity.this);
             loading.setTitle("채팅방 리스트");
@@ -176,6 +187,7 @@ public class ChatListActivity extends AppCompatActivity {
 
             chatting_room_lv.setAdapter(mChatListAdapter);
             loading.dismiss();
+            load_flag = 0;
         }
 
         @Override

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -372,10 +373,10 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, ChatListActivity.class);
             startActivity(intent);
             finish();
-        } else if (id == R.id.nav_send) {
-            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        } else if (id == R.id.notice) {
+            Intent intent = new Intent(MainActivity.this, NoticeActivity.class);
             startActivity(intent);
-            finish();
+            //finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

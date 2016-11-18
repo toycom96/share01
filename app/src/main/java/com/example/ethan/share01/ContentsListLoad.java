@@ -36,6 +36,7 @@ public class ContentsListLoad {
     private double mLat;
     private double mLon;
     private int refresh_data_flag = 0;
+    private int curSize = 0;
 
 
     public ContentsListLoad (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter, GpsInfo gps) {
@@ -104,9 +105,9 @@ public class ContentsListLoad {
         @Override
         protected void onPostExecute(Void aVoid) {
             if (refresh_data_flag == 0 ) {
-                int curSize = mAdapter.getItemCount();
-                Log.e("~~reload", String.valueOf(curSize));
-                mAdapter.notifyItemRangeInserted(curSize, mContentItem.size() - 1);
+                //int curSize = mAdapter.getItemCount();
+                Log.e("~~reload", String.valueOf(curSize)+ "/ " + String.valueOf(mContentItem.size()));
+                mAdapter.notifyItemRangeInserted(curSize+1, mContentItem.size());
             } else {
                 Log.e("~~refresh"," err");
                 mAdapter = new ContentsListAdapter(mContext, mContentItem);
@@ -127,6 +128,7 @@ public class ContentsListLoad {
             ByteArrayOutputStream baos = null;
             String response = null;
 
+            curSize = mAdapter.getItemCount();
             if ( Integer.parseInt(value[0]) <= 0 ) {
                 mContentItem.clear();
                 refresh_data_flag = 1;

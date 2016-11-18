@@ -35,13 +35,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-        <activity android:name=".UserInfoEditActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-        <activity android:name=".ChatListActivity"></activity>
-        <activity android:name=".ChatActivity"></activity>
-        <activity android:name=".SigninActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-        <activity android:name=".ContentDetailActivity"></activity>
-        <activity android:name=".BbsWriteActivity" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".SignupActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".UserInfoEditActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ChatListActivity" />
+        <activity android:name=".ChatActivity" />
+        <activity
+            android:name=".SigninActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ContentDetailActivity" />
+        <activity
+            android:name=".BbsWriteActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- GCM 리시버 -->
         <receiver
@@ -58,15 +66,19 @@
 
         <activity
             android:name=".PictureDetailViewActivity"
-            android:theme="@style/Theme.AppCompat.Transparent"></activity>
+            android:theme="@style/Theme.AppCompat.Transparent" />
         <activity
             android:name=".BbsDetailActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".NoticeActivity"></activity>
     </application>
 
 </manifest>

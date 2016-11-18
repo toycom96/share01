@@ -40,8 +40,17 @@ public class PictureDetailViewActivity extends AppCompatActivity {
         });
         String photo_path = getIntent().getStringExtra("photo_path");
 
-        //Picasso.with(this).load(photo_path).fit().into(mImageView);
-        Picasso.with(this).load(photo_path).resize(picWidth,0).into(mImageView);
+        if (photo_path != null && !photo_path.equals("")) {
+            try {
+                //Picasso.with(this).load(photo_path).fit().into(mImageView);
+                Picasso.with(this).load(photo_path).error(R.drawable.ic_menu_noprofile).into(mImageView);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else{
+            mImageView.setImageResource(R.drawable.ic_menu_noprofile);
+        }
+
 
     }
 }

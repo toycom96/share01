@@ -30,6 +30,9 @@ public class ContentsListLoad {
 
     static List<ContentsListObject> mContentItem = new ArrayList<>();
     static ContentsListAdapter mAdapter;
+    static RecyclerView mRecyclerView;
+    static StaggeredGridLayoutManager mGridLayoutManager;
+    static Context mContext;
     private String mDistFlag = "0";
     private final Lock _mutex = new ReentrantLock(true);
     private GpsInfo mGps;
@@ -39,9 +42,12 @@ public class ContentsListLoad {
     private int curSize = 0;
 
 
-    public ContentsListLoad (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter, GpsInfo gps) {
+    public ContentsListLoad (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter,  RecyclerView RecyclerView, StaggeredGridLayoutManager GridLayoutManager, Context context, GpsInfo gps) {
         this.mContentItem = ContentItem;
         this.mAdapter = ListAdapter;
+        this.mRecyclerView = RecyclerView;
+        this.mGridLayoutManager = GridLayoutManager;
+        this.mContext = context;
         this.mGps = gps;
 
         mGps.GpsInfoRefresh();
@@ -58,13 +64,13 @@ public class ContentsListLoad {
 
     }
 
-    public int loadFromApi(int ListIndex, int dist_flag, String cateStr, String auth, RecyclerView recyclerView, Context context) {
+    public int loadFromApi(int ListIndex, int dist_flag, String cateStr, String auth) {
         if (GlobalVar.loading_flag == 1) {
             return 0;
         }
         GlobalVar.loading_flag = 1;
 
-        getBbsList BbsList = new getBbsList(mContentItem, mAdapter,recyclerView, context);
+        getBbsList BbsList = new getBbsList();
 
         String IdxStr = String.valueOf(ListIndex);
         String DistStr = String.valueOf(dist_flag);
@@ -76,23 +82,10 @@ public class ContentsListLoad {
 
 
     class getBbsList extends AsyncTask<String, Void, Void> {
-        private List<ContentsListObject> mContentItem;
-        public ContentsListAdapter mAdapter;
-        private RecyclerView mRecyclerView;
-        private Context mContext;
-        private StaggeredGridLayoutManager _sGridLayoutManager;
-        private MainActivity activity;
-        ProgressDialog loading;
+        //화면이 지저분해 보여서 우선 주석 처리
+        /*ProgressDialog loading;
 
-        public getBbsList (List<ContentsListObject> ContentItem, ContentsListAdapter ListAdapter,RecyclerView recyclerView, Context context) {
-            this.mContentItem = ContentItem;
-            this.mAdapter = ListAdapter;
-            this.mRecyclerView = recyclerView;
-            this.mContext = context;
-            //this.activity = activity;
-        }
-
-        /*@Override
+        @Override
         protected void onPreExecute() {
             super.onPreExecute();
             loading = new ProgressDialog(mContext);
@@ -105,19 +98,22 @@ public class ContentsListLoad {
         @Override
         protected void onPostExecute(Void aVoid) {
             if (refresh_data_flag == 0 ) {
-                //int curSize = mAdapter.getItemCount();
-                Log.e("~~reload", String.valueOf(curSize)+ "/ " + String.valueOf(mContentItem.size()));
-                mAdapter.notifyItemRangeInserted(curSize+1, mContentItem.size());
+                int curSize2 = mAdapter.getItemCount();
+                Log.e("~~reload1", String.valueOf(curSize)+ ":"+ String.valueOf(curSize2)+"/ " + String.valueOf(mContentItem.size()));
+
+                mAdapter.notifyItemInserted(curSize);
+                //mAdapter.notifyItemRangeInserted(curSize, mContentItem.size());
             } else {
                 Log.e("~~refresh"," err");
                 mAdapter = new ContentsListAdapter(mContext, mContentItem);
                 mRecyclerView.setAdapter(mAdapter);
-                _sGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                mRecyclerView.setLayoutManager(_sGridLayoutManager);
+                mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                mRecyclerView.setLayoutManager(mGridLayoutManager);
             }
             refresh_data_flag = 0;
 
             GlobalVar.loading_flag = 0;
+            //loading.dismiss();
         }
 
         @Override
@@ -196,7 +192,7 @@ public class ContentsListLoad {
                     } catch (Exception e) {
                         mediaPath = order.getString("Media");
                     }
-                    this.mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), mediaPath, order.getString("Term"), "ETC", order.getString("Title"), order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
+                    mContentItem.add(new ContentsListObject(order.getInt("Id"), order.getInt("User_id"), order.getString("User_name"), mediaPath, order.getString("Term"), "ETC", order.getString("Title"), order.getString("Msg"), order.getString("User_sex"), order.getInt("User_age"), order.getInt("Dist")));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -38,11 +38,21 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+
     <ImageView
         android:id="@+id/bbs_detail_photo"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:scaleType="centerCrop"
+        android:layout_height="wrap_content"
         android:layout_margin="0dp"
         android:padding="0dp"
         android:src="@drawable/ic_menu_noprofile" />
@@ -141,18 +151,17 @@
             android:textColor="@color/colorPrimary"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+
 
         <ListView
             android:id="@+id/bbs_detail_memo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="0dp">
         </ListView>
+
     </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

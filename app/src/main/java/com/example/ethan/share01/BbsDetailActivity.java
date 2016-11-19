@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +67,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private double mLon;
     private int photo_idx = 0;
     private int edit_mode = 0;
+    private int screenWidth = 0;
 
     ////////////////////////////////////////////////////////
     private ListView BbsMemo_lv;
@@ -141,7 +144,7 @@ public class BbsDetailActivity extends AppCompatActivity {
 
                         if (getBbs_photo_url[photo_idx] != null && !getBbs_photo_url[photo_idx].equals("")) {
                             try {
-                                Picasso.with(getApplicationContext()).load(getBbs_photo_url[photo_idx]).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
+                                Picasso.with(getApplicationContext()).load(getBbs_photo_url[photo_idx]).resize(bbs_photo.getWidth(),0).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -149,7 +152,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                             photo_idx = 0;
 
                             try {
-                                Picasso.with(getApplicationContext()).load(getBbs_photo_url[photo_idx]).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
+                                Picasso.with(getApplicationContext()).load(getBbs_photo_url[photo_idx]).resize(bbs_photo.getWidth(),0).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -357,7 +360,7 @@ public class BbsDetailActivity extends AppCompatActivity {
 
             if (getBbs_photo_url[0] != null && !getBbs_photo_url[0].equals("")) {
                 try {
-                    Picasso.with(getApplicationContext()).load(getBbs_photo_url[0]).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
+                    Picasso.with(getApplicationContext()).load(getBbs_photo_url[0]).resize(bbs_photo.getWidth(),0).error(R.drawable.ic_menu_noprofile).into(bbs_photo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -503,8 +506,23 @@ public class BbsDetailActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             mBbsMemoAdapter = new BbsMemoAdapter(BbsDetailActivity.this, mBbsMemo);
-
             BbsMemo_lv.setAdapter(mBbsMemoAdapter);
+
+            int totalHeight = 0;
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(BbsMemo_lv.getWidth(), View.MeasureSpec.AT_MOST);
+            for (int i = 0; i < mBbsMemoAdapter.getCount(); i++) {
+                View listItem = mBbsMemoAdapter.getView(i, null, BbsMemo_lv);
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+
+            ViewGroup.LayoutParams params = BbsMemo_lv.getLayoutParams();
+            params.height = totalHeight
+                    + (BbsMemo_lv.getDividerHeight() * (mBbsMemoAdapter.getCount() - 1));
+            BbsMemo_lv.setLayoutParams(params);
+            BbsMemo_lv.requestLayout();
+
+
             loading.dismiss();
         }
 

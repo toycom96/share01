@@ -26,22 +26,7 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
         this.mContext = context;
         this.mRecyclerView = recyclerView;
         visibleThreshold = visibleThreshold * mLayoutManager.getSpanCount();
-        //Toast.makeText(getActivity().getApplicationContext(), "msg msg", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(AppCompatActivity(), "msg msg", Toast.LENGTH_SHORT).show();
     }
-
-    /*public int getLastVisibleItem(int[] lastVisibleItemPositions) {
-        int maxSize = 0;
-        for (int i = 0; i < lastVisibleItemPositions.length; i++) {
-            if (i == 0) {
-                maxSize = lastVisibleItemPositions[i];
-            }
-            else if (lastVisibleItemPositions[i] > maxSize) {
-                maxSize = lastVisibleItemPositions[i];
-            }
-        }
-        return maxSize;
-    }*/
 
     // This happens many times a second during a scroll, so be wary of the code you place here.
     // We are given a few useful parameters to help us work out if we need to load some more data,
@@ -55,15 +40,12 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
         int totalItemCount = view.getLayoutManager().getItemCount();
         int[] firstVisibleItem = ((StaggeredGridLayoutManager) view.getLayoutManager()).findFirstVisibleItemPositions(null);
 
-        Log.e("~~v1 : ", String.valueOf(visibleItemCount));
-        Log.e("~~v2 : ", String.valueOf(totalItemCount));
-        Log.e("~~v3 : ", String.valueOf(firstVisibleItem[0]));
         //if (totalItemCount != 0 && lastVisibleItemPositions[0] + 2 >= totalItemCount) {
-        if ( totalItemCount > 0 && (visibleItemCount + firstVisibleItem[0]) >= totalItemCount - 2) {
+        if ( totalItemCount > 0 && (visibleItemCount + firstVisibleItem[0]) >= totalItemCount - 5) {
             Log.e("~~v4 : ", "Start Load");
             int offset = this.mActivity.mContentsList.get(totalItemCount -1).getId();
 
-            this.mActivity.mContentsLoader.loadFromApi(offset, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, mContext);
+            this.mActivity.mContentsLoader.loadFromApi(offset, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         }
 
     }

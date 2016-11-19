@@ -59,11 +59,13 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private EditText user_nick;
     private EditText user_age;
     private EditText user_coment;
+    private EditText user_openchat;
     private ImageView user_photo;
 
     private Button infoedit_button;
 
     private String getUserComent;
+    private String getUserOpenchat;
     private String getUserNick;
     private int getUserAge;
     private String getUserPhoto = null;
@@ -127,6 +129,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         user_nick = (EditText) findViewById(R.id.infoedit_nick);
         user_age = (EditText) findViewById(R.id.infoedit_age);
         user_coment = (EditText) findViewById(R.id.infoedit_coment);
+        user_openchat = (EditText) findViewById(R.id.infoedit_openchat);
         infoedit_button = (Button) findViewById(R.id.infoedit_button);
         user_photo = (ImageView) findViewById(R.id.infoedit_photo);
 
@@ -167,6 +170,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         switch (viewId) {
             case R.id.infoedit_button:
                 getUserComent = user_coment.getText().toString();
+                getUserOpenchat = user_openchat.getText().toString();
                 getUserNick = user_nick.getText().toString();
                 getUserPhoto = getPhotoPath;
                 getUserAge = Integer.parseInt(user_age.getText().toString());
@@ -507,6 +511,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 JSONObject job = new JSONObject();
                 //JSONObject 생성 후 input
                 job.put("msg", getUserComent);
+                job.put("openchat", getUserOpenchat);
                 job.put("photo", getUserPhoto);
                 job.put("name", getUserNick);
                 job.put("age", getUserAge);

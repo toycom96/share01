@@ -191,13 +191,14 @@ public class MainActivity extends AppCompatActivity
         _sGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(_sGridLayoutManager);
         mRecyclerView.addOnScrollListener(new ContentsListListener(this, _sGridLayoutManager, mRecyclerView, getApplicationContext()));
-        mRecyclerView.setNestedScrollingEnabled(false);
+        //mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);
 
         //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mGps);
         mAdapter = new ContentsListAdapter(getApplicationContext(), mContentsList);
         mRecyclerView.setAdapter(mAdapter);
-        mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mGps);
+        //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mRecyclerView, _sGridLayoutManager, getApplicationContext(), mGps);
+        mContentsLoader = new ContentsListLoad(mContentsList, mAdapter, mRecyclerView, _sGridLayoutManager, MainActivity.this, mGps);
 
         //회원 가입 유무 확인
         checkForLogin();
@@ -211,7 +212,7 @@ public class MainActivity extends AppCompatActivity
             getUserProfile user = new getUserProfile();
             user.execute();
 
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, MainActivity.this);
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         }
     };
 
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_distall) {
             GlobalVar.dist = 0;
         }
-        mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+        mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         return super.onOptionsItemSelected(item);
     }
 
@@ -338,9 +339,9 @@ public class MainActivity extends AppCompatActivity
             user_profile_iv.setImageResource(R.drawable.ic_menu_noprofile);
         }
 
-        if (!Profile.auth.equals("")) {
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
-        }
+        /*if (!Profile.auth.equals("")) {
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
+        }*/
     }
 
 
@@ -352,23 +353,23 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.etc_share) {
             GlobalVar.cate1 = "기타";
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         } else if (id == R.id.time_share) {
             GlobalVar.cate1 = "시간";
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         } else if (id == R.id.talent_share) {
             //mContentsLoader = new ContentsListLoad(mContentsList, mAdapter);
             GlobalVar.cate1 = "재능";
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         } else if (id == R.id.goods_share) {
             GlobalVar.cate1 = "물건";
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         } else if (id == R.id.think_share) {
             GlobalVar.cate1 = "고민";
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         } else if (id == R.id.all_share) {
             GlobalVar.cate1 = "";
-            mContentsLoader.loadFromApi(0,  GlobalVar.dist, GlobalVar.cate1, Profile.auth, mRecyclerView, this);
+            mContentsLoader.loadFromApi(0,  GlobalVar.dist, GlobalVar.cate1, Profile.auth);
         } else if (id == R.id.nav_chatlist) {
             Intent intent = new Intent(MainActivity.this, ChatListActivity.class);
             startActivity(intent);

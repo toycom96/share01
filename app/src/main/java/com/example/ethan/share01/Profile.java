@@ -23,6 +23,7 @@ public class Profile {
     public static String name="";
     public static String photo="";
     public static String auth="";
+    public static String openchat="";
     public static int age=0;
     public static String sex="";
 
@@ -44,6 +45,8 @@ public class Profile {
                 user_id = Integer.parseInt(responseJSON.get("Id").toString());
             if (!responseJSON.get("Device_id").toString().equals(""))
                 device_id = responseJSON.get("Device_id").toString();
+            if (!responseJSON.get("Openchat").toString().equals("") && responseJSON.get("Openchat").toString().length() > 20)
+                openchat = responseJSON.get("Openchat").toString();
             if (!responseJSON.get("Email").toString().equals(""))
                 email = responseJSON.get("Email").toString();
             if (!responseJSON.get("Name").toString().equals(""))

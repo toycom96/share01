@@ -34,6 +34,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -122,6 +132,22 @@
                 />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/infoedit_openchat"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:textSize="16dp"
+                android:ems="10"
+                android:hint="카카오톡 오픈채팅 링크를 공유하시려면 입력해 주세요."
+                android:scrollHorizontally="true"
+                />
+        </android.support.design.widget.TextInputLayout>
+
         <Button
             android:id="@+id/infoedit_button"
             android:layout_width="match_parent"
@@ -132,4 +158,6 @@
             android:text="@string/info_edit_complete"
             android:textColor="@color/colorPrimary"/>
     </LinearLayout>
+            </LinearLayout>
+    </ScrollView>
 </LinearLayout>

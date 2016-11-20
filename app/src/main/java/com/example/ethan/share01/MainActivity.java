@@ -49,6 +49,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.microedition.khronos.opengles.GL;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -339,9 +341,10 @@ public class MainActivity extends AppCompatActivity
             user_profile_iv.setImageResource(R.drawable.ic_menu_noprofile);
         }
 
-        /*if (!Profile.auth.equals("")) {
+        if (GlobalVar.detail_enter_flag == 0 && !Profile.auth.equals("")) {
             mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
-        }*/
+        }
+        GlobalVar.detail_enter_flag = 0;
     }
 
 

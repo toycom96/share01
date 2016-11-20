@@ -104,6 +104,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     }
 
     private void init(){
+        GlobalVar.detail_enter_flag = 1;
         mBbsMemo = new ArrayList<>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.bbs_detail_toolbar);

@@ -96,8 +96,13 @@ public class MainActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
         mGps = new GpsInfo(this);
-        Profile.gpslat = mGps.getLatitude();
-        Profile.gpslong = mGps.getLongitude();
+        if (mGps.isGetLocation()) {
+            Profile.gpslat = mGps.getLatitude();
+            Profile.gpslong = mGps.getLongitude();
+        } else {
+            // GPS 를 사용할수 없으므로
+            mGps.showSettingsAlert();
+        }
 
         this.registerReceiver(this.mainActivityNewBadgeReceiver, new IntentFilter("mainActivityNewBadge"));
         this.registerReceiver(this.mainActivityAuthFinishReceiver, new IntentFilter("AuthFinish"));
@@ -111,8 +116,8 @@ public class MainActivity extends AppCompatActivity
 
                 //intent.putExtra("OBJECT", MainActivity.this.mGps);
                 if (mGps.isGetLocation()) {
-                    intent.putExtra("Lat", mGps.getLatitude());
-                    intent.putExtra("Lon", mGps.getLongitude());
+                    intent.putExtra("Lat", Profile.gpslat);
+                    intent.putExtra("Lon", Profile.gpslong);
                 } else {
                     // GPS 를 사용할수 없으므로
                     mGps.showSettingsAlert();

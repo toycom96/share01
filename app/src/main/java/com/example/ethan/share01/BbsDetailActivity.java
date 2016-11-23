@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -57,6 +59,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private String getBbs_name;
     private String getBbs_age;
     private String getBbs_sex;
+    private String getBbs_openlink;
     private int getBbs_dist;
     private int getBbs_term;
     private String getBbs_cate1;
@@ -74,6 +77,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private ArrayList<BbsMemo> mBbsMemo = null;
     private BbsMemoAdapter mBbsMemoAdapter;
     private Button BbsMemo_write;
+    private Button User_link;
     private EditText BbsMemo_msg;
 
     //int bbs_id, int memo_id, int user_id, String user_name, int user_age, String user_sex, String user_photo, String memo, String date)
@@ -120,10 +124,18 @@ public class BbsDetailActivity extends AppCompatActivity {
         bbs_msg = (TextView) findViewById(R.id.bbs_detail_msg);
         bbs_opt = (TextView) findViewById(R.id.bbs_detail_pay);
         bbs_photo = (ImageView) findViewById(R.id.bbs_detail_photo);
+        User_link = (Button) findViewById(R.id.bbs_detail_openlink);
         BbsMemo_lv = (ListView)  findViewById(R.id.bbs_detail_memo);
         BbsMemo_msg = (EditText) findViewById(R.id.bbs_detail_memo_msg);
         BbsMemo_write = (Button) findViewById(R.id.bbs_detail_memo_write);
 
+        User_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getBbs_openlink));
+                startActivity(myIntent);
+            }
+        });
         BbsMemo_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -353,6 +365,9 @@ public class BbsDetailActivity extends AppCompatActivity {
             bbs_msg.setText(getBbs_msg);
             bbs_opt.setText(getBbs_pay);
             bbs_etc.setText(getBbs_name + " (" + getBbs_sex + ", " + getBbs_age + ") " + getBbs_dist + "km");
+            if (getBbs_openlink.length() > 10) {
+                User_link.setVisibility(View.VISIBLE);
+            }
             /*if (getBbs_sex.equals("여")) {
                 bbs_etc.setTextColor(Color.parseColor("#FF0000"));
             } else {
@@ -455,6 +470,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                     getBbs_title = responseJSON.get("Title").toString();
                     getBbs_msg = responseJSON.get("Msg").toString();
                     getBbs_name = responseJSON.get("User_name").toString();
+                    getBbs_openlink = responseJSON.get("User_link").toString();
                     getBbs_age = responseJSON.get("User_age").toString() + "세";
                     if (responseJSON.get("User_sex").toString().equals("F")){
                         getBbs_sex = "여";

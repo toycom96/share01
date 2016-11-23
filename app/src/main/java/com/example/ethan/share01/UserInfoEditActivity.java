@@ -362,7 +362,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             user_nick.setText(getUserNick);
             user_age.setText(String.valueOf(getUserAge));
             user_coment.setText(getUserComent);
-            if (getUserPhoto != null || !getUserPhoto.equals("")) {
+            user_openchat.setText(getUserOpenchat);
+            if (getUserPhoto != null && !getUserPhoto.equals("")) {
                 try {
                     Picasso.with(getApplicationContext()).load(getUserPhoto).error(R.drawable.ic_menu_noprofile).into(user_photo);
                 } catch (Exception e) {
@@ -448,6 +449,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     getUserNick = responseJSON.get("Name").toString();
                     getUserAge = Integer.parseInt(responseJSON.get("Age").toString());
                     getUserComent = responseJSON.get("Msg").toString();
+                    getUserOpenchat = responseJSON.get("openchat").toString();
                     getUserPhoto = responseJSON.get("Photo").toString();
                 } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

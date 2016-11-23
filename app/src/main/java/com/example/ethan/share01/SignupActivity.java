@@ -59,7 +59,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private Boolean shgnup_complete = false;
 
     public static RbPreference mPref;
-    private final String join_url = "https://toycom96.iptime.org:1443/user_join";
+    private final String join_url = GlobalVar.https_dns1 + "/user_join";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,29 +263,19 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 String regId = gcm.register("1028702649415");
 
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
-                //conn.setRequestProperty("Cookie", "auth=NtUMVRdHefRNbYut82ALIz0hFKOyRM4D13krg/xdxWfrhThgkmDJTAbs7A3fbhd4lu4cIg==");
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
 
                 JSONObject job = new JSONObject();
-                //JSONObject 생성 후 input
                 getUserId = join_id;
                 job.put("email", join_id);
                 job.put("passwd", join_pass);
@@ -299,14 +289,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 job.put("gcm_id", regId);
 
                 os = conn.getOutputStream();
-                //Output Stream 생성
                 os.write(job.toString().getBytes("utf-8"));
                 os.flush();
-                //Buffer에 있는 모든 정보를 보냄
 
                 int responseCode = conn.getResponseCode();
-                //request code를 받음
-
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
                     Log.e("HTTP_OK", "HTTP OK RESULT");

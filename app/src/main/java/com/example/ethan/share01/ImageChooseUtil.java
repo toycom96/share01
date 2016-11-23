@@ -33,7 +33,7 @@ import java.net.URL;
 public class ImageChooseUtil {
     private Context context;
     private Intent data;
-    private String webAddressToPost = "https://192.168.0.14:1443/up_file";
+    //private String webAddressToPost = GlobalVar.https_dns1 + "/up_file";
     private Bitmap bitmap;
 
     private String getPath;

@@ -9,4 +9,7 @@ public class GlobalVar {
     public static String cate1 = "";
     public static int loading_flag = 0;
     public static int detail_enter_flag = 0;
+
+    public static String https_dns1 = "https://toycom96.iptime.org:1443";
+    public static String http_dns1 = "http://toycom96.iptime.org";
 }

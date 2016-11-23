@@ -81,43 +81,28 @@ public class MessageSendUtil extends AsyncTask<String, Void, Void>{
 
         try {
             IgnoreHttpSertification.ignoreSertificationHttps();
-            //String url = "https://toycom96.iptime.org:1443/user_join";
             URL obj = new URL(connUrl);
-            //접속 Server URL 설정
             conn = (HttpURLConnection) obj.openConnection();
-            //Http 접속
             conn.setConnectTimeout(10000);
-            //접속 timeuot시간 설정
             conn.setReadTimeout(10000);
-            //read timeout 시간 설정
             conn.setRequestMethod("POST");
-            //통신 방식 : POST
 
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
-            //Cookie값 설정(auth)
             conn.addRequestProperty("Cookie", auth);
-            //데이터 주고 받는 형식 : json 설정
 
             conn.setDoOutput(true);
             conn.setDoInput(true);
 
-
             JSONObject job = new JSONObject();
-            //JSONObject 생성 후 input
             job.put("recv_id", recv_id);
-            //job.put("recv_id", 97);
             job.put("msg", message);
 
             os = conn.getOutputStream();
-            //Output Stream 생성
             os.write(job.toString().getBytes("utf-8"));
             os.flush();
-            //Buffer에 있는 모든 정보를 보냄
 
             int responseCode = conn.getResponseCode();
-            //request code를 받음
-
             if(responseCode == HttpURLConnection.HTTP_OK) {
 
                 Log.e("HTTP_OK", "HTTP OK RESULT");

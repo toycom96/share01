@@ -91,10 +91,10 @@ public class BbsDetailActivity extends AppCompatActivity {
     private String getBbsMemo_date;
     private String getBbsMemo_term;
 
-    private final String bbs_detail_url = "https://toycom96.iptime.org:1443/bbs_view";
-    private final String bbs_detail_delete_url = "https://toycom96.iptime.org:1443/bbs_delete";
-    private final String bbsmemo_list_url = "https://toycom96.iptime.org:1443/bbs_memo_list";
-    private final String bbsmemo_save_url = "https://toycom96.iptime.org:1443/bbs_memo_write";
+    private final String bbs_detail_url = GlobalVar.https_dns1 + "/bbs_view";
+    private final String bbs_detail_delete_url = GlobalVar.https_dns1 + "/bbs_delete";
+    private final String bbsmemo_list_url = GlobalVar.https_dns1 + "/bbs_memo_list";
+    private final String bbsmemo_save_url = GlobalVar.https_dns1 + "/bbs_memo_write";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,7 +229,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                 return true;
             case R.id.bbs_detail_share:
                 String subject = getBbs_title;
-                String text = "http://toycom96.iptime.org/item_view?id=" + bbs_id;
+                String text = GlobalVar.http_dns1 + "/item_view?id=" + bbs_id;
 
                 List<Intent> targetedShareIntents = new ArrayList<Intent>();
 
@@ -402,17 +402,11 @@ public class BbsDetailActivity extends AppCompatActivity {
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
@@ -559,23 +553,15 @@ public class BbsDetailActivity extends AppCompatActivity {
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
                 conn.addRequestProperty("Cookie", user_auth);
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
@@ -726,23 +712,15 @@ public class BbsDetailActivity extends AppCompatActivity {
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
                 conn.addRequestProperty("Cookie", user_auth);
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 

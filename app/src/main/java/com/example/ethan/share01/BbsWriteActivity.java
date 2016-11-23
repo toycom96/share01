@@ -65,8 +65,8 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-    private double mLat;
-    private double mLon;
+    //private double mLat;
+    //private double mLon;
 
     private Button photo_select;
     private Button bbs_save;
@@ -86,10 +86,10 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
     public Bitmap sub_photo_bm2;
     public Bitmap sub_photo_bm3;
     public Bitmap sub_photo_bm4;
-    //private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_getmy";
-    private final String getmy_url = "https://toycom96.iptime.org:1443/bbs_view";
-    private final String write_url = "https://toycom96.iptime.org:1443/bbs_write";
-    private final String update_url = "https://toycom96.iptime.org:1443/bbs_edit";
+    //private final String getmy_url = GlobalVar.https_dns1 + "/bbs_getmy";
+    private final String getmy_url = GlobalVar.https_dns1 + "/bbs_view";
+    private final String write_url = GlobalVar.https_dns1 + "/bbs_write";
+    private final String update_url = GlobalVar.https_dns1 + "/bbs_edit";
     private static final int GET_PICTURE_URI = 101;
     private int photo_info_flag = 0;
 
@@ -107,10 +107,15 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_bbs_write);
 
         Intent intent = getIntent();
-        mLat = intent.getDoubleExtra("Lat", 0.0);
-        mLon = intent.getDoubleExtra("Lon", 0.0);
+        //mLat = intent.getDoubleExtra("Lat", 0.0);
+        //mLon = intent.getDoubleExtra("Lon", 0.0);
         getBbs_id = intent.getIntExtra("Bbs_id", 0);
-        if (getBbs_id == 0) { getEdit_flag = 0; } else { getEdit_flag = 1; }
+        if (getBbs_id == 0) {
+            getEdit_flag = 0;
+        } else {
+            getEdit_flag = 1;
+        }
+        GlobalVar.detail_enter_flag = 0;
 
         /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
@@ -318,7 +323,7 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
 
     //이미지 파일 올리는 쓰레드
     class UploadBbsImgTask extends AsyncTask<Void, Void, String> {
-        private String webAddressToPost = "https://toycom96.iptime.org:1443/up_file";
+        private String webAddressToPost = GlobalVar.https_dns1 + "/up_file";
 
         private ProgressDialog dialog = new ProgressDialog(BbsWriteActivity.this);
         private int req_code = 0;
@@ -590,8 +595,8 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
                 JSONObject job = new JSONObject();
                 //JSONObject 생성 후 input
                 job.put("id", getBbs_id);
-                job.put("lat", mLat);
-                job.put("long", mLon);
+                job.put("lat", Profile.gpslat);
+                job.put("long", Profile.gpslong);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성
@@ -718,23 +723,15 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
                 user_opt = opt_json.toString();
 
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
                 conn.addRequestProperty("Cookie", Profile.auth);
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
@@ -759,8 +756,8 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
                     job.put("cate", "고민");
                 }
                 job.put("option", user_opt);
-                job.put("lat", mLat);
-                job.put("long", mLon);
+                job.put("lat", Profile.gpslat);
+                job.put("long", Profile.gpslong);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성

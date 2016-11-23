@@ -75,8 +75,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private String getPhotoPath;
 
     public Bitmap user_photo_bm;
-    private final String info_url = "https://toycom96.iptime.org:1443/user_info";
-    private final String edit_url = "https://toycom96.iptime.org:1443/user_edit";
+    private final String info_url = GlobalVar.https_dns1 + "/user_info";
+    private final String edit_url = GlobalVar.https_dns1 + "/user_edit";
     private static final int SELECT_PHOTO = 100;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -227,7 +227,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     //이미지 파일 올리는 쓰레드
     class UploadImageTask extends AsyncTask<Void, Void, String> {
-        private String webAddressToPost = "https://toycom96.iptime.org:1443/up_file";
+        private String webAddressToPost = GlobalVar.https_dns1 + "/up_file";
 
         private ProgressDialog dialog = new ProgressDialog(UserInfoEditActivity.this);
 
@@ -391,38 +391,24 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
                 Log.e("user_auth", user_auth);
                 conn.addRequestProperty("Cookie", user_auth);
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
 
                 os = conn.getOutputStream();
-                //Output Stream 생성
                 os.flush();
-                //Buffer에 있는 모든 정보를 보냄
 
                 int responseCode = conn.getResponseCode();
-
-                //int responseCode = conn.getResponseCode();
-                //request code를 받음
-
                 if (responseCode == HttpURLConnection.HTTP_OK) {
 
                     Log.e("HTTP_OK", "HTTP OK RESULT");
@@ -489,29 +475,20 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
                 conn.addRequestProperty("Cookie", Profile.auth);
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
 
                 JSONObject job = new JSONObject();
-                //JSONObject 생성 후 input
                 job.put("msg", getUserComent);
                 job.put("openchat", getUserOpenchat);
                 job.put("photo", getUserPhoto);
@@ -520,14 +497,10 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
 
                 os = conn.getOutputStream();
-                //Output Stream 생성
                 os.write(job.toString().getBytes("utf-8"));
                 os.flush();
-                //Buffer에 있는 모든 정보를 보냄
 
                 int responseCode = conn.getResponseCode();
-                //request code를 받음
-
                 if (responseCode == HttpURLConnection.HTTP_OK) {
 
                     Log.e("HTTP_OK", "HTTP OK RESULT");

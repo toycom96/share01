@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 class CreateAuthUtil extends AsyncTask<String, Void, Void> {
-    private final String request_auth_url = "https://toycom96.iptime.org:1443/auth_update";
+    private final String request_auth_url = GlobalVar.https_dns1 + "/auth_update";
     private RbPreference mPref;
     private Context context;
 

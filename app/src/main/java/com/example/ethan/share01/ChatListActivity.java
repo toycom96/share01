@@ -50,7 +50,7 @@ public class ChatListActivity extends AppCompatActivity {
     private RbPreference mPref = new RbPreference(ChatListActivity.this);
     private int totalChatBadgeCnt;
 
-    private final String SERVER_URL = "https://toycom96.iptime.org:1443/chat_list";
+    private final String SERVER_URL = GlobalVar.https_dns1 + "/chat_list";
     private static int load_flag = 0;
 
     private int getChatroomId;
@@ -207,36 +207,23 @@ public class ChatListActivity extends AppCompatActivity {
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                //String url = "https://toycom96.iptime.org:1443/user_join";
                 URL obj = new URL(connUrl);
-                //접속 Server URL 설정
                 conn = (HttpURLConnection) obj.openConnection();
-                //Http 접속
                 conn.setConnectTimeout(10000);
-                //접속 timeuot시간 설정
                 conn.setReadTimeout(10000);
-                //read timeout 시간 설정
                 conn.setRequestMethod("POST");
-                //통신 방식 : POST
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                //데이터 주고 받는 형식 : json 설정
                 conn.addRequestProperty("Cookie", user_auth);
-                //Cookie값 설정(auth)
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
 
                 os = conn.getOutputStream();
-                //Output Stream 생성
                 os.flush();
-                //Buffer에 있는 모든 정보를 보냄
 
                 int responseCode = conn.getResponseCode();
-
-                //int responseCode = conn.getResponseCode();
-                //request code를 받음
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
                     int unix_sec = 0;

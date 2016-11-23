@@ -35,7 +35,7 @@ public class MessageDialogUtil extends Dialog{
     private String mRecvMsg;
     private int mRecvId;
 
-    private final String SERVER_URL_SEND = "https://toycom96.iptime.org:1443/chat_send";
+    private final String SERVER_URL_SEND = GlobalVar.https_dns1 + "/chat_send";
 
     private TextView dialog_title_tv;
     private TextView dialog_recvmsg_tv;

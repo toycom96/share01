@@ -531,7 +531,7 @@ public class MainActivity extends AppCompatActivity
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                URL obj = new URL("https://toycom96.iptime.org:1443/user_info");
+                URL obj = new URL(GlobalVar.https_dns1 + "/user_info");
                 conn = (HttpURLConnection) obj.openConnection();
                 conn.setConnectTimeout(10000);
                 conn.setReadTimeout(10000);

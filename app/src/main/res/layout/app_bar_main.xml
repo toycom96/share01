@@ -45,12 +45,19 @@
             android:layout_height="wrap_content"
             android:id="@+id/main_badge"
             android:layout_gravity="top"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="28dp"
-            android:paddingTop="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="31dp"
+            android:text="N"
+            android:visibility="invisible"
             android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="#FF0000" />
+            android:paddingRight="5.3dp"
+            android:paddingLeft="5.3dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="10dp"
+            android:background="@drawable/badge_circle"/>
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton

@@ -182,32 +182,37 @@ public class BbsDetailActivity extends AppCompatActivity {
         BbsMemo_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 //클릭했을 때의 해당 화면의 context를 받아온다.
                 final Context context = view.getContext();
+                if (Profile.user_id == mBbsMemo.get(position).getUser_id()) {
+                    Toast.makeText(context, "자신에게는 쪽지를 보낼 수 없습니다.",Toast.LENGTH_SHORT).show();
+                } else {
 
-                //쪽지 보내기 Dialog 생성, 상대방의 정보를 같이 보낸다.
-                //쪽지를 보내는 버튼에 대한 이벤트는 MessageDialogUtil 클래스 내부에 구현되어 있다.
-                //MessageDialogUtil(Context context, String recvName, String recvSex, String recvMsg, int recvId
-                final MessageDialogUtil messageUtil =
-                        new MessageDialogUtil(context, mBbsMemo.get(position).getUser_name(), mBbsMemo.get(position).getUser_sex(), mBbsMemo.get(position).getMemo() ,mBbsMemo.get(position).getUser_id() );
-                        //new MessageDialogUtil(context, ContentsListAdapter.ViewHolder.this.User.getText().toString(), ContentsListAdapter.ViewHolder.this.Etc.getText().toString(), ContentsListAdapter.ViewHolder.this.Msg.getText().toString(), ContentsListAdapter.ViewHolder.this.UserId);
+                    //쪽지 보내기 Dialog 생성, 상대방의 정보를 같이 보낸다.
+                    //쪽지를 보내는 버튼에 대한 이벤트는 MessageDialogUtil 클래스 내부에 구현되어 있다.
+                    //MessageDialogUtil(Context context, String recvName, String recvSex, String recvMsg, int recvId
+                    final MessageDialogUtil messageUtil =
+                            new MessageDialogUtil(context, mBbsMemo.get(position).getUser_name(), mBbsMemo.get(position).getUser_sex(), mBbsMemo.get(position).getMemo(), mBbsMemo.get(position).getUser_id());
+                    //new MessageDialogUtil(context, ContentsListAdapter.ViewHolder.this.User.getText().toString(), ContentsListAdapter.ViewHolder.this.Etc.getText().toString(), ContentsListAdapter.ViewHolder.this.Msg.getText().toString(), ContentsListAdapter.ViewHolder.this.UserId);
 
-                //쪽지 보내기 Dialog가 화면에 보여졌을 때의 기본 셋팅
-                messageUtil.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialog) {
-                        messageUtil.setTitle();
-                    }
-                });
+                    //쪽지 보내기 Dialog가 화면에 보여졌을 때의 기본 셋팅
+                    messageUtil.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialog) {
+                            messageUtil.setTitle();
+                        }
+                    });
 
-                messageUtil.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        return;
-                    }
-                });
+                    messageUtil.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            return;
+                        }
+                    });
 
-                messageUtil.show();
+                    messageUtil.show();
+                }
             }
         });
 

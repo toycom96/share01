@@ -19,6 +19,8 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.R.attr.visibility;
+
 /**
  * Created by Lsi.OH on 2016-07-27.
  */
@@ -77,10 +79,9 @@ public class ChattingRoomAdapter extends BaseAdapter {
 
         }
         if (item.getBadgeCnt() > 0) {
-            badge.setBackgroundResource(R.drawable.ic_badge_new);
-
-        //} else {
-        //    badge.setBackground("");
+            badge.setVisibility(TextView.VISIBLE);
+        } else {
+            badge.setVisibility(TextView.INVISIBLE);
         }
 
         return v;

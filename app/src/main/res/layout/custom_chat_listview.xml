@@ -34,10 +34,17 @@
                 android:id="@+id/chatlist_msgcnt"
                 android:layout_gravity="top|right"
                 android:layout_marginTop="0dp"
-                android:paddingTop="0dp"
+                android:text="N"
                 android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="#FF0000" />
+                android:paddingRight="5.3dp"
+                android:paddingLeft="5.3dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:textSize="10dp"
+                android:visibility="invisible"
+                android:background="@drawable/badge_circle"/>
         </FrameLayout>
 
         <LinearLayout

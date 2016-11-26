@@ -141,7 +141,8 @@ public class MainActivity extends AppCompatActivity
                     //예외처리
                 } else if (Integer.parseInt(badge_count) > 0) {
                     mChatListNewBadge = (TextView) findViewById(R.id.chatlist_badge);
-                    mChatListNewBadge.setBackgroundResource(R.drawable.ic_badge_new);
+                    mChatListNewBadge.setBackgroundResource(R.drawable.badge_circle);
+                    mChatListNewBadge.setVisibility(TextView.VISIBLE);
                 }
             }
         };
@@ -228,9 +229,9 @@ public class MainActivity extends AppCompatActivity
         public void onReceive(Context context, Intent intent) {
             if (Integer.parseInt(mPref.getValue("badge_chatcnt", "").toString()) > 0) {
                 mMainNewBadge = (TextView) findViewById(R.id.main_badge);
-                mMainNewBadge.setBackgroundResource(R.drawable.ic_badge_new);
+                mMainNewBadge.setVisibility(TextView.VISIBLE);
                 mChatListNewBadge = (TextView) findViewById(R.id.chatlist_badge);
-                mChatListNewBadge.setBackgroundResource(R.drawable.ic_badge_new);
+                mChatListNewBadge.setVisibility(TextView.VISIBLE);
             }
         }
     };
@@ -403,7 +404,7 @@ public class MainActivity extends AppCompatActivity
                 //예외처리
             } else if (Integer.parseInt(badge_count) > 0) {
                 mMainNewBadge = (TextView) findViewById(R.id.main_badge);
-                mMainNewBadge.setBackgroundResource(R.drawable.ic_badge_new);
+                mMainNewBadge.setVisibility(TextView.VISIBLE);
             }
         }
     }

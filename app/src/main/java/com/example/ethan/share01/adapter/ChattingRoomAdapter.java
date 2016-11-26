@@ -69,7 +69,7 @@ public class ChattingRoomAdapter extends BaseAdapter {
 
             if (item.getPhoto() != null && !item.getPhoto().equals("")) {
                 try {
-                    Picasso.with(mContext).load(item.getPhoto()).error(R.drawable.ic_menu_noprofile).resize(72, 72).into(photo);
+                    Picasso.with(mContext).load(item.getPhoto()).error(R.drawable.ic_menu_noprofile).into(photo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -97,7 +97,9 @@ public class GCMIntentService extends IntentService {
         }*/
 
         mSoundFlag = 1;
-        if (getRunActivity() == 1) {
+        int runActivity  = 0;
+        runActivity = getRunActivity();
+        if (runActivity == 1) {
             Intent i = new Intent();
             i.setAction("appendChatScreenMsg");
             i.putExtra("Msg", extras.getString(MSG_EXTRA_KEY));
@@ -106,11 +108,16 @@ public class GCMIntentService extends IntentService {
 
             this.sendBroadcast(i);
             mSoundFlag = 0;
-        } else if (getRunActivity() == 2) {
+        } else if (runActivity == 2) {
             Intent i = new Intent();
             i.setAction("refreshChatRoomList");
             this.sendBroadcast(i);
 
+            Intent i2 = new Intent();
+            i2.setAction("mainActivityNewBadge");
+            this.sendBroadcast(i2);
+            mSoundFlag = 1;
+        } else if (runActivity == 3) {
             Intent i2 = new Intent();
             i2.setAction("mainActivityNewBadge");
             this.sendBroadcast(i2);
@@ -132,6 +139,8 @@ public class GCMIntentService extends IntentService {
             return 1;
         } else if(className.equals("com.example.ethan.share01.ChatListActivity")) {
             return 2;
+        } else if(className.equals("com.example.ethan.share01.MainActivity")) {
+            return 3;
         } else {
             return 0;
         }

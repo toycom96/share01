@@ -59,7 +59,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private Boolean shgnup_complete = false;
 
     public static RbPreference mPref;
-    private final String join_url = GlobalVar.https_dns1 + "/user_join";
+    private final String join_url = GlobalVar.https_api1 + "/user_join";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -47,7 +47,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private RbPreference mPref = new RbPreference(SigninActivity.this);
     private Boolean shgnin_complete = false;
-    private final String SIGNIN_URL = GlobalVar.https_dns1 + "/auth_login";
+    private final String SIGNIN_URL = GlobalVar.https_api1 + "/auth_login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

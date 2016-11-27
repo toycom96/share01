@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 class CreateAuthUtil extends AsyncTask<String, Void, Void> {
-    private final String request_auth_url = GlobalVar.https_dns1 + "/auth_update";
+    private final String request_auth_url = GlobalVar.https_api1 + "/auth_update";
     private RbPreference mPref;
     private Context context;
 
@@ -70,6 +70,8 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
             //JSONObject 생성 후 input
             job.put("id", Profile.user_id);
             job.put("device_id", Profile.device_id);
+            job.put("long", Profile.gpslong);
+            job.put("lat", Profile.gpslat);
             //job.put("gcm_id", Profile.gcm_id);
 
             os = conn.getOutputStream();

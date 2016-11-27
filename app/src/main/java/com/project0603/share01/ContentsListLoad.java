@@ -132,7 +132,7 @@ public class ContentsListLoad {
 
             try {
                 IgnoreHttpSertification.ignoreSertificationHttps();
-                URL obj = new URL(GlobalVar.https_dns1 + "/bbs_list");
+                URL obj = new URL(GlobalVar.https_api1 + "/bbs_list");
                 conn = (HttpURLConnection) obj.openConnection();
                 conn.setConnectTimeout(3000);
                 conn.setReadTimeout(5000);

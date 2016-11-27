@@ -86,10 +86,10 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
     public Bitmap sub_photo_bm2;
     public Bitmap sub_photo_bm3;
     public Bitmap sub_photo_bm4;
-    //private final String getmy_url = GlobalVar.https_dns1 + "/bbs_getmy";
-    private final String getmy_url = GlobalVar.https_dns1 + "/bbs_view";
-    private final String write_url = GlobalVar.https_dns1 + "/bbs_write";
-    private final String update_url = GlobalVar.https_dns1 + "/bbs_edit";
+    //private final String getmy_url = GlobalVar.https_api1 + "/bbs_getmy";
+    private final String getmy_url = GlobalVar.https_api1 + "/bbs_view";
+    private final String write_url = GlobalVar.https_api1 + "/bbs_write";
+    private final String update_url = GlobalVar.https_api1 + "/bbs_edit";
     private static final int GET_PICTURE_URI = 101;
     private int photo_info_flag = 0;
 
@@ -323,7 +323,7 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
 
     //이미지 파일 올리는 쓰레드
     class UploadBbsImgTask extends AsyncTask<Void, Void, String> {
-        private String webAddressToPost = GlobalVar.https_dns1 + "/up_file";
+        private String webAddressToPost = GlobalVar.https_api1 + "/up_file";
 
         private ProgressDialog dialog = new ProgressDialog(BbsWriteActivity.this);
         private int req_code = 0;

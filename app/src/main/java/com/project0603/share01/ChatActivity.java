@@ -46,8 +46,8 @@ public class ChatActivity extends AppCompatActivity {
     private int mGetChatRoomId = -1;
     private String mGetSenderPhoto = "";
 
-    private final String SERVER_URL_SEND = GlobalVar.https_dns1 + "/chat_send";
-    private final String SERVER_URL_QUERY = GlobalVar.https_dns1 + "/chat_msg_list";
+    private final String SERVER_URL_SEND = GlobalVar.https_api1 + "/chat_send";
+    private final String SERVER_URL_QUERY = GlobalVar.https_api1 + "/chat_msg_list";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -50,7 +50,7 @@ public class ChatListActivity extends AppCompatActivity {
     private RbPreference mPref = new RbPreference(ChatListActivity.this);
     private int totalChatBadgeCnt;
 
-    private final String SERVER_URL = GlobalVar.https_dns1 + "/chat_list";
+    private final String SERVER_URL = GlobalVar.https_api1 + "/chat_list";
     private static int load_flag = 0;
 
     private int getChatroomId;
@@ -70,7 +70,6 @@ public class ChatListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_list);
         Log.e("ChatListActivity", "ChatListActivity");
         init();
-
 
         this.registerReceiver(this.refreshChatRoomListReceiver, new IntentFilter("refreshChatRoomList"));
     }

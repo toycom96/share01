@@ -66,8 +66,6 @@ public class BbsDetailActivity extends AppCompatActivity {
     private String getBbs_photo_url[] = {"","","","",""};
 
     private int bbs_id;
-    private double mLat;
-    private double mLon;
     private int photo_idx = 0;
     private int edit_mode = 0;
     private int screenWidth = 0;
@@ -91,10 +89,10 @@ public class BbsDetailActivity extends AppCompatActivity {
     private String getBbsMemo_date;
     private String getBbsMemo_term;
 
-    private final String bbs_detail_url = GlobalVar.https_dns1 + "/bbs_view";
-    private final String bbs_detail_delete_url = GlobalVar.https_dns1 + "/bbs_delete";
-    private final String bbsmemo_list_url = GlobalVar.https_dns1 + "/bbs_memo_list";
-    private final String bbsmemo_save_url = GlobalVar.https_dns1 + "/bbs_memo_write";
+    private final String bbs_detail_url = GlobalVar.https_api1 + "/bbs_view";
+    private final String bbs_detail_delete_url = GlobalVar.https_api1 + "/bbs_delete";
+    private final String bbsmemo_list_url = GlobalVar.https_api1 + "/bbs_memo_list";
+    private final String bbsmemo_save_url = GlobalVar.https_api1 + "/bbs_memo_write";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,7 +232,7 @@ public class BbsDetailActivity extends AppCompatActivity {
                 return true;
             case R.id.bbs_detail_share:
                 String subject = getBbs_title;
-                String text = GlobalVar.http_dns1 + "/item_view?id=" + bbs_id;
+                String text = GlobalVar.http_web1 + "/item_view?id=" + bbs_id;
 
                 List<Intent> targetedShareIntents = new ArrayList<Intent>();
 
@@ -276,8 +274,8 @@ public class BbsDetailActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(BbsDetailActivity.this, BbsWriteActivity.class);
                 intent.putExtra("Bbs_id", bbs_id);
-                intent.putExtra("Lat", mLat);
-                intent.putExtra("Lon", mLon);
+                intent.putExtra("Lat", Profile.gpslat);
+                intent.putExtra("Lon", Profile.gpslong);
                 startActivity(intent);
                 finish();
                 break;
@@ -429,8 +427,8 @@ public class BbsDetailActivity extends AppCompatActivity {
                 //JSONObject 생성 후 input
 
                 job.put("id", bbs_id);
-                job.put("long", mLon);
-                job.put("lat", mLat);
+                job.put("long", Profile.gpslong);
+                job.put("lat", Profile.gpslat);
 
                 os = conn.getOutputStream();
                 //Output Stream 생성
@@ -575,8 +573,8 @@ public class BbsDetailActivity extends AppCompatActivity {
                 //JSONObject 생성 후 input
 
                 job.put("bbs_id", bbs_id);
-                job.put("long", mLon);
-                job.put("lat", mLat);
+                job.put("long", Profile.gpslong);
+                job.put("lat", Profile.gpslat);
 
 
                 os = conn.getOutputStream();
@@ -735,8 +733,8 @@ public class BbsDetailActivity extends AppCompatActivity {
 
                 job.put("bbs_id", bbs_id);
                 job.put("bbs_memo", BbsMemo_msg.getText().toString());
-                job.put("long", mLon);
-                job.put("lat", mLat);
+                job.put("long", Profile.gpslong);
+                job.put("lat", Profile.gpslat);
 
 
                 os = conn.getOutputStream();

@@ -75,8 +75,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private String getPhotoPath;
 
     public Bitmap user_photo_bm;
-    private final String info_url = GlobalVar.https_dns1 + "/user_info";
-    private final String edit_url = GlobalVar.https_dns1 + "/user_edit";
+    private final String info_url = GlobalVar.https_api1 + "/user_info";
+    private final String edit_url = GlobalVar.https_api1 + "/user_edit";
     private static final int SELECT_PHOTO = 100;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -227,7 +227,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     //이미지 파일 올리는 쓰레드
     class UploadImageTask extends AsyncTask<Void, Void, String> {
-        private String webAddressToPost = GlobalVar.https_dns1 + "/up_file";
+        private String webAddressToPost = GlobalVar.https_api1 + "/up_file";
 
         private ProgressDialog dialog = new ProgressDialog(UserInfoEditActivity.this);
 

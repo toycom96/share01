@@ -50,12 +50,15 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
 
         Log.e("onBindViewHolder", "onBindViewHolder");
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(476,0).into(holder.Pic);
-        if (ContentsList.get(position).getPicUrl() != null && !ContentsList.get(position).getPicUrl().equals("")) {
-            Toast.makeText(mContext, ContentsList.get(position).getPicUrl(), Toast.LENGTH_SHORT);
-            photo_path = ContentsList.get(position).getPicUrl();
-            Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(picWidth, 0).into(holder.Photo);
+        photo_path = ContentsList.get(position).getPicUrl();
+        if (photo_path != null && !photo_path.equals("")) {
+            try {
+                Picasso.with(mContext).load(photo_path).resize(picWidth, 0).error(R.drawable.ic_menu_noprofile).into(holder.Photo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
-            holder.Photo.setMaxWidth(0);
+            holder.Photo.setImageResource(R.drawable.ic_menu_noprofile);
         }
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(picWidth, 0).into(holder.Photo);
         Toast.makeText(mContext, ContentsList.get(position).getPicUrl(), 1);

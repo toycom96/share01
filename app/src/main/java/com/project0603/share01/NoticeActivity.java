@@ -29,7 +29,7 @@ public class NoticeActivity extends AppCompatActivity {
 
         mWebView.getSettings().setJavaScriptEnabled(true);
         // 구글홈페이지 지정
-        mWebView.loadUrl(GlobalVar.http_dns1 + "/notice_list");
+        mWebView.loadUrl(GlobalVar.http_web1 + "/notice_list");
         // WebViewClient 지정
         mWebView.setWebViewClient(new WebViewClientClass());
     }
@@ -59,7 +59,7 @@ public class NoticeActivity extends AppCompatActivity {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
             String url = mWebView.getUrl();
-            if (!url.equals(GlobalVar.http_dns1 + "/notice_list")) {
+            if (!url.equals(GlobalVar.http_web1 + "/notice_list")) {
                 mWebView.goBack();
                 return false; //I have tried here true also
             }

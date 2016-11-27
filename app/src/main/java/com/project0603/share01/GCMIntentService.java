@@ -139,9 +139,9 @@ public class GCMIntentService extends IntentService {
             return 1;
         } else if(className.equals("com.project0603.share01.ChatListActivity")) {
             return 2;
-        } else if(className.equals("com.project0603.share01.MainActivity")) {
+        } /*else if(className.equals("com.project0603.share01.MainActivity")) {
             return 3;
-        } else {
+        } */else {
             return 0;
         }
 
@@ -166,6 +166,14 @@ public class GCMIntentService extends IntentService {
             contentIntent = PendingIntent.getActivity(this, 0,
                     new Intent(this, MainActivity.class), 0);
         }
+
+        /*Intent intent = new Intent(this, MainActivity.class);
+        if (typeCode.equals("1")) {
+            intent.putExtra("start_activity_flag", 1); // ChatListActivity실행
+        } else {
+            intent.putExtra("start_activity_flag", 0);
+        }
+        contentIntent = PendingIntent.getActivity(this, 0, intent, 0);*/
 
 
         NotificationCompat.Builder mBuilder =

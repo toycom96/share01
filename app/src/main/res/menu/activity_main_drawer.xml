@@ -12,7 +12,7 @@
             android:title="시간 공유" />
         <item
             android:id="@+id/talent_share"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_navi_talent"
             android:title="재능 공유" />
         <item
             android:id="@+id/goods_share"

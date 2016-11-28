@@ -288,12 +288,14 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
             bbs_save_thrd.execute(write_url, getComent, getBbs_photo_url);
             break;*/
         if (photo_info_flag < 0) {
+            bbs_save.setEnabled(false);
             String getComent = bbs_msg.getText().toString();
             String getTitle = bbs_title.getText().toString();
             String getPay = bbs_pay.getText().toString();
 
             if (bbs_cate1.getSelectedItemPosition() == 0) {
                 Toast.makeText(getApplicationContext(), "공유할 종류를 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                bbs_save.setEnabled(true);
                 return;
             } else {
                 getBbs_cate1 = bbs_cate1.getSelectedItemPosition();
@@ -670,10 +672,23 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
      * 사용자 정보 수정 완료 Thread
      */
     class BbsWriteThread extends AsyncTask<String, Void, Void> {
+        ProgressDialog loading;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = new ProgressDialog(BbsWriteActivity.this);
+            loading.setTitle("게시글 작성");
+            loading.setMessage("게시글을 올리고 있으니 잠시만 기다려주세요~");
+            loading.setCancelable(false);
+            loading.show();
+        }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            bbs_save.setEnabled(true);
             Toast.makeText(BbsWriteActivity.this, "게시글 저장 완료", Toast.LENGTH_SHORT).show();
+            loading.dismiss();
             Intent intent = new Intent(BbsWriteActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

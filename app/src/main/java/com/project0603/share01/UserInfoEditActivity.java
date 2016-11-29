@@ -1,14 +1,20 @@
 package com.project0603.share01;
 
+import android.*;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +47,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -78,6 +85,12 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private final String info_url = GlobalVar.https_api1 + "/user_info";
     private final String edit_url = GlobalVar.https_api1 + "/user_edit";
     private static final int SELECT_PHOTO = 100;
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -100,19 +113,66 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ImageChooseUtil chooseImage = new ImageChooseUtil(data, getApplicationContext());
 
-        switch (requestCode) {
-            case SELECT_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    selectedImagePath = chooseImage.getRealPath();
-                    Log.e("selectedImagePath", selectedImagePath);
-                    user_photo_bm = BitmapFactory.decodeFile(selectedImagePath);
-                    user_photo.setImageBitmap(user_photo_bm);
-                    UploadImageTask editInfo = new UploadImageTask();
-                    editInfo.execute();
-                }
+        if ( resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            selectedImagePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            user_photo_bm = BitmapFactory.decodeFile(selectedImagePath);
+            user_photo.setImageBitmap(user_photo_bm);
+
+            ExifInterface exif = null;
+            try {
+                File pictureFile = new File(selectedImagePath);
+                exif = new ExifInterface(pictureFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            int orientation = ExifInterface.ORIENTATION_NORMAL;
+
+            if (exif != null)
+                orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    user_photo_bm = rotateBitmap(user_photo_bm, 90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    user_photo_bm = rotateBitmap(user_photo_bm, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    user_photo_bm = rotateBitmap(user_photo_bm, 270);
+                    break;
+            }
+
+            File file = new File(getExternalCacheDir(), "unlimited_share_image.jpg");
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 85, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                Log.e("Image", "Convert");
+            }
+
+            UploadImageTask editInfo = new UploadImageTask();
+            editInfo.execute();
         }
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
 
@@ -180,10 +240,17 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.infoedit_photo:
-                Intent photoPickerIntent = new Intent();
-                photoPickerIntent.setType("image/*");
-                photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), SELECT_PHOTO);
+                int permission = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    // We don't have permission so prompt the user
+                    ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE );
+                } else {
+                    Intent photoPickerIntent = new Intent();
+                    photoPickerIntent.setType("image/*");
+                    photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), SELECT_PHOTO);
+                }
                 break;
         }
     }

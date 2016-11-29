@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         sign_up_btn.setOnClickListener(this);
     }
 
-    private void signupModule(String userId, String userPass, String userNick, String userAge, String userSex, String userDeviceId, String userPhone){
+    /*private void signupModule(String userId, String userPass, String userNick, String userAge, String userSex, String userDeviceId, String userPhone){
         if (userId != null && userPass != null && userNick != null){
             SignupThread http = new SignupThread();
             http.execute(join_url,userId,userPass,userNick,userAge,userSex,userDeviceId,userPhone);
@@ -78,9 +78,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             Toast.makeText(SignupActivity.this, "입력 실패", Toast.LENGTH_SHORT);
         }
+    }*/
 
-
-    }
     private void init(){
         user_id_edt = (EditText) findViewById(R.id.signup_user_id);
         user_age_edt = (EditText) findViewById(R.id.signup_user_age);
@@ -180,12 +179,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         getUserSex = "F";
                     }
 
-                    if (user_password_edt.getText().toString().equals(user_pass_check_edt.getText().toString())) {
-                        signupModule(getUserId,getUserPass,getUserNick,getUserAge,getUserSex,getUserDeviceId,getUserPhone);
-                    } else {
+                    if (!user_password_edt.getText().toString().equals(user_pass_check_edt.getText().toString())) {
                         Toast.makeText(SignupActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
                         sign_up_btn.setEnabled(true);
-                    }
+                    } else if (getUserId != null && getUserPass != null && getUserNick != null){
+                        SignupThread signup = new SignupThread();
+                        signup.execute(join_url,getUserId,getUserPass,getUserNick,getUserAge,getUserSex,getUserDeviceId,getUserPhone);
+                    } /*else {
+                        Toast.makeText(SignupActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
+                        sign_up_btn.setEnabled(true);
+                    }*/
 
                 } else {
                     sign_up_btn.setEnabled(true);
@@ -312,7 +315,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
                     Log.e("Response ID Value", responseJSON.get("Id").toString());
-                    String result = responseJSON.get("id").toString();
+                    String result = responseJSON.get("Id").toString();
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
                     Log.i("responese value", "DATA response = " + result);
 

@@ -178,8 +178,6 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
 
             UploadBbsImgTask bbs_photo_upload = new UploadBbsImgTask();
             bbs_photo_upload.execute();
-
-
         }
     }
 
@@ -251,14 +249,6 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         int viewId = v.getId();
 
-
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE );
-        }
-
         switch (viewId) {
 
             case R.id.bbs_main_photo:
@@ -311,10 +301,17 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
             if (photo_info_flag > 0 && saved_image_url[photo_info_flag - 1].equals("")) {
                 Toast.makeText(getApplicationContext(), "이미지를 순서대로 선택해 주세요.", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, GET_PICTURE_URI);
+                int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    // We don't have permission so prompt the user
+                    ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, GET_PICTURE_URI);
+                }
             }
         }
 

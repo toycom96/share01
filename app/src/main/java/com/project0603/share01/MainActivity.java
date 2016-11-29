@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity
     public TextView mChatListNewBadge;
     public TextView mMainNewBadge;
 
+    private int start_activity_flag = 0; // 0:MainActivity, 1:ChatListActivity
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity
             // GPS 를 사용할수 없으므로
             mGps.showSettingsAlert();
         }
+
+        Intent intent = getIntent();
+        start_activity_flag = intent.getIntExtra("start_activity_flag", 0);
 
         this.registerReceiver(this.mainActivityNewBadgeReceiver, new IntentFilter("mainActivityNewBadge"));
         this.registerReceiver(this.mainActivityAuthFinishReceiver, new IntentFilter("AuthFinish"));
@@ -175,10 +180,12 @@ public class MainActivity extends AppCompatActivity
         user_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPref.removeAllValue();
+                logoutThread logout = new logoutThread();
+                logout.execute();
+                /*mPref.removeAllValue();
                 new Profile("removeAll");
                 GcmBroadcastReceiver.updateIconBadge(MainActivity.this, 0);
-                finish();
+                finish();*/
             }
         });
 
@@ -220,7 +227,13 @@ public class MainActivity extends AppCompatActivity
             getUserProfile user = new getUserProfile();
             user.execute();
 
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
+            if (start_activity_flag == 1) {
+                Intent intent2 = new Intent(MainActivity.this, ChatListActivity.class);
+                startActivity(intent2);
+                finish();
+            } else {
+                mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
+            }
         }
     };
 
@@ -334,23 +347,32 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        user_email_tv.setText(Profile.email);
-        user_nick_tv.setText(Profile.name);
+        Intent intent = getIntent();
+        start_activity_flag = intent.getIntExtra("start_activity_flag", 0);
 
-        if (Profile.photo != null && !Profile.photo.equals("")) {
-            try {
-                Picasso.with(getApplicationContext()).load(Profile.photo).error(R.drawable.ic_menu_noprofile).into(user_profile_iv);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (start_activity_flag == 1) {
+            Intent intent2 = new Intent(MainActivity.this, ChatListActivity.class);
+            startActivity(intent2);
+            finish();
+        } else {
+            user_email_tv.setText(Profile.email);
+            user_nick_tv.setText(Profile.name);
+
+            if (Profile.photo != null && !Profile.photo.equals("")) {
+                try {
+                    Picasso.with(getApplicationContext()).load(Profile.photo).error(R.drawable.ic_menu_noprofile).into(user_profile_iv);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                user_profile_iv.setImageResource(R.drawable.ic_menu_noprofile);
             }
-        } else{
-            user_profile_iv.setImageResource(R.drawable.ic_menu_noprofile);
-        }
 
-        if (GlobalVar.detail_enter_flag == 0 && !Profile.auth.equals("")) {
-            mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
+            if (GlobalVar.detail_enter_flag == 0 && !Profile.auth.equals("")) {
+                mContentsLoader.loadFromApi(0, GlobalVar.dist, GlobalVar.cate1, Profile.auth);
+            }
+            GlobalVar.detail_enter_flag = 0;
         }
-        GlobalVar.detail_enter_flag = 0;
     }
 
 
@@ -574,4 +596,70 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    class logoutThread extends AsyncTask<String, Void, Void> {
+        int logout_success = 0;
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (logout_success == 0){
+                mPref.removeAllValue();
+                new Profile("removeAll");
+                GcmBroadcastReceiver.updateIconBadge(MainActivity.this, 0);
+                finish();
+            } else {
+                Toast.makeText(MainActivity.this, "logout에 실패했습니다. 다시 시도해 주세요.",Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        protected Void doInBackground(String... value) {
+            HttpURLConnection conn = null;
+            OutputStream os = null;
+            InputStream is = null;
+            ByteArrayOutputStream baos = null;
+            String response = null;
+
+            try {
+                IgnoreHttpSertification.ignoreSertificationHttps();
+                URL obj = new URL(GlobalVar.https_api1 + "/user_leave");
+                conn = (HttpURLConnection) obj.openConnection();
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
+                conn.setRequestMethod("POST");
+
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.addRequestProperty("Cookie", Profile.auth);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+
+                os = conn.getOutputStream();
+                os.flush();
+
+                int responseCode = conn.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+
+                    is = conn.getInputStream();
+                    baos = new ByteArrayOutputStream();
+                    byte[] byteBuffer = new byte[1024];
+                    byte[] byteData = null;
+                    int nLength = 0;
+                    while((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
+                        baos.write(byteBuffer, 0, nLength);
+                    }
+                    byteData = baos.toByteArray();
+                    response = new String(byteData);
+                }else {
+                    logout_success = -1;
+                    Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                logout_success = -1;
+            }
+            return null;
+        }
+    }
 }

@@ -180,7 +180,7 @@ public class ChatListActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             mPref.put("badge_chatcnt",  String.valueOf(totalChatBadgeCnt));
-            GcmBroadcastReceiver.updateIconBadge(ChatListActivity.this, -1);
+            GcmBroadcastReceiver.updateIconBadge(ChatListActivity.this, totalChatBadgeCnt);
 
             mChatListAdapter = new ChattingRoomAdapter(ChatListActivity.this, mChatRooms);
 

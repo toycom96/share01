@@ -5,10 +5,7 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_marginBottom="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,10 +13,7 @@
         android:orientation="horizontal"
         android:padding="4dp"
         android:layout_margin="0dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:foreground="#FAFAFA"
-        android:clickable="true"
-        android:focusable="true"
+        android:background="#FAFAFA"
         android:gravity="left">
 
         <ImageView

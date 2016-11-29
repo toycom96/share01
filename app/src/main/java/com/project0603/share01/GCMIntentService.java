@@ -159,21 +159,21 @@ public class GCMIntentService extends IntentService {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (typeCode.equals("1")) {
+        /*if (typeCode.equals("1")) {
             contentIntent = PendingIntent.getActivity(this, 0,
                     new Intent(this, ChatListActivity.class), 0);
         } else {
             contentIntent = PendingIntent.getActivity(this, 0,
                     new Intent(this, MainActivity.class), 0);
-        }
+        }*/
 
-        /*Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         if (typeCode.equals("1")) {
             intent.putExtra("start_activity_flag", 1); // ChatListActivity실행
         } else {
             intent.putExtra("start_activity_flag", 0);
         }
-        contentIntent = PendingIntent.getActivity(this, 0, intent, 0);*/
+        contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
 
         NotificationCompat.Builder mBuilder =

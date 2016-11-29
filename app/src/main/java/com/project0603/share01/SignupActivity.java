@@ -312,16 +312,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
                     Log.e("Response ID Value", responseJSON.get("Id").toString());
-                    String result = responseJSON.get("Id").toString();
+                    String result = responseJSON.get("id").toString();
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
                     Log.i("responese value", "DATA response = " + result);
 
                     Profile.user_id = Integer.parseInt(result);
                     Profile.device_id = join_device_id;
                     Profile.gcm_id = regId;
-                    Profile.email = responseJSON.get("Email").toString();
-                    Profile.name = responseJSON.get("Name").toString();
-
                     shgnup_complete = true;
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

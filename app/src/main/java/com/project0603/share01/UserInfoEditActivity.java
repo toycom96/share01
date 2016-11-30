@@ -84,7 +84,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     public Bitmap user_photo_bm;
     private final String info_url = GlobalVar.https_api1 + "/user_info";
     private final String edit_url = GlobalVar.https_api1 + "/user_edit";
-    private static final int SELECT_PHOTO = 100;
+    private static final int GET_PICTURE_URI = 101;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -112,7 +112,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         if ( resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
@@ -246,10 +246,16 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     // We don't have permission so prompt the user
                     ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE );
                 } else {
-                    Intent photoPickerIntent = new Intent();
+                    /*Intent photoPickerIntent = new Intent();
                     photoPickerIntent.setType("image/*");
                     photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), SELECT_PHOTO);
+                    startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), SELECT_PHOTO);*/
+
+
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, GET_PICTURE_URI);
                 }
                 break;
         }

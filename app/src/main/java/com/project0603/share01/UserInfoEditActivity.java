@@ -161,7 +161,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 out.flush();
                 out.close();
             } catch (Exception e) {
-                Log.e("Image", "Convert");
+                e.printStackTrace();
             }
 
             UploadImageTask editInfo = new UploadImageTask();
@@ -314,11 +314,9 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             dialog.dismiss();
-            Log.e("response String before", s);
             getPhotoPath = s;
             //getPhotoPath = s.replace("[", "").replace("]", "");
 
-            Log.e("response String after", getPhotoPath);
             Toast.makeText(getApplicationContext(), "file uploaded",
                     Toast.LENGTH_LONG).show();
         }
@@ -363,14 +361,11 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 conn.connect();
 
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    Log.e("HTTP OK", "HTTP OK");
                     String result = readStream(conn.getInputStream());
 
-                    //int i = 0;
                     JSONObject responseJSON = new JSONArray(result).getJSONObject(0);
 
                     String filename = responseJSON.get("Filename").toString();
-                    //Log.e("result", filename);
                     return filename;
                 } else {
                     Log.e("HTTP CODE", "HTTP CONN FAILED");
@@ -472,7 +467,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                Log.e("user_auth", user_auth);
                 conn.addRequestProperty("Cookie", user_auth);
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
@@ -484,7 +478,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -496,14 +489,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response Nick Value", responseJSON.get("Name").toString());
-                    Log.i("Response Age Value", responseJSON.get("Age").toString());
-                    Log.i("Response Age Value", responseJSON.get("Msg").toString());
-                    Log.i("Response Age Value", responseJSON.get("Photo").toString());
 
                     getUserNick = responseJSON.get("Name").toString();
                     getUserAge = Integer.parseInt(responseJSON.get("Age").toString());
@@ -529,8 +515,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Toast.makeText(UserInfoEditActivity.this, "정보수정 완료", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(UserInfoEditActivity.this, MainActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(UserInfoEditActivity.this, MainActivity.class);
+            //startActivity(intent);
             finish();
         }
 
@@ -576,7 +562,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -588,14 +573,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response ID Value", responseJSON.get("result").toString());
                     String result = responseJSON.get("result").toString();
-                    //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                    Log.i("responese value", "DATA response = " + result);
                 } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }

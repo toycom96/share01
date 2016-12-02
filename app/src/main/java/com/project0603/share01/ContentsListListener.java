@@ -42,7 +42,6 @@ public class ContentsListListener extends RecyclerView.OnScrollListener {
 
         //if (totalItemCount != 0 && lastVisibleItemPositions[0] + 2 >= totalItemCount) {
         if ( totalItemCount > 0 && (visibleItemCount + firstVisibleItem[0]) >= totalItemCount - 5) {
-            Log.e("~~v4 : ", "Start Load");
             int offset = this.mActivity.mContentsList.get(totalItemCount -1).getId();
 
             this.mActivity.mContentsLoader.loadFromApi(offset, GlobalVar.dist, GlobalVar.cate1, Profile.auth);

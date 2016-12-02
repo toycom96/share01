@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e("MainActivity", "MainActivity");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -217,13 +216,11 @@ public class MainActivity extends AppCompatActivity
 
         //회원 가입 유무 확인
         checkForLogin();
-
     }
 
     BroadcastReceiver mainActivityAuthFinishReceiver = new BroadcastReceiver(){
         @Override
         public void onReceive(Context context, Intent intent){
-
             getUserProfile user = new getUserProfile();
             user.execute();
 
@@ -439,7 +436,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openBottomSheet(int titleVal, int cateVal1, int cateVal2, final int caseVal){
-        Log.e("openBottomSheet", "Open");
         /*
          * Create by Lai.OH 2016.07.27
          *
@@ -477,14 +473,14 @@ public class MainActivity extends AppCompatActivity
                         intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
                         startActivity(intent);
                         mBottomSheetDialog.dismiss();
-                        finish();
+                        //finish();
 
                         break;
                     case 2 :
                         intent = new Intent(MainActivity.this, SigninActivity.class);
                         startActivity(intent);
                         mBottomSheetDialog.dismiss();
-                        finish();
+                        //finish();
                         break;
                 }
             }
@@ -504,7 +500,7 @@ public class MainActivity extends AppCompatActivity
                         Intent intent = new Intent(MainActivity.this, SignupActivity.class);
                         startActivity(intent);
                         mBottomSheetDialog.dismiss();
-                        finish();
+                        //finish();
                         break;
                 }
             }

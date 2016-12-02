@@ -229,8 +229,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
 
 
-            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+            //startActivity(intent);
             finish();
         }
 
@@ -255,11 +255,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             String join_photo = "";
             String join_coment = "";
-
-            Log.e("user_id", join_id);
-            Log.e("userpass", join_pass);
-            Log.e("userDevice", join_device_id);
-
 
             try {
                 GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
@@ -298,7 +293,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 int responseCode = conn.getResponseCode();
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -310,14 +304,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.e("Response ID Value", responseJSON.get("Id").toString());
                     String result = responseJSON.get("Id").toString();
-                    //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                    Log.i("responese value", "DATA response = " + result);
 
                     Profile.user_id = Integer.parseInt(result);
                     Profile.device_id = join_device_id;

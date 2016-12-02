@@ -414,7 +414,6 @@ public class BbsDetailActivity extends AppCompatActivity {
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
                 //데이터 주고 받는 형식 : json 설정
-                Log.e("user_auth", user_auth);
                 conn.addRequestProperty("Cookie", user_auth);
                 //Cookie값 설정(auth)
                 conn.setDoOutput(true);
@@ -444,7 +443,6 @@ public class BbsDetailActivity extends AppCompatActivity {
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -457,11 +455,8 @@ public class BbsDetailActivity extends AppCompatActivity {
 
                     response = new String(byteData);
                     //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response Age Value", responseJSON.get("Msg").toString());
-                    Log.i("Response Age Value", responseJSON.get("Media").toString());
 
                     getBbs_user_id = Integer.parseInt(responseJSON.get("User_id").toString());
                     getBbs_title = responseJSON.get("Title").toString();
@@ -591,7 +586,6 @@ public class BbsDetailActivity extends AppCompatActivity {
                 if(responseCode == HttpURLConnection.HTTP_OK) {
                     int unix_sec = 0;
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -607,7 +601,6 @@ public class BbsDetailActivity extends AppCompatActivity {
 
 
                     if (response.isEmpty() || response.equals("null") ) {
-                        Log.e("ChatListNull", response.toString());
                         return null;
                     }
                     mBbsMemo.clear();
@@ -644,7 +637,6 @@ public class BbsDetailActivity extends AppCompatActivity {
                         }*/
                         mBbsMemo.add(new BbsMemo(getBbs_id, 0, getBbsMemo_userid, getBbsMemo_username, getBbsMemo_userage,  getBbsMemo_usersex, getBbsMemo_userphoto, getBbsMemo_memo, getBbsMemo_term));
                     }
-                    Log.i("Response Data", response);
                     //JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
 

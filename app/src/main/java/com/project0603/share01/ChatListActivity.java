@@ -68,7 +68,6 @@ public class ChatListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_chat_list);
         setContentView(R.layout.activity_chat_list);
-        Log.e("ChatListActivity", "ChatListActivity");
         init();
 
         this.registerReceiver(this.refreshChatRoomListReceiver, new IntentFilter("refreshChatRoomList"));
@@ -227,7 +226,6 @@ public class ChatListActivity extends AppCompatActivity {
                 if(responseCode == HttpURLConnection.HTTP_OK) {
                     int unix_sec = 0;
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -239,11 +237,9 @@ public class ChatListActivity extends AppCompatActivity {
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
 
 
                     if (response.isEmpty() || response.equals("null") ) {
-                        Log.e("ChatListNull", response.toString());
                         return null;
                     }
                     mChatRooms.clear();
@@ -279,12 +275,6 @@ public class ChatListActivity extends AppCompatActivity {
                         mChatRooms.add(new ChattingRoom(getChatroomId,getRecvId, getRecvName, getMsg, getTime, getSex, getEtcInfo, getPhoto, getBadgeCnt));
                         totalChatBadgeCnt = totalChatBadgeCnt + getBadgeCnt;
                     }
-                    Log.i("Response Data", response);
-                    //JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-
-
-
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }

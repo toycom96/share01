@@ -99,8 +99,6 @@ public class ChatActivity extends AppCompatActivity {
         mGetChatRoomId = getIntent().getIntExtra("room_id", -1);
         mGetSendId = getIntent().getIntExtra("sender_id", -1);
         mGetSenderPhoto = getIntent().getStringExtra("sender_photo");
-        Log.e("room_id", String.valueOf(mGetChatRoomId));
-        Log.e("sender_id", String.valueOf(mGetSendId));
         switch (mGetChatRoomId) {
             case -1 :
                 Toast.makeText(getApplicationContext(), "새로운 채팅", Toast.LENGTH_SHORT).show();
@@ -212,7 +210,6 @@ public class ChatActivity extends AppCompatActivity {
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -224,14 +221,8 @@ public class ChatActivity extends AppCompatActivity {
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.e("Response ID Value", responseJSON.get("chat_id").toString());
                     mGetChatRoomId = Integer.parseInt(responseJSON.get("chat_id").toString());
-                    //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                    Log.i("responese value", "DATA response = " + mGetChatRoomId);
 
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

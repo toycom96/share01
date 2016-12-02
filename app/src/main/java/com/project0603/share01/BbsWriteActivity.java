@@ -173,7 +173,7 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
                 out.flush();
                 out.close();
             } catch (Exception e) {
-                Log.e("Image", "Convert");
+                e.printStackTrace();
             }
 
             UploadBbsImgTask bbs_photo_upload = new UploadBbsImgTask();
@@ -335,11 +335,8 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             dialog.dismiss();
-            //Log.e("response String before", s);
             getBbs_photo_url = s;
-            //getPhotoPath = s.replace("[", "").replace("]", "");
 
-            Log.e("response String after", getBbs_photo_url);
             Toast.makeText(getApplicationContext(), "file uploaded",
                     Toast.LENGTH_LONG).show();
 
@@ -433,7 +430,6 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
                 conn.connect();
 
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    Log.e("HTTP OK", "HTTP OK");
                     String result = readStream(conn.getInputStream());
 
                     //int i = 0;
@@ -605,7 +601,6 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -617,12 +612,7 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response Age Value", responseJSON.get("Msg").toString());
-                    Log.i("Response Age Value", responseJSON.get("Media").toString());
 
 
                     getBbs_title = responseJSON.get("Title").toString();
@@ -767,7 +757,6 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -780,13 +769,10 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
 
                     response = new String(byteData);
                     //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
                     //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response ID Value", responseJSON.get("result").toString());
                     String result = responseJSON.get("result").toString();
                     //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                    Log.i("responese value", "DATA response = " + result);
                 }else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }

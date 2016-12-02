@@ -48,7 +48,6 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         int unix_sec = 0;
         String getTime;
 
-        Log.e("onBindViewHolder", "onBindViewHolder");
         //Picasso.with(mContext).load(ContentsList.get(position).getPicUrl()).resize(476,0).into(holder.Pic);
         photo_path = ContentsList.get(position).getPicUrl();
         if (photo_path != null && !photo_path.equals("")) {
@@ -92,7 +91,6 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
         holder.Photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("~~~~Click : ", "Photo");
                 Intent intent = new Intent(mContext, PictureDetailViewActivity.class);
                 intent.putExtra("photo_path", ContentsList.get(position).getPicUrl());
                 mContext.startActivity(intent);
@@ -170,7 +168,6 @@ public class ContentsListAdapter  extends RecyclerView.Adapter<ContentsListAdapt
 
             messageUtil.show();*/
 
-            Log.e("~~~~Click : ", "Photo");
             Intent intent = new Intent(mContext, BbsDetailActivity.class);
             intent.putExtra("bbs_id", ViewHolder.this.ContentId);
             mContext.startActivity(intent);

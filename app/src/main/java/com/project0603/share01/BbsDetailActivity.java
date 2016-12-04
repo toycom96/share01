@@ -152,6 +152,7 @@ public class BbsDetailActivity extends AppCompatActivity {
 
                     case R.id.bbs_detail_photo:
                         photo_idx++;
+                        if (photo_idx >= 5) photo_idx = 0;
 
                         if (getBbs_photo_url[photo_idx] != null && !getBbs_photo_url[photo_idx].equals("")) {
                             try {

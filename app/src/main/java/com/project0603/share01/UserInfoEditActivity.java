@@ -81,7 +81,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     private String getPhotoPath;
 
-    public Bitmap user_photo_bm;
+    public static Bitmap user_photo_bm;
     private final String info_url = GlobalVar.https_api1 + "/user_info";
     private final String edit_url = GlobalVar.https_api1 + "/user_edit";
     private static final int GET_PICTURE_URI = 101;
@@ -125,8 +125,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             selectedImagePath = cursor.getString(columnIndex);
             cursor.close();
 
-            user_photo_bm = BitmapFactory.decodeFile(selectedImagePath);
-            user_photo.setImageBitmap(user_photo_bm);
+            //user_photo_bm = BitmapFactory.decodeFile(selectedImagePath);
+            user_photo_bm = decodeSampledBitmapFromFile(selectedImagePath, 1280,1280);
 
             ExifInterface exif = null;
             try {
@@ -157,7 +157,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             File file = new File(getExternalCacheDir(), "unlimited_share_image.jpg");
             try {
                 FileOutputStream out = new FileOutputStream(file);
-                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 85, out);
+                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                user_photo.setImageBitmap(user_photo_bm);
                 out.flush();
                 out.close();
             } catch (Exception e) {
@@ -169,10 +170,46 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+    private static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degrees);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+
+        return inSampleSize;
+    }
+
+    private static Bitmap decodeSampledBitmapFromFile(String path,int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path,options);
     }
 
 
@@ -494,7 +531,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     getUserNick = responseJSON.get("Name").toString();
                     getUserAge = Integer.parseInt(responseJSON.get("Age").toString());
                     getUserComent = responseJSON.get("Msg").toString();
-                    getUserOpenchat = responseJSON.get("openchat").toString();
+                    getUserOpenchat = responseJSON.get("Openchat").toString();
                     getUserPhoto = responseJSON.get("Photo").toString();
                 } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");

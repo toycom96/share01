@@ -81,11 +81,12 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
     private int getBbs_id;
     private int getEdit_flag;   //0은 새로운 글쓰기 모드, 1은 수정 모드
 
-    public Bitmap main_photo_bm;
-    public Bitmap sub_photo_bm1;
-    public Bitmap sub_photo_bm2;
-    public Bitmap sub_photo_bm3;
-    public Bitmap sub_photo_bm4;
+    public static Bitmap main_photo_bm;
+    public static Bitmap sub_photo_bm1;
+    public static Bitmap sub_photo_bm2;
+    public static Bitmap sub_photo_bm3;
+    public static Bitmap sub_photo_bm4;
+    public static Bitmap loadedBitmap;
     //private final String getmy_url = GlobalVar.https_api1 + "/bbs_getmy";
     private final String getmy_url = GlobalVar.https_api1 + "/bbs_view";
     private final String write_url = GlobalVar.https_api1 + "/bbs_write";
@@ -138,7 +139,7 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            Bitmap loadedBitmap = BitmapFactory.decodeFile(picturePath);
+            loadedBitmap = decodeSampledBitmapFromFile(picturePath, 1280,1280);
 
             ExifInterface exif = null;
             try {
@@ -169,7 +170,7 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
             File file = new File(getExternalCacheDir(), "unlimited_share_image.jpg");
             try {
                 FileOutputStream out = new FileOutputStream(file);
-                loadedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
+                loadedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
                 out.flush();
                 out.close();
             } catch (Exception e) {
@@ -181,10 +182,46 @@ public class BbsWriteActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+    private static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degrees);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+
+        return inSampleSize;
+    }
+
+    private static Bitmap decodeSampledBitmapFromFile(String path,int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path,options);
     }
 
 

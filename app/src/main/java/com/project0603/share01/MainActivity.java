@@ -189,6 +189,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        /*this.registerReceiver(this.mainActivityNewBadgeReceiver, new IntentFilter("mainActivityNewBadge"));
+        this.registerReceiver(this.mainActivityAuthFinishReceiver, new IntentFilter("AuthFinish"));*/
         // michael adding
 
         /*
@@ -224,6 +226,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent){
 
+            Log.e("Main Receiver", "getUserProfile");
             getUserProfile user = new getUserProfile();
             user.execute();
 
@@ -530,6 +533,8 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            Log.e("getUserProfile", "set Profile");
+
             user_email_tv.setText(Profile.email);
             user_nick_tv.setText(Profile.name);
 
@@ -592,6 +597,7 @@ public class MainActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.e("getUserProfile", "onBackFinish");
             return null;
         }
     }

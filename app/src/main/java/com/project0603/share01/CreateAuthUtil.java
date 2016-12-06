@@ -36,6 +36,7 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
 
         //context.sendBroadcast(new Intent("com.project0603.share01.AuthFinish"));
         context.sendBroadcast(new Intent("AuthFinish"));
+        Log.e("Create Auth", "AuthFinish");
     }
 
     @Override

@@ -57,6 +57,9 @@ public class Profile {
                 age = Integer.parseInt(responseJSON.get("Age").toString());
             if (!responseJSON.get("Sex").toString().equals(""))
                 sex = responseJSON.get("Sex").toString();
+
+            Log.e("Profile", email);
+            Log.e("Profile", name);
         } catch (Exception e) {
             e.printStackTrace();
         }

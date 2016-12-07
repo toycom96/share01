@@ -35,7 +35,7 @@ public class ContentsListLoad {
     static Context mContext;
     private String mDistFlag = "0";
     private final Lock _mutex = new ReentrantLock(true);
-    private GpsInfo mGps;
+    private GpsInfo mGps = null;
     private double mLat;
     private double mLon;
     private int refresh_data_flag = 0;
@@ -65,6 +65,18 @@ public class ContentsListLoad {
     }
 
     public int loadFromApi(int ListIndex, int dist_flag, String cateStr, String auth) {
+
+        if (ListIndex == 0) {
+            mGps = new GpsInfo(mContext);
+            if (mGps.isGetLocation()) {
+                Profile.gpslat = mGps.getLatitude();
+                Profile.gpslong = mGps.getLongitude();
+            } else {
+                // GPS 를 사용할수 없으므로
+                mGps.showSettingsAlert();
+            }
+        }
+
         if (GlobalVar.loading_flag == 1) {
             return 0;
         }
@@ -143,8 +155,8 @@ public class ContentsListLoad {
                 conn.setDoInput(true);
 
                 JSONObject job = new JSONObject();
-                job.put("long", mLon);
-                job.put("lat", mLat);
+                job.put("long", Profile.gpslong);
+                job.put("lat", Profile.gpslat);
                 job.put("cate", value[2]);
                 job.put("dist", Integer.parseInt(value[1]));
                 job.put("lidx", Integer.parseInt(value[0]));

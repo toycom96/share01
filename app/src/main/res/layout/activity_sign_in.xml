@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="아이디를 입력해주세요"
+            android:hint="아이디(이메일 형식)를 입력해주세요"
             android:inputType="textEmailAddress"
             android:backgroundTint="@color/colorPrimary"
             android:textCursorDrawable="@color/colorPrimary"/>

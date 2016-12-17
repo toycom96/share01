@@ -7,7 +7,7 @@ android {
         //javaMaxHeapSize "4g" //specify the heap size for the dex process
     }
     defaultConfig {
-        applicationId "com.project0603.share01"
+        applicationId "com.project0603.share00"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 2

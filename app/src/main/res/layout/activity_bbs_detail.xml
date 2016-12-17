@@ -10,7 +10,7 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:background="#EEEEEE"
-    tools:context="com.project0603.share01.BbsDetailActivity">
+    tools:context="com.project0603.share00.com.project0603.share00.BbsDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:padding="0dp"
-    tools:context="com.project0603.share01.PictureDetailViewActivity">
+    tools:context="com.project0603.share00.com.project0603.share00.PictureDetailViewActivity">
 
     <ImageButton
         android:id="@+id/picture_detail_cancel"

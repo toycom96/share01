@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="com.project0603.share01.ContentDetailActivity">
+    tools:context="com.project0603.share00.com.project0603.share00.ContentDetailActivity">
 
     <Button
         android:id="@+id/detail_chat_button"

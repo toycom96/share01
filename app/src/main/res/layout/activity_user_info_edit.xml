@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="0dp"
-    tools:context=".UserInfoEditActivity">
+    tools:context="com.project0603.share00.UserInfoEditActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

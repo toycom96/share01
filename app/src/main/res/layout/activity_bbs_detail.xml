@@ -95,25 +95,51 @@
             android:textColor="@color/colorPrimary"/>
         </FrameLayout>
         <FrameLayout
-            android:layout_width="100dp"
+            android:layout_width="108dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
+            android:layout_margin="1dp"
             android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bbs_detail_openlink"
-            android:layout_width="65dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center_vertical|right"
-            android:visibility="invisible"
-            android:layout_marginRight="1dp"
-            android:text="오픈 채팅"
-            android:textSize="14dp"
-            android:background="@drawable/buttonshape"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="1"
-            android:textColor="@color/colorPrimary"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:padding="0dp"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/bbs_detail_openlink"
+                    android:layout_width="65dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:visibility="invisible"
+                    android:layout_marginRight="3dp"
+                    android:text="오픈 채팅"
+                    android:textSize="14dp"
+                    android:background="@drawable/buttonshape"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="1"
+                    android:textColor="@color/colorPrimary"/>
+
+                <Button
+                    android:id="@+id/bbs_detail_chat"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="1dp"
+                    android:text="쪽 지"
+                    android:textSize="14dp"
+                    android:background="@drawable/buttonshape"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="1"
+                    android:textColor="@color/colorPrimary"/>
+
+
+            </LinearLayout>
         </FrameLayout>
         </FrameLayout>
 

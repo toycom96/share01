@@ -73,6 +73,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private ArrayList<BbsMemo> mBbsMemo = null;
     private BbsMemoAdapter mBbsMemoAdapter;
     private Button BbsMemo_write;
+    private Button User_chat;
     private Button User_link;
     private EditText BbsMemo_msg;
 
@@ -120,6 +121,7 @@ public class BbsDetailActivity extends AppCompatActivity {
         bbs_msg = (TextView) findViewById(R.id.bbs_detail_msg);
         bbs_opt = (TextView) findViewById(R.id.bbs_detail_pay);
         bbs_photo = (ImageView) findViewById(R.id.bbs_detail_photo);
+        User_chat = (Button) findViewById(R.id.bbs_detail_chat);
         User_link = (Button) findViewById(R.id.bbs_detail_openlink);
         BbsMemo_lv = (ListView)  findViewById(R.id.bbs_detail_memo);
         BbsMemo_msg = (EditText) findViewById(R.id.bbs_detail_memo_msg);
@@ -130,6 +132,33 @@ public class BbsDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getBbs_openlink));
                 startActivity(myIntent);
+            }
+        });
+        User_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Profile.user_id == getBbs_user_id) {
+                    Toast.makeText(BbsDetailActivity.this, "자신에게는 쪽지를 보낼 수 없습니다.",Toast.LENGTH_SHORT).show();
+                } else {
+                    final MessageDialogUtil messageUtil =
+                            new MessageDialogUtil(BbsDetailActivity.this, getBbs_name, getBbs_sex, getBbs_title, getBbs_user_id);
+
+                    messageUtil.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialog) {
+                            messageUtil.setTitle();
+                        }
+                    });
+
+                    messageUtil.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            return;
+                        }
+                    });
+
+                    messageUtil.show();
+                }
             }
         });
         BbsMemo_write.setOnClickListener(new View.OnClickListener() {

@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class BbsDetailActivity extends AppCompatActivity {
     private TextView bbs_opt;
     private TextView bbs_etc;
     private ImageView bbs_photo;
+    private FrameLayout bbs_userinfo;
 
     private int getBbs_user_id;
     private String getBbs_title;
@@ -126,12 +128,36 @@ public class BbsDetailActivity extends AppCompatActivity {
         BbsMemo_lv = (ListView)  findViewById(R.id.bbs_detail_memo);
         BbsMemo_msg = (EditText) findViewById(R.id.bbs_detail_memo_msg);
         BbsMemo_write = (Button) findViewById(R.id.bbs_detail_memo_write);
+        bbs_userinfo = (FrameLayout) findViewById(R.id.bbs_detail_userinfo);
 
         User_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getBbs_openlink));
                 startActivity(myIntent);
+            }
+        });
+        bbs_userinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProfileDialogUtil ProfileDialog =
+                        new ProfileDialogUtil(BbsDetailActivity.this, getBbs_user_id);
+
+                ProfileDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        ProfileDialog.setTitle("AA");
+                    }
+                });
+
+                ProfileDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        return;
+                    }
+                });
+
+                ProfileDialog.show();
             }
         });
         User_chat.setOnClickListener(new View.OnClickListener() {

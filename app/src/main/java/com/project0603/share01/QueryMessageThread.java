@@ -81,7 +81,6 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
         int chatroom_id = Integer.parseInt(value[1]);
         String UserPhoto = value[2];
         String auth = value[3];
-        Log.e("query get auth", auth);
         try {
             IgnoreHttpSertification.ignoreSertificationHttps();
             URL obj = new URL(connUrl);
@@ -108,7 +107,6 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
             int responseCode = conn.getResponseCode();
             if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                Log.e("HTTP_OK", "HTTP OK RESULT");
                 is = conn.getInputStream();
                 baos = new ByteArrayOutputStream();
                 byte[] byteBuffer = new byte[1024];
@@ -120,8 +118,6 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
                 byteData = baos.toByteArray();
 
                 response = new String(byteData);
-                //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                Log.i("Response Data", response);
 
                 JSONArray ja = new JSONArray(response);
                 mChatMessages.clear();
@@ -139,8 +135,6 @@ public class QueryMessageThread extends AsyncTask<String, Void, Void> {
                     String getSenderName = order.get("User_name").toString();
                     String getMsg = order.get("Msg").toString();
                     String getTime = order.get("Sended").toString();
-
-                    Log.e("chatListJson", order.toString());
 
                     mChatMessages.add(new ChatMessage(getMsgId,mGetChatroomId, getSendId, UserPhoto, getSenderName, getMsg, getTime));
                     //메세지에 대한 내용 ArrayList에 저장

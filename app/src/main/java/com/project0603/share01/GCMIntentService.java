@@ -128,12 +128,17 @@ public class GCMIntentService extends IntentService {
     }
 
     int getRunActivity()	{
+        String className;
+        try {
+            ActivityManager activity_manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> task_info = activity_manager.getRunningTasks(1);
 
-        ActivityManager activity_manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> task_info = activity_manager.getRunningTasks(9999);
-
-        //String className = task_info.get(task_info.size()-1).topActivity.getClassName();
-        String className = task_info.get(0).topActivity.getClassName();
+            //String className = task_info.get(task_info.size()-1).topActivity.getClassName();
+            className = task_info.get(0).topActivity.getClassName();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
 
         if(className.equals("com.project0603.share01.ChatActivity")) {
             return 1;

@@ -140,8 +140,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+        //intent.putExtra("start_activity_flag", 2);
         finish();
     }
 
@@ -169,17 +169,19 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 auth.execute();
 
                 loading.dismiss();
-
+                signin_button.setEnabled(true);
+                finish();
             } else {
 
                 Toast.makeText(SigninActivity.this, "로그인중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
                 loading.dismiss();
+                signin_button.setEnabled(true);
             }
 
-            signin_button.setEnabled(true);
-            Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+
+            //Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+            //startActivity(intent);
+
         }
 
         @Override
@@ -228,9 +230,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 os.flush();
 
                 int responseCode = conn.getResponseCode();
+
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -242,10 +244,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
 
                     Profile.user_id = Integer.parseInt(responseJSON.get("Id").toString());
                     Profile.device_id = responseJSON.get("Device_id").toString();

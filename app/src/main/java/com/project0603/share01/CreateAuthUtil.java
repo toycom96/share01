@@ -83,7 +83,6 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
 
             if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                Log.e("HTTP_OK", "HTTP OK RESULT");
                 is = conn.getInputStream();
                 baos = new ByteArrayOutputStream();
                 byte[] byteBuffer = new byte[1024];
@@ -98,7 +97,6 @@ class CreateAuthUtil extends AsyncTask<String, Void, Void> {
                 JSONObject responseJSON = new JSONObject(response);
 
                 String result = responseJSON.get("result").toString();
-                Log.i("auth_result_code", result);
 
                 List<String> cookies = conn.getHeaderFields().get("Set-Cookie");
                 if (cookies != null) {

@@ -81,10 +81,10 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     private String getPhotoPath;
 
-    public Bitmap user_photo_bm;
+    public static Bitmap user_photo_bm;
     private final String info_url = GlobalVar.https_api1 + "/user_info";
     private final String edit_url = GlobalVar.https_api1 + "/user_edit";
-    private static final int SELECT_PHOTO = 100;
+    private static final int GET_PICTURE_URI = 101;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -112,7 +112,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         if ( resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
@@ -125,8 +125,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             selectedImagePath = cursor.getString(columnIndex);
             cursor.close();
 
-            user_photo_bm = BitmapFactory.decodeFile(selectedImagePath);
-            user_photo.setImageBitmap(user_photo_bm);
+            //user_photo_bm = BitmapFactory.decodeFile(selectedImagePath);
+            user_photo_bm = decodeSampledBitmapFromFile(selectedImagePath, 1280,1280);
 
             ExifInterface exif = null;
             try {
@@ -157,11 +157,12 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             File file = new File(getExternalCacheDir(), "unlimited_share_image.jpg");
             try {
                 FileOutputStream out = new FileOutputStream(file);
-                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 85, out);
+                user_photo_bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                user_photo.setImageBitmap(user_photo_bm);
                 out.flush();
                 out.close();
             } catch (Exception e) {
-                Log.e("Image", "Convert");
+                e.printStackTrace();
             }
 
             UploadImageTask editInfo = new UploadImageTask();
@@ -169,10 +170,46 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+    private static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degrees);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+
+        return inSampleSize;
+    }
+
+    private static Bitmap decodeSampledBitmapFromFile(String path,int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path,options);
     }
 
 
@@ -246,10 +283,16 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     // We don't have permission so prompt the user
                     ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE );
                 } else {
-                    Intent photoPickerIntent = new Intent();
+                    /*Intent photoPickerIntent = new Intent();
                     photoPickerIntent.setType("image/*");
                     photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), SELECT_PHOTO);
+                    startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), SELECT_PHOTO);*/
+
+
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, GET_PICTURE_URI);
                 }
                 break;
         }
@@ -308,11 +351,9 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             dialog.dismiss();
-            Log.e("response String before", s);
             getPhotoPath = s;
             //getPhotoPath = s.replace("[", "").replace("]", "");
 
-            Log.e("response String after", getPhotoPath);
             Toast.makeText(getApplicationContext(), "file uploaded",
                     Toast.LENGTH_LONG).show();
         }
@@ -357,14 +398,11 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 conn.connect();
 
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    Log.e("HTTP OK", "HTTP OK");
                     String result = readStream(conn.getInputStream());
 
-                    //int i = 0;
                     JSONObject responseJSON = new JSONArray(result).getJSONObject(0);
 
                     String filename = responseJSON.get("Filename").toString();
-                    //Log.e("result", filename);
                     return filename;
                 } else {
                     Log.e("HTTP CODE", "HTTP CONN FAILED");
@@ -466,7 +504,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
-                Log.e("user_auth", user_auth);
                 conn.addRequestProperty("Cookie", user_auth);
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
@@ -478,7 +515,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -490,19 +526,12 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response Nick Value", responseJSON.get("Name").toString());
-                    Log.i("Response Age Value", responseJSON.get("Age").toString());
-                    Log.i("Response Age Value", responseJSON.get("Msg").toString());
-                    Log.i("Response Age Value", responseJSON.get("Photo").toString());
 
                     getUserNick = responseJSON.get("Name").toString();
                     getUserAge = Integer.parseInt(responseJSON.get("Age").toString());
                     getUserComent = responseJSON.get("Msg").toString();
-                    getUserOpenchat = responseJSON.get("openchat").toString();
+                    getUserOpenchat = responseJSON.get("Openchat").toString();
                     getUserPhoto = responseJSON.get("Photo").toString();
                 } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
@@ -523,8 +552,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Toast.makeText(UserInfoEditActivity.this, "정보수정 완료", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(UserInfoEditActivity.this, MainActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(UserInfoEditActivity.this, MainActivity.class);
+            //startActivity(intent);
             finish();
         }
 
@@ -570,7 +599,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                 int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
 
-                    Log.e("HTTP_OK", "HTTP OK RESULT");
                     is = conn.getInputStream();
                     baos = new ByteArrayOutputStream();
                     byte[] byteBuffer = new byte[1024];
@@ -582,14 +610,8 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                    Log.i("Response Data", response);
                     JSONObject responseJSON = new JSONObject(response);
-                    //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                    Log.i("Response ID Value", responseJSON.get("result").toString());
                     String result = responseJSON.get("result").toString();
-                    //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                    Log.i("responese value", "DATA response = " + result);
                 } else {
                     Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
                 }

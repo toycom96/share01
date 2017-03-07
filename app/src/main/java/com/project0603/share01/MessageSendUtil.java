@@ -105,7 +105,6 @@ public class MessageSendUtil extends AsyncTask<String, Void, Void>{
             int responseCode = conn.getResponseCode();
             if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                Log.e("HTTP_OK", "HTTP OK RESULT");
                 is = conn.getInputStream();
                 baos = new ByteArrayOutputStream();
                 byte[] byteBuffer = new byte[1024];
@@ -117,15 +116,8 @@ public class MessageSendUtil extends AsyncTask<String, Void, Void>{
                 byteData = baos.toByteArray();
 
                 response = new String(byteData);
-                //Json 문자열로 온 데이터값을 저장함( ex.> {"key":value} )
-                Log.i("Response Data", response);
                 JSONObject responseJSON = new JSONObject(response);
-                //JSONObject를 생성해 key값 설정으로 result값을 받음.
-                Log.e("Response ID Value", responseJSON.get("chat_id").toString());
                 mGetChatRoomId = responseJSON.get("chat_id").toString();
-                //Toast.makeText(this, "Your id value : : " + result, Toast.LENGTH_SHORT);
-                Log.i("responese value", "DATA response = " + mGetChatRoomId);
-
             }else {
                 Log.e("HTTP_ERROR", "NOT CONNECTED HTTP");
             }

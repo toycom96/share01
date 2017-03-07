@@ -85,12 +85,13 @@ public class MainActivity extends AppCompatActivity
     public TextView mMainNewBadge;
 
     private int start_activity_flag = 0; // 0:MainActivity, 1:ChatListActivity
+    //Signin , Signup 화면으로 이동후 아무런 행동 없이 Main으로 돌아왔을 때 bottomup이 뜨지 않는 문제를 해결하기 위한 변수
+    private boolean return_activity_flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e("MainActivity", "MainActivity");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent  intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
         user_logout.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +220,6 @@ public class MainActivity extends AppCompatActivity
 
         //회원 가입 유무 확인
         checkForLogin();
-
     }
 
     BroadcastReceiver mainActivityAuthFinishReceiver = new BroadcastReceiver(){
@@ -350,6 +350,10 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+        if (return_activity_flag) {
+            checkForLogin();
+            return_activity_flag = false;
+        }
         Intent intent = getIntent();
         start_activity_flag = intent.getIntExtra("start_activity_flag", 0);
 
@@ -442,7 +446,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openBottomSheet(int titleVal, int cateVal1, int cateVal2, final int caseVal){
-        Log.e("openBottomSheet", "Open");
         /*
          * Create by Lai.OH 2016.07.27
          *
@@ -480,14 +483,15 @@ public class MainActivity extends AppCompatActivity
                         intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
                         startActivity(intent);
                         mBottomSheetDialog.dismiss();
-                        finish();
+                        //finish();
 
                         break;
                     case 2 :
                         intent = new Intent(MainActivity.this, SigninActivity.class);
                         startActivity(intent);
                         mBottomSheetDialog.dismiss();
-                        finish();
+                        return_activity_flag = true;
+                        //finish();
                         break;
                 }
             }
@@ -507,7 +511,8 @@ public class MainActivity extends AppCompatActivity
                         Intent intent = new Intent(MainActivity.this, SignupActivity.class);
                         startActivity(intent);
                         mBottomSheetDialog.dismiss();
-                        finish();
+                        return_activity_flag = true;
+                        //finish();
                         break;
                 }
             }

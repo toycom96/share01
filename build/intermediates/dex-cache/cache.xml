@@ -12,57 +12,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="9cad249cf62751a323d9af568caf12284b7d6062">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-nearby-8.4.0_99225faf779df1e95940416e8dc84396146af8f1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appinvite\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="9fe026fb4c7fce21bc5142f6e1bdf844f28061ac">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appinvite-8.4.0_2d2fd82f9c2b5ae3aa4202a1dd7025b8a5021ed8\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="b82b8e847173c28efffcd291b2a0b1ae9ad17fa4">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-identity-8.4.0_403d5da0f98e6435342dfe911fd044c1d1c6dc11\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\8.4.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
         sha1="1c9f35e952b212c843f7bd2c7eec8e82ad95602e">
         <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-analytics-8.4.0_0e5a4056fe0798ecab8e2d9ac9f8be028c337ea7\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\design\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.4.0_ab493f848e1c81c724ac0940ca7a83cae2579c0d\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.4.0_69b89cbba70e6c5eb1a6eed4686aecd0cc5ab32a\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -111,15 +66,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.4.0_4a484880e21325d5cb787bc966335dca110c1f08\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\OHRok\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.0.0\2534c458682c73f5b9871131ab3098d3f987ca3\okio-1.0.0.jar"
         jumboMode="true"
         optimize="true"
@@ -156,30 +102,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="f2df436a8f02ce7e4d7d209671fc45f97c470f0e">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wallet-8.4.0_c968a6480b892a3a3af785039f7e342a817fdd17\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-drive\8.4.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
         sha1="b36f30ac5ee5d5214f4b1e2ac49f11889d58e71a">
         <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-drive-8.4.0_1e87f57b3ab35df21ba357600a02d27eaae1158e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.4.0_4efd16aff5e3f7db63ed6ca3c1d3fb8ce6210dc0\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -210,24 +138,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appindexing-8.4.0_b4e16754efb69d55f3b952b0631ae9d4ca1170d2\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="667a20c6cc311f7cf18135473fca9890c15eabde">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_dbe23024154d6189c126a3e82640004f26d2adcc\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\8.4.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
@@ -237,39 +147,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="e167a34eaca0b31704212f43f9576ea84e05046f">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wearable-8.4.0_e26d432a82ef4010a08993e9a546d2c641798096\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-auth\8.4.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
         sha1="966e5771a5a2ebfb31bf00d7cd6cd2546d245517">
         <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-auth-8.4.0_9c6e29523a7c7f41567d1190dff61e67f96e911c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\23.0.0\jars\libs\internal_impl-23.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="03d38bb042efe3e5ce27ba66b729a9523c36d8fe">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.0.0_507824bf7979d6ea118110c8a910f614bf29c7c1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="04de44f90606c77f3b28cf44861f306290505aac">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-maps-8.4.0_cee6d4e62e121843b341129251895f01b2d6bab1\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -288,15 +171,6 @@
         revision="23.0.3"
         sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
         <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.4.0_89cb4ecc606f21015df19444011916752e7c9a92\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-8.4.0_89dc7aa31534070fbbdec860419a2e5ff78c5704\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -327,6 +201,150 @@
     </item>
     <item
         is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="551e78f21acf69ebfb489c0e79647824c838013e">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-cast-8.4.0_060bdc9845566ea84a7c468525d6970575f85e32\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.4.0_98e2bbb984ce5a61c7d7a5e9e57b4c9ddbd89564\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="9cad249cf62751a323d9af568caf12284b7d6062">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-nearby-8.4.0_99225faf779df1e95940416e8dc84396146af8f1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appinvite\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="9fe026fb4c7fce21bc5142f6e1bdf844f28061ac">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appinvite-8.4.0_2d2fd82f9c2b5ae3aa4202a1dd7025b8a5021ed8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="b82b8e847173c28efffcd291b2a0b1ae9ad17fa4">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-identity-8.4.0_403d5da0f98e6435342dfe911fd044c1d1c6dc11\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\design\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.4.0_ab493f848e1c81c724ac0940ca7a83cae2579c0d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.4.0_69b89cbba70e6c5eb1a6eed4686aecd0cc5ab32a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.4.0_4a484880e21325d5cb787bc966335dca110c1f08\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="f2df436a8f02ce7e4d7d209671fc45f97c470f0e">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wallet-8.4.0_c968a6480b892a3a3af785039f7e342a817fdd17\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.4.0_4efd16aff5e3f7db63ed6ca3c1d3fb8ce6210dc0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appindexing-8.4.0_b4e16754efb69d55f3b952b0631ae9d4ca1170d2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="582601346bbdc13b313cdddb23187183cb4741b3">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_dbe23024154d6189c126a3e82640004f26d2adcc\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="e167a34eaca0b31704212f43f9576ea84e05046f">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wearable-8.4.0_e26d432a82ef4010a08993e9a546d2c641798096\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="03d38bb042efe3e5ce27ba66b729a9523c36d8fe">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.0.0_507824bf7979d6ea118110c8a910f614bf29c7c1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="04de44f90606c77f3b28cf44861f306290505aac">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-maps-8.4.0_cee6d4e62e121843b341129251895f01b2d6bab1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
+        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-8.4.0_89dc7aa31534070fbbdec860419a2e5ff78c5704\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.android.support\multidex\1.0.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
@@ -354,15 +372,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="551e78f21acf69ebfb489c0e79647824c838013e">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-cast-8.4.0_060bdc9845566ea84a7c468525d6970575f85e32\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\8.4.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
@@ -376,17 +385,8 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="48bafede6f7613874c9acbdc64dee44a536e128a">
+        sha1="41e2a524a076ed8e1980b229974082892c918f1b">
         <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_96acbad922c43b47e098a834c4c95c07ab3bee90\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\SourceTree\0603\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
-        <dex dex="D:\SourceTree\0603\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.4.0_98e2bbb984ce5a61c7d7a5e9e57b4c9ddbd89564\classes.dex" />
     </item>
 
 </items>

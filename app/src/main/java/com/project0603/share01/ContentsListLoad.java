@@ -99,12 +99,10 @@ public class ContentsListLoad {
         protected void onPostExecute(Void aVoid) {
             if (refresh_data_flag == 0 ) {
                 int curSize2 = mAdapter.getItemCount();
-                Log.e("~~reload1", String.valueOf(curSize)+ ":"+ String.valueOf(curSize2)+"/ " + String.valueOf(mContentItem.size()));
 
                 mAdapter.notifyItemInserted(curSize);
                 //mAdapter.notifyItemRangeInserted(curSize, mContentItem.size());
             } else {
-                Log.e("~~refresh"," err");
                 mAdapter = new ContentsListAdapter(mContext, mContentItem);
                 mRecyclerView.setAdapter(mAdapter);
                 mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -170,7 +168,6 @@ public class ContentsListLoad {
                     byteData = baos.toByteArray();
 
                     response = new String(byteData);
-                    Log.e("ItemResponse", response.toString());
                 } else {
                     return null;
                 }
@@ -184,7 +181,6 @@ public class ContentsListLoad {
                 for (int i = 0; i < ja.length(); i++) {
                     String mediaPath = "";
                     JSONObject order = ja.getJSONObject(i);
-                    Log.e("ID", order.getString("User_name"));
 
                     try {
                         JSONObject mediaJson = new JSONObject(order.getString("Media"));

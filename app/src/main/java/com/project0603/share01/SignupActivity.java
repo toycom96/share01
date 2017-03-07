@@ -224,6 +224,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 auth.execute();
 
                 loading.dismiss();
+                finish();
             } else {
                 Toast.makeText(SignupActivity.this, "회원가입중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }
@@ -231,7 +232,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             //Intent intent = new Intent(SignupActivity.this, MainActivity.class);
             //startActivity(intent);
-            finish();
+
         }
 
         @Override
